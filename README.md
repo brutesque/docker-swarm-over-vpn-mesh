@@ -8,7 +8,7 @@ Requirements:
 ### Execute deployment
 
 - Create a hosts file in the secrets folder using hosts.default as a template.
-- Adjust droplet.tf to your requirements.
+- Adjust droplets.tf to your likings.
 
 - Set the following environment variables:
     - DO_TOKEN: Digital Ocean API token
