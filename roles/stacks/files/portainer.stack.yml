@@ -37,7 +37,7 @@ services:
       placement:
         constraints:
           - node.role == manager
-          - node.labels.portainer-agent == true
+          - node.labels.portainer-frontend == true
       labels:
         - traefik.frontend.rule=Host:portainer.${DOMAIN?Variable DOMAIN not set}
         - traefik.enable=true
