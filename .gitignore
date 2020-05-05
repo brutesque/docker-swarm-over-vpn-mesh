@@ -1,7 +1,14 @@
+# PyCharm
 .idea
-.terraform
+
+# ansible storage
 fetch
+
+# Terraform
+.terraform
+.terraform.tfstate.lock.info
 terraform.tfstate
 terraform.tfstate.backup
 
+# Secrets
 secrets/hosts
