@@ -14,6 +14,8 @@ deploy:
 		-var "vultr_token=${VULTR_TOKEN}" \
 		-auto-approve
 
+	sleep 10
+
 	ansible \
 		--forks 1 \
 		--module-name ping \
