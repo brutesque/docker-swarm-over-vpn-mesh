@@ -1,0 +1,7 @@
+.idea
+.terraform
+fetch
+terraform.tfstate
+terraform.tfstate.backup
+
+secrets/hosts
