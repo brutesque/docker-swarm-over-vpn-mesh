@@ -7,6 +7,14 @@ Requirements:
 
 ### Execute deployment
 
+Setup a CNAME record in you domain dns pointed at your duckdns subdomain. The domain name will be used for all swarm services. Using duckdns links the domain dynamically to the swarm's ip address.
+```
+name: *
+type: CNAME
+value: my-duckdns-subdomain.duckdns.org.
+```
+Make sure to include the dot at the end.
+
 - Create a hosts file in the secrets folder using hosts.default as a template.
 - Adjust droplets.tf to your likings.
 
