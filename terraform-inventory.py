@@ -100,34 +100,35 @@ def _main():
             i = 1
         managers = 1
         for resource in tfstate['resources']:
-            try:
-                resource_vpn_ip = inventory['_meta']['hostvars'][resource['name']]['vpn_ip']
-            except KeyError:
-                resource_vpn_ip = "{}.{}".format(vpn_ip_first_part, i)
-                i += 1
-            finally:
-                dict_merge(
-                    inventory['_meta']['hostvars'],
-                    {
-                        resource['name']: {
-                            'ansible_host': resource['instances'][0]['attributes']['ipv4_address'],
-                            'ansible_python_interpreter': "/usr/bin/python3",
-                            'ansible_user': "root",
-                            'vpn_ip': resource_vpn_ip,
-                            'wan_interface': "eth0"
+            if resource['type'] == 'digitalocean_droplet':
+                try:
+                    resource_vpn_ip = inventory['_meta']['hostvars'][resource['name']]['vpn_ip']
+                except KeyError:
+                    resource_vpn_ip = "{}.{}".format(vpn_ip_first_part, i)
+                    i += 1
+                finally:
+                    dict_merge(
+                        inventory['_meta']['hostvars'],
+                        {
+                            resource['name']: {
+                                'ansible_host': resource['instances'][0]['attributes']['ipv4_address'],
+                                'ansible_python_interpreter': "/usr/bin/python3",
+                                'ansible_user': "root",
+                                'vpn_ip': resource_vpn_ip,
+                                'wan_interface': "eth0"
+                            }
                         }
-                    }
-                )
-                for group in ['servers', 'tinc_vpn_mesh']:
-                    if resource['name'] not in inventory[group]['hosts']:
-                        inventory[group]['hosts'].append(resource['name'])
+                    )
+                    for group in ['servers', 'tinc_vpn_mesh']:
+                        if resource['name'] not in inventory[group]['hosts']:
+                            inventory[group]['hosts'].append(resource['name'])
 
-                if len(inventory['docker_swarm_manager']['hosts']) < managers:
-                    if resource['name'] not in inventory['docker_swarm_manager']['hosts']:
-                        inventory['docker_swarm_manager']['hosts'].append(resource['name'])
-                else:
-                    if resource['name'] not in inventory['docker_swarm_worker']['hosts']:
-                        inventory['docker_swarm_worker']['hosts'].append(resource['name'])
+                    if len(inventory['docker_swarm_manager']['hosts']) < managers:
+                        if resource['name'] not in inventory['docker_swarm_manager']['hosts']:
+                            inventory['docker_swarm_manager']['hosts'].append(resource['name'])
+                    else:
+                        if resource['name'] not in inventory['docker_swarm_worker']['hosts']:
+                            inventory['docker_swarm_worker']['hosts'].append(resource['name'])
 
 
         sys.stdout.write(json.dumps(inventory, indent=2))
