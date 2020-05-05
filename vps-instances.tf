@@ -20,7 +20,7 @@ resource "digitalocean_droplet" "droplet01" {
     image = "ubuntu-18-04-x64"
     name = "droplet01"
     region = "nyc1"
-    size = "1gb"
+    size = "2gb"
     ssh_keys = [digitalocean_ssh_key.laptop.fingerprint, digitalocean_ssh_key.workstation.fingerprint]
 }
 resource "digitalocean_droplet" "droplet02" {
