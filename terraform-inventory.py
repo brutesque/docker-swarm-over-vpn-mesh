@@ -100,18 +100,22 @@ def _main():
             i = 1
         managers = 1
         for resource in tfstate['resources']:
-            if resource['type'] == 'digitalocean_droplet':
+            if resource['type'] in ['digitalocean_droplet', 'vultr_server']:
                 try:
                     resource_vpn_ip = inventory['_meta']['hostvars'][resource['name']]['vpn_ip']
                 except KeyError:
                     resource_vpn_ip = "{}.{}".format(vpn_ip_first_part, i)
                     i += 1
                 finally:
+                    if resource['type'] == 'digitalocean_droplet':
+                        ansible_host = resource['instances'][0]['attributes']['ipv4_address']
+                    elif resource['type'] == 'vultr_server':
+                        ansible_host = resource['instances'][0]['attributes']['main_ip']
                     dict_merge(
                         inventory['_meta']['hostvars'],
                         {
                             resource['name']: {
-                                'ansible_host': resource['instances'][0]['attributes']['ipv4_address'],
+                                'ansible_host': ansible_host,
                                 'ansible_python_interpreter': "/usr/bin/python3",
                                 'ansible_user': "root",
                                 'vpn_ip': resource_vpn_ip,
