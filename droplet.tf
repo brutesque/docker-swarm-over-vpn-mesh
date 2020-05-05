@@ -1,5 +1,5 @@
 resource "digitalocean_ssh_key" "laptop" {
-  name       = "laptop"
+  name       = "Laptop"
   public_key = file("secrets/ssh/laptop.id_rsa.pub")
 }
 resource "digitalocean_ssh_key" "workstation" {
