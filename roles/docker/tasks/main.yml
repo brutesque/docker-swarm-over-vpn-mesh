@@ -1,0 +1,49 @@
+---
+
+- name: Install aptitude using apt
+  apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+  tags: docker
+
+- name: Install required system packages
+  apt: name={{ item }} state=latest update_cache=yes
+  loop: ['apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip']
+  tags: docker
+
+- pip:
+    name:
+      - docker
+      - jsondiff
+  tags: docker
+
+- name: Add Docker GPG apt Key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+  tags: docker
+
+- name: Add Docker Repository
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu bionic stable
+    state: present
+  tags: docker
+
+- name: Update apt and install docker-ce
+  apt: update_cache=yes name={{ item }} state=latest
+  loop: ['docker-ce', 'docker-compose']
+  tags: docker
+
+- name: Add user to 'docker' group
+  user:
+    name: "{{ create_user }}"
+    groups: docker
+    append: yes
+
+- name: Configure Docker daemon options
+  template:
+    src: "etc/docker/daemon.json.j2"
+    dest: "/etc/docker/daemon.json"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify:
+    - restart docker

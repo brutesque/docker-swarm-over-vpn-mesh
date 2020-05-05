@@ -1,0 +1,78 @@
+---
+
+- name: Wait for nodes to become available
+  hosts: all
+  tasks:
+  - wait_for_connection:
+      delay: 10
+      timeout: 600
+  tags: waiting
+
+- name: Setup Ubuntu 18.04
+  hosts: all
+  roles:
+    - setup_ubuntu1804
+  vars_files:
+    - vars/main.yml
+  tags: ubuntu
+
+- name: Mount the BigStorage disk
+  hosts: storage
+  tasks:
+    - name: Mount big storage device
+      mount:
+        path: "/mnt/storage"
+        src: "/dev/{{ storage_device }}"
+        fstype: xfs
+        opts: defaults
+        state: present
+      when: storage_device is defined
+  tags: storage
+
+- name: Install Tinc
+  hosts: tinc_vpn_mesh
+  roles:
+    - tinc
+  vars_files:
+    - vars/main.yml
+  tags: tinc
+
+- name: Install Docker
+  hosts: docker_swarm
+  roles:
+    - docker
+  vars_files:
+    - vars/main.yml
+  tags: docker
+
+- name: Install Docker Machine and Virtualbox
+  hosts: docker_machine_hosts
+  roles:
+    - docker-machine
+  vars_files:
+    - vars/main.yml
+  tags: docker-machine
+
+- name: Setup Docker Swarm
+  hosts: docker_swarm
+  roles:
+    - swarm
+  vars_files:
+    - vars/main.yml
+  tags: swarm
+
+- name: Deploy stacks
+  hosts: docker_swarm_manager
+  roles:
+    - stacks
+  vars_files:
+    - vars/main.yml
+  tags: stacks
+
+- name: Register ip at DuckDNS
+  hosts: domain_name_targets
+  roles:
+    - duckdns
+  vars_files:
+    - vars/main.yml
+  tags: duckdns

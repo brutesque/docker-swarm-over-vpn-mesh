@@ -1,0 +1,29 @@
+---
+
+- name: UFW - Deny all other incoming traffic by default
+  ufw:
+    state: enabled
+    policy: deny
+    direction: incoming
+
+- name: UFW - Allow SSH connections on WAN interface
+  ufw:
+    rule: limit
+#    interface: "{{ wan_interface }}"
+    direction: in
+    port: ssh
+    proto: tcp
+    comment: "SSH port on WAN interface"
+
+- name: UFW - Allow VNC connections on WAN interface
+  ufw:
+    rule: limit
+#    interface: "{{ wan_interface }}"
+    direction: in
+    port: "5900"
+    proto: tcp
+    comment: "VNC port on WAN interface"
+  when: vnc_enabled is defined and vnc_enabled == "true"
+
+- name: ensure ufw service is enabled
+  service: name=ufw enabled=yes

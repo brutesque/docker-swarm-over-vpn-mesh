@@ -1,0 +1,11 @@
+---
+create_user: "{{ lookup('env','USER') }}"
+copy_local_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+
+ca_email: "{{ lookup('env', 'EMAIL')}}"
+
+admin_password: "{{ lookup('env', 'ADMIN_PASSWORD') }}"
+
+duckdns_token: "{{ lookup('env', 'DUCKDNS_TOKEN') }}"
+
+docker_swarm_interface: ppp0

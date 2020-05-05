@@ -1,0 +1,52 @@
+version: '3.7'
+
+services:
+
+  app1:
+    image: containous/whoami
+    deploy:
+      mode: global
+      labels:
+        - traefik.frontend.rule=Host:app1.${DOMAIN?Variable DOMAIN not set}
+        - traefik.enable=true
+        - traefik.port=80
+        - traefik.tags=traefik-public
+        - traefik.docker.network=traefik-public
+        - traefik.frontend.entryPoints=http,https
+#        - traefik.frontend.redirect.entryPoint=https
+    networks:
+      - traefik-public
+
+  app2:
+    image: jwilder/whoami
+    deploy:
+      mode: global
+      labels:
+        - traefik.frontend.rule=Host:app2.${DOMAIN?Variable DOMAIN not set}
+        - traefik.enable=true
+        - traefik.port=8000
+        - traefik.tags=traefik-public
+        - traefik.docker.network=traefik-public
+        - traefik.frontend.entryPoints=http,https
+#        - traefik.frontend.redirect.entryPoint=https
+    networks:
+      - traefik-public
+
+  app3:
+    image: emilevauge/whoami
+    deploy:
+      mode: global
+      labels:
+        - traefik.frontend.rule=Host:app3.${DOMAIN?Variable DOMAIN not set}
+        - traefik.enable=true
+        - traefik.port=80
+        - traefik.tags=traefik-public
+        - traefik.docker.network=traefik-public
+        - traefik.frontend.entryPoints=http,https
+#        - traefik.frontend.redirect.entryPoint=https
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true

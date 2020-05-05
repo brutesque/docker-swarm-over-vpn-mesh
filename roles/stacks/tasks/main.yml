@@ -1,0 +1,31 @@
+---
+
+- name: Create an empty file to store the first deployment timestamp
+  copy:
+    content: ""
+    dest: "/opt/hello"
+    force: no
+- name: Get the first deployment timestamp
+  shell: "stat --format '%Y' /opt/hello"
+  register: filetime_result
+  run_once: true
+- name: Do ssh keyscan on ansible host
+  shell: "ssh-keyscan {{ ansible_host }} 2>/dev/null | ssh-keygen -l -f - | grep ED25519"
+  register: keyscan_result
+  until: keyscan_result.rc == 0
+  retries: 10
+  delay: 60
+  run_once: true
+- name: Set fingerprint for ansible host
+  set_fact:
+    fingerprint: "{{ keyscan_result.stdout.split(' ')[1] }}"
+
+- file:
+    path: /opt/stacks
+    state: directory
+
+- include_tasks: reverse-proxy.yml
+- include_tasks: portainer.yml
+- include_tasks: swarmpit.yml
+- include_tasks: swarmprom.yml
+- include_tasks: test-apps.yml

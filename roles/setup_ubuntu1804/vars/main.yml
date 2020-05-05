@@ -1,0 +1,2 @@
+---
+sys_packages: [ 'curl', 'nano', 'git', 'ufw', 'python3', 'python3-pip', 'net-tools']

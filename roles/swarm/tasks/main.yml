@@ -1,0 +1,39 @@
+---
+
+- include_tasks: ufw.yml
+
+- name: Init a new swarm with default parameters
+  docker_swarm:
+      state: present
+      advertise_addr: "{{ docker_swarm_interface }}"
+  register: swarm_info
+  run_once: true
+  when: "'docker_swarm_manager' in group_names"
+
+- set_fact:
+    first_docker_manager: "{{ vpn_ip }}"
+  run_once: true
+
+- name: Add manager nodes
+  docker_swarm:
+    state: join
+    join_token: "{{ swarm_info.swarm_facts.JoinTokens.Manager }}"
+    remote_addrs: "{{ first_docker_manager }}"
+    advertise_addr: "{{ docker_swarm_interface }}"
+  when: "'docker_swarm_manager' in group_names"
+
+- name: Add worker nodes
+  docker_swarm:
+    state: join
+    join_token: "{{ swarm_info.swarm_facts.JoinTokens.Worker }}"
+    remote_addrs: "{{ first_docker_manager }}"
+    advertise_addr: "{{ docker_swarm_interface }}"
+  when: "'docker_swarm_worker' in group_names"
+
+- name: Add labels to nodes
+  docker_node:
+    hostname: "{{ hostvars[item]['ansible_hostname'] }}"
+    labels: "{{ hostvars[item]['swarm_labels'] |default({}) }}"
+  loop: "{{ ansible_play_batch }}"
+  when: "'docker_swarm_manager' in group_names"
+  run_once: true

@@ -1,0 +1,24 @@
+---
+
+- name: Create portainer secret
+  docker_secret:
+    name: portainer-pass
+    data: "{{ admin_password | b64encode }}"
+    data_is_b64: true
+    state: present
+
+- name: Copy portainer stack file
+  copy:
+    src: files/portainer.stack.yml
+    dest: /opt/stacks/portainer.stack.yml
+  run_once: true
+
+- name: Deploy portainer stack
+  docker_stack:
+    state: present
+    name: portainer
+    compose:
+      - /opt/stacks/portainer.stack.yml
+  environment:
+    DOMAIN: "admin.{{ domain_name }}"
+  run_once: true

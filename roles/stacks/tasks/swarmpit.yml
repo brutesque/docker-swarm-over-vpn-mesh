@@ -1,0 +1,44 @@
+---
+
+- name: Copy swarmpit stack file
+  copy:
+    src: files/swarmpit.stack.yml
+    dest: /opt/stacks/swarmpit.stack.yml
+  run_once: true
+
+- name: Deploy swarmpit stack
+  docker_stack:
+    state: present
+    name: swarmpit
+    compose:
+      - /opt/stacks/swarmpit.stack.yml
+  environment:
+    DOMAIN: "admin.{{ domain_name }}"
+  run_once: true
+
+- name: "wait for swarmpit to come up"
+  uri:
+    headers:
+      Host: "swarmpit.admin.{{ domain_name }}"
+    validate_certs: no
+    method: GET
+    url: "https://{{ ansible_host }}/"
+    status_code: 200
+  register: result
+  until: result.status == 200
+  retries: 60
+  delay: 5
+  run_once: true
+
+- name: Create first admin account
+  uri:
+    headers:
+      Host: "swarmpit.admin.{{ domain_name }}"
+    validate_certs: no
+    method: POST
+    body_format: json
+    url: "https://{{ ansible_host }}/initialize"
+    body: '{"username": "admin", "password": "{{ admin_password }}"}'
+    status_code: [201, 403]
+  register: result
+  run_once: true

@@ -1,0 +1,13 @@
+---
+
+- name: UFW - Allow incoming access to port 655 on WAN interface
+  ufw:
+    rule: allow
+    interface: "{{ wan_interface }}"
+    direction: in
+    port: '655'
+    comment: "Tinc on WAN interface for {{ hostvars[item].inventory_hostname }}"
+    from_ip: "{{ hostvars[item].ansible_host }}"
+    to_ip: "{{ ansible_host }}"
+  when: hostvars[item].ansible_host != ansible_host and vpn_ip is defined and hostvars[item].vpn_ip is defined
+  with_items: "{{ ansible_play_batch }}"

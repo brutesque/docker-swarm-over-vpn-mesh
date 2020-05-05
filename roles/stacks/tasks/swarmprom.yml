@@ -1,0 +1,26 @@
+---
+
+- name: Create admin password hash for stack
+  set_fact:
+    admin_password_hash: "{{ admin_password | password_hash('blowfish', rounds=12, salt=['swarmprom', fingerprint, filetime_result.stdout] | join('|') | hash('sha1') | truncate(22, True, '')) }}"
+  run_once: true
+
+- git:
+    repo: 'https://github.com/stefanprodan/swarmprom.git'
+    dest: /opt/swarmprom
+    version: master
+  run_once: true
+
+- name: Deploy swarmprom stack
+  docker_stack:
+    state: present
+    name: swarmprom
+    compose:
+      - /opt/swarmprom/docker-compose.traefik.yml
+  environment:
+    ADMIN_USER: "admin"
+    ADMIN_PASSWORD: "{{ admin_password }}"
+    HASHED_PASSWORD: "{{ admin_password_hash }}"
+    DOMAIN: "admin.{{ domain_name }}"
+    TRAEFIK_PUBLIC_TAG: traefik-public
+  run_once: true

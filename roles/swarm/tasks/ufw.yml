@@ -1,0 +1,43 @@
+---
+
+- name: UFW - Open TCP port 2377 for cluster management communications
+  ufw:
+    rule: allow
+    interface: ppp0
+    direction: in
+    port: '2377'
+    proto: tcp
+    to_ip: "{{ vpn_ip }}"
+    comment: "Docker Swarm on VPN interface for cluster management communications"
+  when: "'docker_swarm_manager' in group_names and vpn_ip is defined"
+
+- name: UFW - Open TCP port 4789 for overlay network traffic
+  ufw:
+    rule: allow
+    interface: ppp0
+    direction: in
+    port: '4789'
+    proto: udp
+    to_ip: "{{ vpn_ip }}"
+    comment: "Docker Swarm on VPN interface for overlay network traffic"
+  when: vpn_ip is defined
+
+- name: UFW - Open TCP and UDP port 7946 for communication among nodes
+  ufw:
+    rule: allow
+    interface: ppp0
+    direction: in
+    port: '7946'
+    to_ip: "{{ vpn_ip }}"
+    comment: "Docker Swarm on VPN interface for communication among nodes"
+  when: vpn_ip is defined
+
+#- name: UFW - Open TCP port 50 for overlay network with encryption
+#  ufw:
+#    rule: allow
+#    interface: ppp0
+#    direction: in
+#    port: '50'
+#    to_ip: "{{ vpn_ip }}"
+#    comment: "Docker Swarm port on VPN interface"
+#  when: vpn_ip is defined
