@@ -91,7 +91,7 @@ services:
       --logLevel=INFO
       --accessLog
       --api
-#      --acme.caServer="https://acme-staging-v02.api.letsencrypt.org/directory"
+      --acme.caServer=${CA_SERVER:-"https://acme-v02.api.letsencrypt.org/directory"}
     networks:
       - traefik-public
     depends_on:
