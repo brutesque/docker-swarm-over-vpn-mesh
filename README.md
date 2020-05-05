@@ -56,3 +56,4 @@ $ make clean
 - implement traefikv2
     - usersfile as secret
     - get traefik working on workers using limited docker socket
+- clear duckdns record if vps using the ip address gets destroyed
