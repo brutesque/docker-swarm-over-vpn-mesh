@@ -24,7 +24,7 @@
     path: /opt/stacks
     state: directory
 
-- include_tasks: reverse-proxy.yml
+- include_tasks: proxy.yml
 - include_tasks: portainer.yml
 - include_tasks: swarmpit.yml
 - include_tasks: swarmprom.yml

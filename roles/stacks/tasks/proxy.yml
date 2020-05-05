@@ -2,7 +2,7 @@
 
 - name: Create admin password hash for stack
   set_fact:
-    admin_password_hash: "{{ admin_password | password_hash('blowfish', rounds=12, salt=['reverse-proxy', fingerprint, filetime_result.stdout] | join('|') | hash('sha1') | truncate(22, True, '')) }}"
+    admin_password_hash: "{{ admin_password | password_hash('blowfish', rounds=12, salt=['proxy', fingerprint, filetime_result.stdout] | join('|') | hash('sha1') | truncate(22, True, '')) }}"
   run_once: true
 
 - name: Create network for the reverse-proxy
@@ -21,18 +21,18 @@
     data_is_b64: true
     state: present
 
-- name: Copy reverse-proxy stack file
+- name: Copy proxy stack file
   copy:
-    src: files/traefik-v1.stack.yml
-    dest: /opt/stacks/traefik-v1.stack.yml
+    src: files/proxy.stack.yml
+    dest: /opt/stacks/proxy.stack.yml
   run_once: true
 
 - name: Deploy reverse-proxy stack
   docker_stack:
     state: present
-    name: reverse-proxy
+    name: proxy
     compose:
-      - /opt/stacks/traefik-v1.stack.yml
+      - /opt/stacks/proxy.stack.yml
   environment:
     EMAIL: "{{ ca_email }}"
     DOMAIN: "admin.{{ domain_name }}"
