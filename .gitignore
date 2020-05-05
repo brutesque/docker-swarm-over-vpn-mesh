@@ -11,4 +11,5 @@ terraform.tfstate
 terraform.tfstate.backup
 
 # Secrets
+secrets/ssh/*
 secrets/hosts
