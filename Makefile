@@ -32,4 +32,7 @@ destroy:
 		-auto-approve
 
 clean:
-	rm -Rf .terraform fetch terraform.tfstate terraform.tfstate.backup
+	rm -Rf .terraform
+	rm -Rf fetch
+	rm -f terraform.tfstate
+	rm -f terraform.tfstate.backup
