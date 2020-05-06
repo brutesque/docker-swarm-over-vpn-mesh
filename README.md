@@ -1,9 +1,18 @@
 # Ansible playbook for Docker Swarm using Tinc
-This ansible playbook sets up a Docker Swarm using Tinc for peer-to-peer communication between nodes.
+This ansible playbook creates a Docker Swarm that uses a Tinc vpn-mesh. It's purpose is to work cross-location and cross-provider.
+
+When using the makefile to deploy the following will happen:
+- terraform will use the vps-instances.tf configuration to spin up a number of vps instances.
+- an ansible inventory is dynamically created from the manually configured secrets/hosts file and the terraformed vps-instances.
+- all nodes get some initial hardening. A user will be created using the local $USER env variable.
+- a tinc vpn mesh will be created between all the nodes.
+- docker swarm will be setup to use the tinc vpn mesh for communication between swarm nodes.
+- initial admin stacks are deployed on the swarm and will be made available through reverse-proxy.
 
 Requirements:
 - Terraform
 - Python-pip
+- duckdns account
 
 ### Execute deployment
 
@@ -56,4 +65,4 @@ $ make clean
 - implement traefikv2
     - usersfile as secret
     - get traefik working on workers using limited docker socket
-- clear duckdns record if vps using the ip address gets destroyed
+- clear duckdns record if vps using the ip address gets destroyed. (To prevent having a link from our domain to an ip that is no longer ours)
