@@ -10,7 +10,7 @@
   register: filetime_result
   run_once: true
 - name: Do ssh keyscan on ansible host
-  shell: "ssh-keyscan {{ ansible_host }} 2>/dev/null | ssh-keygen -l -f - | grep ED25519"
+  shell: "cat /etc/ssh/ssh_host_ed25519_key.pub | ssh-keygen -l -f - | grep ED25519"
   register: keyscan_result
   until: keyscan_result.rc == 0
   retries: 10
