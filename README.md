@@ -16,7 +16,7 @@ value: my-duckdns-subdomain.duckdns.org.
 Make sure to include the dot at the end.
 
 - Create a hosts file in the secrets folder using hosts.default as a template.
-- Adjust vps-instances.tf to your likings.
+- Adjust vps-instances.tf to your liking.
 
 - Set the following environment variables:
     - DO_TOKEN: Digital Ocean API token
