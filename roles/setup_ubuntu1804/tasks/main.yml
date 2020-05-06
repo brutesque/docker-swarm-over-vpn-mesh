@@ -75,7 +75,7 @@
     path: /etc/ssh/sshd_config
     state: present
     regexp: '^#?AllowUsers'
-    line: 'AllowUsers {{ create_user }}'
+    line: 'AllowUsers {{ create_user }} root'  # TODO: remove root
 
 - name: Limit max authentication attempts
   lineinfile:
