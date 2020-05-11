@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   app:
-    image: swarmpit/swarmpit:latest
+    image: swarmpit/swarmpit:1.9
     environment:
       - SWARMPIT_DB=http://db:5984
       - SWARMPIT_INFLUXDB=http://influxdb:8086
@@ -68,7 +68,7 @@ services:
           - node.labels.swarmpit.influx-data == true
 
   agent:
-    image: swarmpit/agent:latest
+    image: swarmpit/agent:2.2
     environment:
       - DOCKER_API_VERSION=1.35
     volumes:

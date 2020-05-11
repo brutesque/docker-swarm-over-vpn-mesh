@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   consul-leader:
-    image: consul
+    image: consul:1.7.3
     command: agent -server -client=0.0.0.0 -bootstrap -ui
     volumes:
       - consul-data-leader:/consul/data
@@ -16,17 +16,17 @@ services:
       - traefik-pass
     deploy:
       labels:
-        - traefik.frontend.rule=Host:consul.${DOMAIN?Variable DOMAIN not set}
         - traefik.enable=true
+        - traefik.frontend.rule=Host:consul.${DOMAIN?Variable DOMAIN not set}
         - traefik.port=8500
-        - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
+        - traefik.tags=traefik-public
         - traefik.docker.network=traefik-public
         - traefik.frontend.entryPoints=http,https
         - traefik.frontend.redirect.entryPoint=https
         - traefik.frontend.auth.basic.users=${USERNAME?Variable USERNAME not set}:${HASHED_PASSWORD?Variable HASHED_PASSWORD not set}
 
   consul-replica:
-    image: consul
+    image: consul:1.7.3
     command: agent -server -client=0.0.0.0 -retry-join="consul-leader"
     volumes:
       - consul-data-replica:/consul/data
