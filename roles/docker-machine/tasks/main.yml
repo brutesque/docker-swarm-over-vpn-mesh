@@ -51,4 +51,6 @@
     - docker-machine-install-verify
 
 - name: Install virtualbox
-  apt: name=virtualbox state=latest
+  apt:
+    name: virtualbox
+    state: latest

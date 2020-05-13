@@ -1,11 +1,18 @@
 ---
 
 - name: Install aptitude using apt
-  apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+  apt:
+    name: aptitude
+    state: latest
+    update_cache: yes
+    force_apt_get: yes
   tags: docker
 
 - name: Install required system packages
-  apt: name={{ item }} state=latest update_cache=yes
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
   loop: ['apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip']
   tags: docker
 
@@ -13,6 +20,7 @@
     name:
       - docker
       - jsondiff
+    state: latest
   tags: docker
 
 - name: Add Docker GPG apt Key
@@ -21,15 +29,23 @@
     state: present
   tags: docker
 
+
+- name: Add Docker Repository
+  shell:
+    cmd: lsb_release -cs
+  register: lsb_release
 - name: Add Docker Repository
   apt_repository:
-    repo: deb https://download.docker.com/linux/ubuntu bionic stable
+    repo: "deb https://download.docker.com/linux/ubuntu {{ lsb_release.stdout }} stable"
     state: present
   tags: docker
 
 - name: Update apt and install docker-ce
-  apt: update_cache=yes name={{ item }} state=latest
-  loop: ['docker-ce', 'docker-compose']
+  apt:
+    update_cache: yes
+    name: "{{ item }}"
+    state: latest
+  loop: ['docker-ce', 'docker-ce-cli', 'containerd.io', 'docker-compose']
   tags: docker
 
 - name: Add user to 'docker' group
@@ -40,7 +56,7 @@
 
 - name: Configure Docker daemon options
   template:
-    src: "etc/docker/daemon.json.j2"
+    src: "daemon.json.j2"
     dest: "/etc/docker/daemon.json"
     owner: "root"
     group: "root"
