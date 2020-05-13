@@ -10,6 +10,7 @@
 
 - name: Setup Ubuntu 18.04
   hosts: all
+  become: true
   roles:
     - setup_ubuntu1804
   vars_files:
@@ -18,6 +19,7 @@
 
 - name: Mount the BigStorage disk
   hosts: storage
+  become: true
   tasks:
     - name: Mount big storage device
       mount:
@@ -31,6 +33,7 @@
 
 - name: Install Tinc
   hosts: tinc_vpn_mesh
+  become: true
   roles:
     - tinc
   vars_files:
@@ -39,6 +42,7 @@
 
 - name: Install Docker
   hosts: docker_swarm
+  become: true
   roles:
     - docker
   vars_files:
@@ -47,6 +51,7 @@
 
 - name: Install Docker Machine and Virtualbox
   hosts: docker_machine_hosts
+  become: true
   roles:
     - docker-machine
   vars_files:
@@ -55,6 +60,7 @@
 
 - name: Setup Docker Swarm
   hosts: docker_swarm
+  become: true
   roles:
     - swarm
   vars_files:
@@ -63,6 +69,7 @@
 
 - name: Deploy stacks
   hosts: docker_swarm_manager
+  become: true
   roles:
     - stacks
   vars_files:
@@ -71,6 +78,7 @@
 
 - name: Register ip at DuckDNS
   hosts: domain_name_targets
+  become: true
   roles:
     - duckdns
   vars_files:
