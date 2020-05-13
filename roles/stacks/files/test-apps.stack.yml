@@ -6,6 +6,13 @@ services:
     image: containous/whoami
     deploy:
       mode: global
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 32M
+        reservations:
+          cpus: '0.1'
+          memory: 16M
       labels:
         - traefik.frontend.rule=Host:app1.${DOMAIN?Variable DOMAIN not set}
         - traefik.enable=true
@@ -21,6 +28,13 @@ services:
     image: jwilder/whoami
     deploy:
       mode: global
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 32M
+        reservations:
+          cpus: '0.1'
+          memory: 16M
       labels:
         - traefik.frontend.rule=Host:app2.${DOMAIN?Variable DOMAIN not set}
         - traefik.enable=true
@@ -36,6 +50,13 @@ services:
     image: emilevauge/whoami
     deploy:
       mode: global
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 32M
+        reservations:
+          cpus: '0.1'
+          memory: 16M
       labels:
         - traefik.frontend.rule=Host:app3.${DOMAIN?Variable DOMAIN not set}
         - traefik.enable=true

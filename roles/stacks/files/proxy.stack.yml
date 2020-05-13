@@ -15,6 +15,13 @@ services:
     secrets:
       - traefik-pass
     deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
       labels:
         - traefik.enable=true
         - traefik.frontend.rule=Host:consul.${DOMAIN?Variable DOMAIN not set}
@@ -40,6 +47,13 @@ services:
       placement:
         preferences:
           - spread: node.id
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
 
   traefik:
     image: traefik:v1.7
@@ -60,6 +74,13 @@ services:
           - node.role == manager
         preferences:
           - spread: node.id
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
       labels:
         - traefik.frontend.rule=Host:traefik.${DOMAIN?Variable DOMAIN not set}
         - traefik.enable=true

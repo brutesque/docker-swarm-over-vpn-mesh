@@ -10,6 +10,13 @@ services:
       - agent-network
     deploy:
       mode: global
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+        reservations:
+          cpus: '0.1'
+          memory: 32M
       placement:
         constraints:
           - node.platform.os == linux
@@ -38,6 +45,13 @@ services:
         constraints:
           - node.role == manager
           - node.labels.portainer-frontend == true
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
       labels:
         - traefik.frontend.rule=Host:portainer.${DOMAIN?Variable DOMAIN not set}
         - traefik.enable=true

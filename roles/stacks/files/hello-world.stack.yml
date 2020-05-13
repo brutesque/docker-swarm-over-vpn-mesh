@@ -7,6 +7,13 @@ services:
     networks:
       - traefik-public
     deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 32M
+        reservations:
+          cpus: '0.1'
+          memory: 16M
       labels:
         - traefik.frontend.rule=Host:helloworld.${DOMAIN?Variable DOMAIN not set}
         - traefik.enable=true
