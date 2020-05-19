@@ -10,6 +10,8 @@ fetch
 terraform.tfstate
 terraform.tfstate.backup
 
+vps-instances.tf
+
 # Secrets
 secrets/ssh/*
 secrets/*
