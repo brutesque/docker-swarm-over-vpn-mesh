@@ -13,8 +13,6 @@
   shell: "cat /etc/ssh/ssh_host_ed25519_key.pub | ssh-keygen -l -f - | grep ED25519"
   register: keyscan_result
   until: keyscan_result.rc == 0
-  retries: 10
-  delay: 60
   run_once: true
 - name: Set fingerprint for ansible host
   set_fact:
