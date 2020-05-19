@@ -55,14 +55,37 @@ services:
           cpus: '0.1'
           memory: 64M
 
+  docker-socket:
+    image: tecnativa/docker-socket-proxy
+    networks:
+      - socket-network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      CONTAINERS: 1
+      NETWORKS: 1
+      SERVICES: 1
+      SWARM: 1
+      TASKS: 1
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.role == manager
+    logging:
+      options:
+        max-size: "500k"
+
   traefik:
     image: traefik:v1.7
     ports:
       - target: 80
         published: 80
+        protocol: tcp
         mode: host
       - target: 443
         published: 443
+        protocol: tcp
         mode: host
 #      - target: 8080
 #        published: 8080
@@ -70,8 +93,8 @@ services:
     deploy:
       replicas: ${TRAEFIK_REPLICAS:-3}
       placement:
-        constraints:
-          - node.role == manager
+#        constraints:
+#          - node.role == manager
         preferences:
           - spread: node.id
       resources:
@@ -94,6 +117,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     command:
       --docker
+      --docker.endpoint=http://docker-socket:2375
       --docker.swarmmode
       --docker.watch
       --docker.exposedbydefault=false
@@ -115,7 +139,9 @@ services:
       --acme.caServer=${CA_SERVER:-"https://acme-v02.api.letsencrypt.org/directory"}
     networks:
       - traefik-public
+      - socket-network
     depends_on:
+      - docker-socket
       - consul-leader
     secrets:
       - traefik-pass
@@ -128,6 +154,8 @@ networks:
   traefik-public:
     external: true
   consul-network:
+    driver: overlay
+  socket-network:
     driver: overlay
 
 secrets:
