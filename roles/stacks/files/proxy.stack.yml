@@ -1,7 +1,6 @@
 version: '3.7'
 
 services:
-
   consul-leader:
     image: consul:1.7.3
     command: agent -server -client=0.0.0.0 -bootstrap -ui
@@ -31,7 +30,7 @@ services:
         - traefik.docker.network=traefik-public
         - traefik.frontend.entryPoints=http,https
         - traefik.frontend.redirect.entryPoint=https
-        - traefik.frontend.auth.basic.users=${USERNAME?Variable USERNAME not set}:${HASHED_PASSWORD?Variable HASHED_PASSWORD not set}
+        - traefik.frontend.auth.basic.usersFile=/run/secrets/traefik-pass
 
   consul-replica:
     image: consul:1.7.3
@@ -68,6 +67,29 @@ services:
 #      - target: 8080
 #        published: 8080
 #        mode: host
+    deploy:
+      replicas: ${TRAEFIK_REPLICAS:-3}
+      placement:
+        constraints:
+          - node.role == manager
+        preferences:
+          - spread: node.id
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+      labels:
+        - traefik.frontend.rule=Host:traefik.${DOMAIN?Variable DOMAIN not set}
+        - traefik.enable=true
+        - traefik.port=8080
+        - traefik.tags=traefik-public
+        - traefik.docker.network=traefik-public
+        - traefik.frontend.entryPoints=http,https
+        - traefik.frontend.redirect.entryPoint=https
+        - traefik.frontend.auth.basic.usersFile=/run/secrets/traefik-pass
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command:
@@ -95,29 +117,8 @@ services:
       - traefik-public
     depends_on:
       - consul-leader
-    deploy:
-      replicas: ${TRAEFIK_REPLICAS:-3}
-      placement:
-        constraints:
-          - node.role == manager
-        preferences:
-          - spread: node.id
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 256M
-        reservations:
-          cpus: '0.1'
-          memory: 128M
-      labels:
-        - traefik.frontend.rule=Host:traefik.${DOMAIN?Variable DOMAIN not set}
-        - traefik.enable=true
-        - traefik.port=8080
-        - traefik.tags=traefik-public
-        - traefik.docker.network=traefik-public
-        - traefik.frontend.entryPoints=http,https
-        - traefik.frontend.redirect.entryPoint=https
-        - traefik.frontend.auth.basic.users=${USERNAME?Variable USERNAME not set}:${HASHED_PASSWORD?Variable HASHED_PASSWORD not set}
+    secrets:
+      - traefik-pass
 
 volumes:
   consul-data-leader:

@@ -7,8 +7,14 @@
 
 - git:
     repo: 'https://github.com/stefanprodan/swarmprom.git'
-    dest: /opt/swarmprom
+    dest: /opt/stacks/swarmprom
     version: master
+  run_once: true
+
+- name: Copy proxy stack file
+  copy:
+    src: files/swarmprom.stack.yml
+    dest: /opt/stacks/swarmprom/docker-compose.custom.yml
   run_once: true
 
 - name: Deploy swarmprom stack
@@ -16,11 +22,10 @@
     state: present
     name: swarmprom
     compose:
-      - /opt/swarmprom/docker-compose.traefik.yml
+      - /opt/stacks/swarmprom/docker-compose.custom.yml
   environment:
     ADMIN_USER: "admin"
     ADMIN_PASSWORD: "{{ admin_password }}"
-    HASHED_PASSWORD: "{{ admin_password_hash }}"
     DOMAIN: "admin.{{ domain_name }}"
     TRAEFIK_PUBLIC_TAG: traefik-public
   run_once: true

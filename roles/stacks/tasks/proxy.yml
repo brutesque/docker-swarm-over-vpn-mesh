@@ -36,8 +36,6 @@
   environment:
     EMAIL: "{{ ca_email }}"
     DOMAIN: "admin.{{ domain_name }}"
-    USERNAME: "admin"
-    HASHED_PASSWORD: "{{ admin_password_hash }}"
     CONSUL_REPLICAS: 3
     TRAEFIK_REPLICAS: 3
     CA_SERVER: "{{ ca_server }}"
