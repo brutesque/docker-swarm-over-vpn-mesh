@@ -1,6 +1,7 @@
 version: '3.7'
 
 services:
+
   consul-leader:
     image: consul:1.7.3
     command: agent -server -client=0.0.0.0 -bootstrap -ui
@@ -93,8 +94,6 @@ services:
     deploy:
       replicas: ${TRAEFIK_REPLICAS:-3}
       placement:
-#        constraints:
-#          - node.role == manager
         preferences:
           - spread: node.id
       resources:
