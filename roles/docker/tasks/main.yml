@@ -20,6 +20,7 @@
     name:
       - docker
       - jsondiff
+      - passlib
     state: latest
   tags: docker
 
