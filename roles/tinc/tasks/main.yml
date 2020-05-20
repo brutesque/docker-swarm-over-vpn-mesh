@@ -70,7 +70,7 @@
   when: public_key.changed
 
 - name: create tinc private key (and append public key to tincd hosts file)
-  shell: tincd -n {{ netname }} -K4096
+  shell: tincd -n {{ netname }} -K8192
   args:
     creates: /etc/tinc/{{ netname }}/rsa_key.priv
   notify:
