@@ -11,7 +11,7 @@
     version: master
   run_once: true
 
-- name: Copy proxy stack file
+- name: Copy swarmprom stack file
   copy:
     src: files/swarmprom.stack.yml
     dest: /opt/stacks/swarmprom/docker-compose.custom.yml
