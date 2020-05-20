@@ -13,8 +13,6 @@ services:
     networks:
       - consul-network
       - traefik-public
-    secrets:
-      - traefik-pass
     deploy:
       resources:
         limits:
