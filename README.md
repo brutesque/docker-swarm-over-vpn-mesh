@@ -64,5 +64,4 @@ $ make clean
 - create method for persisting letsencrypt data between deployments (to prevent getting rate-limited)
 - implement traefikv2
     - usersfile as secret
-    - get traefik working on workers using limited docker socket
 - clear duckdns record if vps using the ip address gets destroyed. (To prevent having a link from our domain to an ip that is no longer ours)
