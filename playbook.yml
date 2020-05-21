@@ -8,11 +8,11 @@
       timeout: 600
   tags: waiting
 
-- name: Setup Ubuntu 18.04
+- name: Setup Ubuntu
   hosts: all
   become: true
   roles:
-    - setup_ubuntu1804
+    - setup_ubuntu
   vars_files:
     - vars/main.yml
   tags: ubuntu

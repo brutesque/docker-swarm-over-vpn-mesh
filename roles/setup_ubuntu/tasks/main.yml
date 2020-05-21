@@ -4,10 +4,8 @@
 - shell:
     cmd: "echo {{ inventory_hostname }} > /etc/hostname"
   when: inventory_hostname != ansible_hostname
-- debug:
-    msg: "{{ inventory_hostname }} | {{ ansible_hostname }}"
 
-- name: Install Prerequisitesx
+- name: Install Prerequisites
   apt:
     name: aptitude
     update_cache: yes
