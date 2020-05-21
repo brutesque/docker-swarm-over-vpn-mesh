@@ -5,6 +5,22 @@
     admin_password_hash: "{{ admin_password | password_hash('blowfish', rounds=12, salt=['proxy', fingerprint, filetime_result.stdout] | join('|') | hash('sha1') | truncate(22, True, '')) }}"
   run_once: true
 
+- name: Add label to entrypoints
+  docker_node:
+    hostname: "{{ hostvars[item]['inventory_hostname'] }}"
+    labels:
+      traefik: 'true'
+  loop: "{{ groups['entrypoints'] }}"
+  run_once: true
+
+- name: Remove label from non-entrypoints
+  docker_node:
+    hostname: "{{ item }}"
+    labels_to_remove:
+      - traefik
+  when: item not in groups['entrypoints']
+  loop: "{{ groups['docker_swarm'] }}"
+
 - name: Create network for the reverse-proxy
   docker_network:
     state: present
@@ -20,6 +36,7 @@
     data: "{{ ['admin', admin_password_hash] | join(':') | b64encode }}"
     data_is_b64: true
     state: present
+  run_once: true
 
 - name: Copy proxy stack file
   copy:
@@ -36,7 +53,5 @@
   environment:
     EMAIL: "{{ ca_email }}"
     DOMAIN: "admin.{{ domain_name }}"
-    CONSUL_REPLICAS: 3
-    TRAEFIK_REPLICAS: 3
     CA_SERVER: "{{ ca_server }}"
   run_once: true

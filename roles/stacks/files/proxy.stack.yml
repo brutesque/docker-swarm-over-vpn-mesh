@@ -71,6 +71,13 @@ services:
       placement:
         constraints:
           - node.role == manager
+      resources:
+        reservations:
+          cpus: '0.1'
+          memory: 8M
+        limits:
+          cpus: '0.1'
+          memory: 8M
     logging:
       options:
         max-size: "500k"
@@ -90,10 +97,10 @@ services:
 #        published: 8080
 #        mode: host
     deploy:
-      replicas: ${TRAEFIK_REPLICAS:-3}
+      mode: global
       placement:
-        preferences:
-          - spread: node.id
+        constraints:
+          - node.labels.traefik == true
       resources:
         limits:
           cpus: '0.5'

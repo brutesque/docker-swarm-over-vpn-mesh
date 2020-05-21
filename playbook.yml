@@ -68,7 +68,7 @@
   tags: swarm
 
 - name: Deploy stacks
-  hosts: docker_swarm_manager
+  hosts: docker_swarm_manager[0]
   become: true
   roles:
     - stacks
@@ -77,7 +77,7 @@
   tags: stacks
 
 - name: Register ip at DuckDNS
-  hosts: domain_name_targets
+  hosts: entrypoints
   become: true
   roles:
     - duckdns
