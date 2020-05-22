@@ -57,8 +57,10 @@ def _execute_shell():
         out_cmd, err_cmd = proc_tf_cmd.communicate()
         if err_cmd != '':
             sys.stderr.write(str(err_cmd) + '\n')
-        else:
+        elif out_cmd != '':
             return json.loads(out_cmd, encoding=encoding)
+        else:
+            raise ValueError('Terraform is not initialized')
 
 
 def _main():
