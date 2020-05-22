@@ -32,7 +32,7 @@
   tags: storage
 
 - name: Install Tinc
-  hosts: tinc_vpn_mesh
+  hosts: vpn_mesh
   become: true
   roles:
     - tinc
@@ -41,7 +41,7 @@
   tags: tinc
 
 - name: Install Docker
-  hosts: docker_swarm
+  hosts: swarm
   become: true
   roles:
     - docker
@@ -59,7 +59,7 @@
   tags: docker-machine
 
 - name: Setup Docker Swarm
-  hosts: docker_swarm
+  hosts: swarm
   become: true
   roles:
     - swarm
@@ -68,7 +68,7 @@
   tags: swarm
 
 - name: Deploy stacks
-  hosts: docker_swarm_manager[0]
+  hosts: managers[0]
   become: true
   roles:
     - stacks

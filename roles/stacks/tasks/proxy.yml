@@ -19,7 +19,7 @@
     labels_to_remove:
       - traefik
   when: item not in groups['entrypoints']
-  loop: "{{ groups['docker_swarm'] }}"
+  loop: "{{ groups['swarm'] }}"
 
 - name: Create network for the reverse-proxy
   docker_network:

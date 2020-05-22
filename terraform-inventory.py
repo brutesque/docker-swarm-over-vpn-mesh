@@ -70,20 +70,23 @@ def _main():
             },
             "all": {
                 "children": [
-                    "docker_swarm_manager",
-                    "docker_swarm_worker",
+                    "managers",
+                    "workers",
                     "servers",
-                    "tinc_vpn_mesh",
+                    "vpn_mesh",
                     "ungrouped"
                 ]
             },
-            "tinc_vpn_mesh": {
+            "vpn_mesh": {
                 "hosts": []
             },
-            "docker_swarm_manager": {
+            "entrypoints": {
                 "hosts": []
             },
-            "docker_swarm_worker": {
+            "managers": {
+                "hosts": []
+            },
+            "workers": {
                 "hosts": []
             },
             "servers": {
@@ -123,16 +126,16 @@ def _main():
                             }
                         }
                     )
-                    for group in ['servers', 'tinc_vpn_mesh']:
+                    for group in ['servers', 'vpn_mesh']:
                         if resource['name'] not in inventory[group]['hosts']:
                             inventory[group]['hosts'].append(resource['name'])
 
-                    if len(inventory['docker_swarm_manager']['hosts']) < managers:
-                        if resource['name'] not in inventory['docker_swarm_manager']['hosts']:
-                            inventory['docker_swarm_manager']['hosts'].append(resource['name'])
+                    if len(inventory['managers']['hosts']) < managers:
+                        if resource['name'] not in inventory['managers']['hosts']:
+                            inventory['managers']['hosts'].append(resource['name'])
                     else:
-                        if resource['name'] not in inventory['docker_swarm_worker']['hosts']:
-                            inventory['docker_swarm_worker']['hosts'].append(resource['name'])
+                        if resource['name'] not in inventory['workers']['hosts']:
+                            inventory['workers']['hosts'].append(resource['name'])
 
 
         sys.stdout.write(json.dumps(inventory, indent=2))

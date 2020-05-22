@@ -8,7 +8,7 @@
       advertise_addr: "{{ docker_swarm_interface }}"
   register: swarm_info
   run_once: true
-  when: "'docker_swarm_manager' in group_names"
+  when: "'managers' in group_names"
 
 - set_fact:
     first_docker_manager: "{{ vpn_ip }}"
@@ -20,7 +20,7 @@
     join_token: "{{ swarm_info.swarm_facts.JoinTokens.Manager }}"
     remote_addrs: "{{ first_docker_manager }}"
     advertise_addr: "{{ docker_swarm_interface }}"
-  when: "'docker_swarm_manager' in group_names"
+  when: "'managers' in group_names"
 
 - name: Add worker nodes
   docker_swarm:
@@ -28,12 +28,12 @@
     join_token: "{{ swarm_info.swarm_facts.JoinTokens.Worker }}"
     remote_addrs: "{{ first_docker_manager }}"
     advertise_addr: "{{ docker_swarm_interface }}"
-  when: "'docker_swarm_worker' in group_names"
+  when: "'workers' in group_names"
 
 - name: Add labels to nodes
   docker_node:
     hostname: "{{ hostvars[item]['ansible_hostname'] }}"
     labels: "{{ hostvars[item]['swarm_labels'] |default({}) }}"
   loop: "{{ ansible_play_batch }}"
-  when: "'docker_swarm_manager' in group_names"
+  when: "'managers' in group_names"
   run_once: true

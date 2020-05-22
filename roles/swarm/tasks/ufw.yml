@@ -9,7 +9,7 @@
     proto: tcp
     to_ip: "{{ vpn_ip }}"
     comment: "Docker Swarm on VPN interface for cluster management communications"
-  when: "'docker_swarm_manager' in group_names and vpn_ip is defined"
+  when: "'managers' in group_names and vpn_ip is defined"
 
 - name: UFW - Open TCP port 4789 for overlay network traffic
   ufw:
