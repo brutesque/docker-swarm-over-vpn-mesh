@@ -49,15 +49,6 @@
     - vars/main.yml
   tags: docker
 
-- name: Install Docker Machine and Virtualbox
-  hosts: docker_machine_hosts
-  become: true
-  roles:
-    - docker-machine
-  vars_files:
-    - vars/main.yml
-  tags: docker-machine
-
 - name: Setup Docker Swarm
   hosts: swarm
   become: true
