@@ -1,0 +1,19 @@
+---
+
+- shell:
+    cmd: docker stack ps proxy |grep proxy_consul-leader |awk '{print $4}'
+  register: result
+  changed_when: false
+  run_once: true
+  when: "'managers' in group_names"
+
+- shell:
+    cmd: docker exec proxy_consul-leader.1.$(docker service ps -f 'name=proxy_consul-leader.1' proxy_consul-leader -q --no-trunc | head -n1) consul kv get -base64 traefik/acme/account/object > backup-base64
+  when: inventory_hostname == result.stdout
+  changed_when: false
+
+- fetch:
+    src: backup-base64
+    dest: secrets/cert-backups/{{ domain_name }}-backup-base64
+    flat: yes
+  when: inventory_hostname == result.stdout

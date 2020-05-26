@@ -1,0 +1,10 @@
+---
+
+- name: Fetch Let's Encrypts certificates
+  hosts: all
+  become: true
+  roles:
+    - fetch-certs
+  vars_files:
+    - vars/main.yml
+  tags: fetch-certs

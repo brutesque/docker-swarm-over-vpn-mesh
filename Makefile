@@ -26,6 +26,8 @@ deploy:
 destroy:
 	terraform init
 
+	ansible-playbook destroy.yml
+
 	terraform destroy \
 		-var "do_token=${DO_TOKEN}" \
 		-var "vultr_token=${VULTR_TOKEN}" \
