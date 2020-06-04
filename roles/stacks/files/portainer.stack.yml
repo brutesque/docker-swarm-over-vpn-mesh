@@ -30,7 +30,7 @@ services:
 #      - target: 9000
 #        published: 9000
 #        protocol: tcp
-#        mode: host
+#        mode: ingress
     volumes:
       - portainer_data:/data
     networks:
