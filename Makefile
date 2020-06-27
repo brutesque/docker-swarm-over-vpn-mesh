@@ -21,7 +21,7 @@ deploy:
 		--module-name ping \
 		all
 
-	ansible-playbook playbook.yml
+	ansible-playbook deploy.yml
 
 destroy:
 	terraform init
