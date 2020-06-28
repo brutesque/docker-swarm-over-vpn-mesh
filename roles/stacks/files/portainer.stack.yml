@@ -22,7 +22,7 @@ services:
           - node.platform.os == linux
 
   portainer:
-    image: portainer/portainer:1.23.2
+    image: portainer/portainer:1.24.0
     container_name: portainer
     restart: unless-stopped
     command: -H tcp://tasks.agent:9001 --tlsskipverify --admin-password-file /run/secrets/portainer-pass
