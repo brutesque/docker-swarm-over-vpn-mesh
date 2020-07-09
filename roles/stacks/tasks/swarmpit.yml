@@ -16,13 +16,25 @@
     DOMAIN: "admin.{{ domain_name }}"
   run_once: true
 
-- name: "wait for swarmpit to come up"
+- name: get list of hosts that run a traefik instance
+  shell:
+    cmd: docker stack ps proxy |grep proxy_traefik |awk '{print $4}'
+  register: result
+  changed_when: false
+  run_once: true
+  when: "'managers' in group_names"
+
+- name: set proxy_host to first entry
+- set_fact:
+    proxy_host: "{{ hostvars[result.stdout_lines[0]].ansible_host }}"
+
+- name: wait for swarmpit to come up
   uri:
     headers:
       Host: "swarmpit.admin.{{ domain_name }}"
     validate_certs: no
     method: GET
-    url: "https://{{ ansible_host }}/"
+    url: "https://{{ proxy_host }}/"
     status_code: 200
   register: result
   until: result.status == 200
@@ -37,7 +49,7 @@
     validate_certs: no
     method: POST
     body_format: json
-    url: "https://{{ ansible_host }}/initialize"
+    url: "https://{{ proxy_host }}/initialize"
     body: '{"username": "admin", "password": "{{ admin_password }}"}'
     status_code: [201, 403]
   register: result
