@@ -25,7 +25,7 @@
   when: "'managers' in group_names"
 
 - name: set proxy_host to first entry
-- set_fact:
+  set_fact:
     proxy_host: "{{ hostvars[result.stdout_lines[0]].ansible_host }}"
 
 - name: wait for swarmpit to come up
