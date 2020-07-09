@@ -4,6 +4,8 @@
   package:
     name: tinc
     state: latest
+  retries: 3
+  delay: 3
 
 - name: ensure tinc netname directory exists
   file:
