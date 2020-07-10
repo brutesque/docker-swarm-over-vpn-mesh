@@ -58,15 +58,6 @@
     - vars/main.yml
   tags: swarm
 
-- name: Deploy stacks
-  hosts: managers[0]
-  become: true
-  roles:
-    - stacks
-  vars_files:
-    - vars/main.yml
-  tags: stacks
-
 - name: Register ip at DuckDNS
   hosts: entrypoints
   become: true
@@ -75,3 +66,12 @@
   vars_files:
     - vars/main.yml
   tags: duckdns
+
+- name: Deploy stacks
+  hosts: managers[0]
+  become: true
+  roles:
+    - stacks
+  vars_files:
+    - vars/main.yml
+  tags: stacks

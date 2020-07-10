@@ -7,26 +7,26 @@
       state: present
       advertise_addr: "{{ docker_swarm_interface }}"
   register: swarm_info
-  run_once: true
-  when: "'managers' in group_names"
+  when: inventory_hostname == groups['managers'][0]
 
 - set_fact:
-    first_docker_manager: "{{ vpn_ip }}"
-  run_once: true
+    docker_swarm_address: "{{ hostvars[groups['managers'][0]].vpn_ip }}"
+    manager_token: "{{ hostvars[groups['managers'][0]].swarm_info.swarm_facts.JoinTokens.Manager }}"
+    worker_token: "{{ hostvars[groups['managers'][0]].swarm_info.swarm_facts.JoinTokens.Worker }}"
 
 - name: Add manager nodes
   docker_swarm:
     state: join
-    join_token: "{{ swarm_info.swarm_facts.JoinTokens.Manager }}"
-    remote_addrs: "{{ first_docker_manager }}"
+    join_token: "{{ manager_token }}"
+    remote_addrs: "{{ docker_swarm_address }}"
     advertise_addr: "{{ docker_swarm_interface }}"
   when: "'managers' in group_names"
 
 - name: Add worker nodes
   docker_swarm:
     state: join
-    join_token: "{{ swarm_info.swarm_facts.JoinTokens.Worker }}"
-    remote_addrs: "{{ first_docker_manager }}"
+    join_token: "{{ worker_token }}"
+    remote_addrs: "{{ docker_swarm_address }}"
     advertise_addr: "{{ docker_swarm_interface }}"
   when: "'workers' in group_names"
 
@@ -35,5 +35,4 @@
     hostname: "{{ hostvars[item]['ansible_hostname'] }}"
     labels: "{{ hostvars[item]['swarm_labels'] |default({}) }}"
   loop: "{{ ansible_play_batch }}"
-  when: "'managers' in group_names"
-  run_once: true
+  when: inventory_hostname == groups['managers'][0]

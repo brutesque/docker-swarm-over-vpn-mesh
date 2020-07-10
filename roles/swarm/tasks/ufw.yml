@@ -32,12 +32,12 @@
     comment: "Docker Swarm on VPN interface for communication among nodes"
   when: vpn_ip is defined
 
-#- name: UFW - Open TCP port 50 for overlay network with encryption
-#  ufw:
-#    rule: allow
-#    interface: ppp0
-#    direction: in
-#    port: '50'
-#    to_ip: "{{ vpn_ip }}"
-#    comment: "Docker Swarm port on VPN interface"
-#  when: vpn_ip is defined
+- name: UFW - Open TCP port 50 for overlay network with encryption
+  ufw:
+    rule: allow
+    interface: ppp0
+    direction: in
+    port: '50'
+    to_ip: "{{ vpn_ip }}"
+    comment: "Docker Swarm port on VPN interface"
+  when: vpn_ip is defined
