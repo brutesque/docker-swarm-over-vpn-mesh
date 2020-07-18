@@ -2,7 +2,7 @@
 
 - name: Create admin password hash for stack
   set_fact:
-    admin_password_hash: "{{ admin_password | password_hash('blowfish', rounds=12, salt=['swarmprom', fingerprint, filetime_result.stdout] | join('|') | hash('sha1') | truncate(22, True, '')) }}"
+    admin_password_hash: "{{ admin_password | password_hash('blowfish', rounds=12, salt=['swarmprom', fingerprint, filetime_result.stdout] | join('|') | hash('sha1') | truncate(21, True, '') + '.') }}"
   run_once: true
 
 - git:
