@@ -14,6 +14,8 @@ services:
       - consul-network
       - traefik-public
     deploy:
+      mode: replicated
+      replicas: 1
       resources:
         limits:
           cpus: '0.25'
@@ -42,6 +44,7 @@ services:
     networks:
       - consul-network
     deploy:
+      mode: replicated
       replicas: ${CONSUL_REPLICAS:-3}
       placement:
         preferences:
@@ -130,6 +133,7 @@ services:
       --entrypoints='Name:https Address::443 TLS'
       --consul
       --consul.endpoint="consul-leader:8500"
+      --consul.prefix="traefik"
       --acme
       --acme.email=${EMAIL}
       --acme.storage="traefik/acme/account"

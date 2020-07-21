@@ -38,10 +38,14 @@
     state: present
   run_once: true
 
+- file:
+    state: directory
+    path: /opt/stacks/proxy
+
 - name: Copy proxy stack file
   copy:
     src: files/proxy.stack.yml
-    dest: /opt/stacks/proxy.stack.yml
+    dest: /opt/stacks/proxy/docker-compose.yml
   run_once: true
 
 - name: Deploy reverse-proxy stack
@@ -49,7 +53,7 @@
     state: present
     name: proxy
     compose:
-      - /opt/stacks/proxy.stack.yml
+      - /opt/stacks/proxy/docker-compose.yml
   environment:
     EMAIL: "{{ ca_email }}"
     DOMAIN: "admin.{{ domain_name }}"
