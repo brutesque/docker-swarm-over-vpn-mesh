@@ -33,6 +33,14 @@ destroy:
 		-var "vultr_token=${VULTR_TOKEN}" \
 		-auto-approve
 
+force-destroy:
+	terraform init
+
+	terraform destroy \
+		-var "do_token=${DO_TOKEN}" \
+		-var "vultr_token=${VULTR_TOKEN}" \
+		-auto-approve
+
 clean:
 	rm -Rf .terraform
 	rm -Rf fetch
