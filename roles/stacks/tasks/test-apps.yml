@@ -4,6 +4,7 @@
   copy:
     src: files/hello-world.stack.yml
     dest: /opt/stacks/hello-world.stack.yml
+    mode: '0600'
   run_once: true
 
 - name: Deploy hello-world stack
@@ -20,6 +21,7 @@
   copy:
     src: files/test-apps.stack.yml
     dest: /opt/stacks/test-apps.stack.yml
+    mode: '0600'
   run_once: true
 
 - name: Deploy test-apps stack

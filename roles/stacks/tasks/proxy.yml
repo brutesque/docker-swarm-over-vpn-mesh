@@ -41,11 +41,15 @@
 - file:
     state: directory
     path: /opt/stacks/proxy
+    mode: '0600'
+  run_once: true
 
 - name: Copy proxy stack file
   copy:
     src: files/proxy.stack.yml
     dest: /opt/stacks/proxy/docker-compose.yml
+    mode: '0600'
+  run_once: true
   run_once: true
 
 - name: Deploy reverse-proxy stack
