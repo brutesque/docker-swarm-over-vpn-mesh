@@ -58,6 +58,7 @@ $ make clean
 - block docker from adjusting iptables
 - docker overlay network with encryption
 - tls verification for docker
+- use ansible vault for secrets
 
 #### todo:
 - create easy method to switch between development and production
