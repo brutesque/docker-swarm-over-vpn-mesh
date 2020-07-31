@@ -21,6 +21,8 @@
 - file:
     path: /opt/stacks
     state: directory
+    mode: '0600'
+  run_once: true
 
 - include_tasks: proxy.yml
 - include_tasks: portainer.yml
