@@ -3,7 +3,6 @@ create_user: "{{ lookup('env','USER') }}"
 copy_local_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
 
 ca_email: "{{ lookup('env', 'EMAIL')}}"
-#ca_server: "https://acme-staging-v02.api.letsencrypt.org/directory"
 ca_server: "https://acme-v02.api.letsencrypt.org/directory"
 
 admin_password: "{{ lookup('env', 'ADMIN_PASSWORD') }}"

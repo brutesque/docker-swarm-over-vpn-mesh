@@ -75,7 +75,7 @@ services:
       --logLevel=INFO
       --accessLog
       --api
-      --acme.caServer=${CA_SERVER:-"https://acme-v02.api.letsencrypt.org/directory"}
+      --acme.caServer=${CA_SERVER:-"https://acme-staging-v02.api.letsencrypt.org/directory"}
     deploy:
       labels:
         - traefik.frontend.rule=Host:traefik.${DOMAIN?Variable DOMAIN not set}

@@ -14,8 +14,6 @@ deploy:
 		-var "vultr_token=${VULTR_TOKEN}" \
 		-auto-approve
 
-	sleep 10
-
 	ansible \
 		--forks 1 \
 		--module-name ping \
@@ -76,8 +74,6 @@ clean-rebuild:
 		-var "do_token=${DO_TOKEN}" \
 		-var "vultr_token=${VULTR_TOKEN}" \
 		-auto-approve
-
-	sleep 10
 
 	ansible \
 		--forks 1 \

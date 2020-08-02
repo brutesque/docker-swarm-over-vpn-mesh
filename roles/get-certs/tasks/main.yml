@@ -18,18 +18,6 @@
     flat: yes
   changed_when: false
 
-- fetch:
-    src: "acme.json.gz"
-    dest: "secrets/backups/acme.json.gz"
-    flat: yes
-  changed_when: false
-
-- fetch:
-    src: "acme.json.gz.base64"
-    dest: "secrets/backups/acme.json.gz.base64"
-    flat: yes
-  changed_when: false
-
 - file:
     state: absent
     path: "{{ item }}"

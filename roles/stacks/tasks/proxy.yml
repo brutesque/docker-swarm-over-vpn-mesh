@@ -60,8 +60,8 @@
 
 - name: Copy acme data if it exists locally
   copy:
-    src: "secrets/backups/acme.json.gz"
-    dest: "/opt/stacks/proxy/secrets/acme.json.gz"
+    src: "secrets/backups/acme.json"
+    dest: "/opt/stacks/proxy/secrets/acme.json"
     mode: '0600'
   run_once: true
   ignore_errors: yes
@@ -91,7 +91,7 @@
 
 - name: push acme data to consul
   shell:
-    cmd: "docker run --rm --network proxy_consul-network --env 'CONSUL_HTTP_ADDR=consul-leader:8500' consul:1.7.3 kv put -base64 traefik/acme/account/object $(cat /opt/stacks/proxy/secrets/acme.json.gz | base64 --wrap=0)"
+    cmd: "docker run --rm --network proxy_consul-network --env 'CONSUL_HTTP_ADDR=consul-leader:8500' consul:1.7.3 kv put -base64 traefik/acme/account/object $(cat /opt/stacks/proxy/secrets/acme.json | gzip | base64 --wrap=0)"
   register: kv_put_result
   when: acme_copy_result.failed == false and "Error! No key exists" in get_acme_result.stderr
 
