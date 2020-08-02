@@ -17,20 +17,6 @@
     - vars/main.yml
   tags: ubuntu
 
-- name: Mount the BigStorage disk
-  hosts: storage
-  become: true
-  tasks:
-    - name: Mount big storage device
-      mount:
-        path: "/mnt/storage"
-        src: "/dev/{{ storage_device }}"
-        fstype: xfs
-        opts: defaults
-        state: present
-      when: storage_device is defined
-  tags: storage
-
 - name: Install Tinc
   hosts: vpn_mesh
   become: true
