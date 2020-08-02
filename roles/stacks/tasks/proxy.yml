@@ -58,13 +58,6 @@
     mode: '0600'
   run_once: true
 
-- name: Create traefik.toml from template
-  template:
-    src: traefik.toml.j2
-    dest: /opt/stacks/proxy/traefik.toml
-    mode: '0600'
-  run_once: true
-
 - name: Copy acme data if it exists locally
   copy:
     src: "secrets/backups/acme.json.gz"
