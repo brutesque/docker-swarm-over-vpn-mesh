@@ -40,24 +40,80 @@
 
 - file:
     state: directory
-    path: /opt/stacks/proxy
+    path: /opt/stacks/proxy/secrets
     mode: '0600'
   run_once: true
 
-- name: Copy proxy stack file
+- name: Copy consul stack file
   copy:
-    src: files/proxy.stack.yml
-    dest: /opt/stacks/proxy/docker-compose.yml
+    src: files/proxy-consul.stack.yml
+    dest: /opt/stacks/proxy/docker-compose.consul.yml
     mode: '0600'
   run_once: true
+
+- name: Copy traefik stack file
+  copy:
+    src: files/proxy-traefik.stack.yml
+    dest: /opt/stacks/proxy/docker-compose.traefik.yml
+    mode: '0600'
   run_once: true
 
-- name: Deploy reverse-proxy stack
+- name: Create traefik.toml from template
+  template:
+    src: traefik.toml.j2
+    dest: /opt/stacks/proxy/traefik.toml
+    mode: '0600'
+  run_once: true
+
+- name: Copy acme data if it exists locally
+  copy:
+    src: "secrets/backups/acme.json.gz"
+    dest: "/opt/stacks/proxy/secrets/acme.json.gz"
+    mode: '0600'
+  run_once: true
+  ignore_errors: yes
+  register: acme_copy_result
+  no_log: True
+
+- name: Deploy the consul services from the proxy stack
   docker_stack:
     state: present
     name: proxy
     compose:
-      - /opt/stacks/proxy/docker-compose.yml
+      - /opt/stacks/proxy/docker-compose.consul.yml
+  environment:
+    DOMAIN: "admin.{{ domain_name }}"
+  run_once: true
+
+- name: check for acme data in consul
+  shell:
+    cmd: "docker run --rm --network proxy_consul-network --env 'CONSUL_HTTP_ADDR=consul-leader:8500' consul:1.7.3 kv get -base64 traefik/acme/account/object | cut --characters=1-9"
+  register: get_acme_result
+  until: "'Error querying Consul agent' not in get_acme_result.stderr"
+  retries: 60
+  delay: 5
+  changed_when: false
+  failed_when: "get_acme_result.stderr != '' and 'Error! No key exists' not in get_acme_result.stderr"
+  when: acme_copy_result.failed == false
+
+- name: push acme data to consul
+  shell:
+    cmd: "docker run --rm --network proxy_consul-network --env 'CONSUL_HTTP_ADDR=consul-leader:8500' consul:1.7.3 kv put -base64 traefik/acme/account/object $(cat /opt/stacks/proxy/secrets/acme.json.gz | base64 --wrap=0)"
+  register: kv_put_result
+  when: acme_copy_result.failed == false and "Error! No key exists" in get_acme_result.stderr
+
+- name: create empty lock in consul
+  shell:
+    cmd: "docker run --rm --network proxy_consul-network --env 'CONSUL_HTTP_ADDR=consul-leader:8500' consul:1.7.3 kv put traefik/acme/account/lock"
+  register: kv_put_result
+  when: acme_copy_result.failed == false and "Error! No key exists" in get_acme_result.stderr
+
+- name: Deploy the traefik services from the proxy stack
+  docker_stack:
+    state: present
+    name: proxy
+    compose:
+      - /opt/stacks/proxy/docker-compose.traefik.yml
   environment:
     EMAIL: "{{ ca_email }}"
     DOMAIN: "admin.{{ domain_name }}"

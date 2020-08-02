@@ -16,17 +16,9 @@
     DOMAIN: "admin.{{ domain_name }}"
   run_once: true
 
-- name: get list of hosts that run a traefik instance
-  shell:
-    cmd: docker stack ps proxy |grep proxy_traefik |awk '{print $4}'
-  register: result
-  changed_when: false
-  run_once: true
-  when: "'managers' in group_names"
-
-- name: set proxy_host to first entry
+- name: set proxy_host to first entry in entrypoints group
   set_fact:
-    proxy_host: "{{ hostvars[result.stdout_lines[0]].ansible_host }}"
+    proxy_host: "{{ groups['entrypoints'][0] }}"
 
 - name: wait for swarmpit to come up
   uri:

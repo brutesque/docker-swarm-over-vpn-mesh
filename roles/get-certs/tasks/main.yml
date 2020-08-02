@@ -1,0 +1,40 @@
+---
+
+- shell:
+    cmd: "docker run --rm --network proxy_consul-network --env 'CONSUL_HTTP_ADDR=consul-leader:8500' consul:1.7.3 kv get -base64 traefik/acme/account/object > acme.json.gz.base64"
+  changed_when: false
+
+- shell:
+    cmd: "base64 --decode acme.json.gz.base64 > acme.json.gz"
+  changed_when: false
+
+- shell:
+    cmd: "cat acme.json.gz | gzip --decompress --stdout > acme.json"
+  changed_when: false
+
+- fetch:
+    src: "acme.json"
+    dest: "secrets/backups/acme.json"
+    flat: yes
+  changed_when: false
+
+- fetch:
+    src: "acme.json.gz"
+    dest: "secrets/backups/acme.json.gz"
+    flat: yes
+  changed_when: false
+
+- fetch:
+    src: "acme.json.gz.base64"
+    dest: "secrets/backups/acme.json.gz.base64"
+    flat: yes
+  changed_when: false
+
+- file:
+    state: absent
+    path: "{{ item }}"
+  loop:
+    - "acme.json.gz.base64"
+    - "acme.json.gz"
+    - "acme.json"
+  changed_when: false
