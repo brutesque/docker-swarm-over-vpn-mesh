@@ -5,6 +5,7 @@
     content: ""
     dest: "/opt/hello"
     force: no
+    mode: '0600'
 - name: Get the first deployment timestamp
   shell: "stat --format '%Y' /opt/hello"
   register: filetime_result
