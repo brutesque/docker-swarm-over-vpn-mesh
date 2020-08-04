@@ -29,8 +29,8 @@ services:
           cpus: '0.1'
           memory: 64M
       labels:
-        - traefik.enable=true
         - traefik.frontend.rule=Host:consul.${DOMAIN?Variable DOMAIN not set}
+        - traefik.enable=true
         - traefik.port=8500
         - traefik.tags=traefik-public
         - traefik.docker.network=traefik-public
