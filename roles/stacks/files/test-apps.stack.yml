@@ -20,7 +20,7 @@ services:
         - traefik.tags=traefik-public
         - traefik.docker.network=traefik-public
         - traefik.frontend.entryPoints=http,https
-#        - traefik.frontend.redirect.entryPoint=https
+        - traefik.frontend.redirect.entryPoint=https
     networks:
       - traefik-public
 
@@ -42,7 +42,7 @@ services:
         - traefik.tags=traefik-public
         - traefik.docker.network=traefik-public
         - traefik.frontend.entryPoints=http,https
-#        - traefik.frontend.redirect.entryPoint=https
+        - traefik.frontend.redirect.entryPoint=https
     networks:
       - traefik-public
 
@@ -64,7 +64,7 @@ services:
         - traefik.tags=traefik-public
         - traefik.docker.network=traefik-public
         - traefik.frontend.entryPoints=http,https
-#        - traefik.frontend.redirect.entryPoint=https
+        - traefik.frontend.redirect.entryPoint=https
     networks:
       - traefik-public
 
