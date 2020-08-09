@@ -35,5 +35,5 @@
     hostname: "{{ hostvars[item]['ansible_hostname'] }}"
     labels: "{{ hostvars[item]['swarm_labels'] |default({}) }}"
   loop: "{{ ansible_play_batch }}"
-  no_logs: true
+  no_log: true
   when: inventory_hostname == groups['managers'][0]
