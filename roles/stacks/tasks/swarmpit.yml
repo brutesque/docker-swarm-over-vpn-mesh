@@ -16,9 +16,9 @@
     DOMAIN: "admin.{{ domain_name }}"
   run_once: true
 
-- name: set proxy_host to first entry in entrypoints group
+- name: set entrypoint_host to first entry in entrypoints group
   set_fact:
-    proxy_host: "{{ groups['entrypoints'][0] }}"
+    entrypoint_host: "{{ groups['entrypoints'][0] }}"
 
 - name: wait for swarmpit to come up
   uri:
@@ -26,7 +26,7 @@
       Host: "swarmpit.admin.{{ domain_name }}"
     validate_certs: no
     method: GET
-    url: "https://{{ proxy_host }}/"
+    url: "https://{{ entrypoint_host }}/"
     status_code: 200
   register: result
   until: result.status == 200
@@ -41,7 +41,7 @@
     validate_certs: no
     method: POST
     body_format: json
-    url: "https://{{ proxy_host }}/initialize"
+    url: "https://{{ entrypoint_host }}/initialize"
     body: '{"username": "admin", "password": "{{ admin_password }}"}'
     status_code: [201, 403]
   register: result
