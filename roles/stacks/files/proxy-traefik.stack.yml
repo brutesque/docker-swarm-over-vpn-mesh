@@ -9,11 +9,23 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
+      BUILD: 0
+      COMMIT: 0
+      CONFIGS: 0
       CONTAINERS: 1
+      DISTRIBUTION: 0
+      EXEC: 0
+      IMAGES: 0
+      INFO: 0
       NETWORKS: 1
+      NODES: 0
+      PLUGINS: 0
       SERVICES: 1
+      SESSION: 0
       SWARM: 1
+      SYSTEM: 0
       TASKS: 1
+      VOLUMES: 0
     deploy:
       mode: global
       placement:
