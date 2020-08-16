@@ -68,7 +68,6 @@ services:
     command:
       --consul
       --consul.endpoint="consul-leader:8500"
-      --consul.prefix="traefik"
       --docker
       --docker.endpoint=http://docker-socket:2375
       --docker.swarmmode
@@ -82,6 +81,7 @@ services:
       --acme.storage="traefik/acme/account"
       --acme.entryPoint=https
       --acme.httpChallenge.entryPoint=http
+      --acme.ondemand=true
       --acme.onhostrule=true
       --acme.acmelogging=true
       --logLevel=INFO
