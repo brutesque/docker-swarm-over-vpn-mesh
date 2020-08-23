@@ -24,6 +24,7 @@
   template:
     src: tinc.conf.j2
     dest: /etc/tinc/{{ netname }}/tinc.conf
+    mode: '0600'
   notify:
     - reload tinc
 
@@ -48,6 +49,7 @@
     dest: /etc/tinc/{{ netname }}/hosts/{{ inventory_hostname }}
     line: "Address = {{ ansible_host }}"
     create: yes
+    mode: '0600'
   notify:
     - restart tinc
 
