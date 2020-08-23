@@ -16,7 +16,7 @@ Requirements:
 
 ### Execute deployment
 
-Setup a CNAME record in you domain dns pointed at your duckdns subdomain. The domain name will be used for all swarm services. Using duckdns links the domain dynamically to the swarm's ip address.
+Setup a CNAME record in you domain dns pointed to your duckdns subdomain. The domain name will be used for all swarm services. Using duckdns links the domain dynamically to the swarm's ip address.
 ```
 name: *
 type: CNAME
@@ -45,7 +45,7 @@ Run:
 $ make destroy
 ```
 
-Additionally to remove any temporary files (terraform data, ansible data, etc), run:
+Additionally to remove any local temporary files (terraform data, ansible data, etc), run:
 ```
 $ make clean
 ```
@@ -55,7 +55,7 @@ $ make clean
 - Set "PermitRootLogin no" after becoming different user in playbook
 - don't allow ssh as root
 - Setup services under non-root user
-- block docker from adjusting iptables
+- block docker from adjusting iptables, so we can open up ports manually
 - docker overlay network with encryption
 - tls verification for docker
 - use ansible vault for secrets
