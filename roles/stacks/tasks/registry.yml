@@ -1,0 +1,24 @@
+---
+
+- name: Create directory for docker-compose
+  file:
+    state: directory
+    path: /opt/stacks/registry
+    mode: '0600'
+
+- name: Copy docker-compose file
+  copy:
+    src: files/registry.stack.yml
+    dest: /opt/stacks/registry/docker-compose.yml
+    mode: '0600'
+
+- name: Deploy docker-compose file to swarm
+  docker_stack:
+    state: present
+    name: registry
+    compose:
+      - /opt/stacks/registry/docker-compose.yml
+  environment:
+    DOMAIN: "{{ domain_name }}"
+    REGISTRY_TITLE: "{{ domain_name }}"
+    REGISTRY_HTTP_SECRET: "{{ domain_name | hash('sha1') | truncate(10, True, '') }}"

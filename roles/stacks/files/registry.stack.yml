@@ -1,0 +1,65 @@
+version: "3.7"
+
+services:
+
+  registry:
+    restart: always
+    image: registry:2.7.1
+    environment:
+      - REGISTRY_HTTP_SECRET=${REGISTRY_HTTP_SECRET?Variable REGISTRY_HTTP_SECRET not set}
+      - REGISTRY_STORAGE_DELETE_ENABLED=true
+    volumes:
+      - registry-data:/var/lib/registry
+    networks:
+      - registry-network
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 64M
+        reservations:
+          cpus: '0.1'
+          memory: 32M
+
+  registry-ui:
+    restart: always
+    image: joxit/docker-registry-ui:static
+    environment:
+      - DELETE_IMAGES=true
+      - REGISTRY_TITLE=${REGISTRY_TITLE?Variable REGISTRY_TITLE not set}
+      - REGISTRY_URL=http://registry:5000
+    depends_on:
+      - registry
+    networks:
+      - registry-network
+      - traefik-public
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 64M
+        reservations:
+          cpus: '0.1'
+          memory: 32M
+      labels:
+        - traefik.frontend.rule=Host:registry.${DOMAIN?Variable DOMAIN not set}
+        - traefik.enable=true
+        - traefik.port=80
+        - traefik.tags=traefik-public
+        - traefik.docker.network=traefik-public
+        - traefik.frontend.entryPoints=http,https
+        - traefik.frontend.redirect.entryPoint=https
+        - traefik.frontend.auth.basic.usersFile=/run/secrets/traefik-pass
+
+volumes:
+  registry-data:
+
+networks:
+  traefik-public:
+    external: true
+  registry-network:
+    driver: overlay
