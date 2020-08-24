@@ -29,4 +29,6 @@
 - include_tasks: portainer.yml
 - include_tasks: registry.yml
 - include_tasks: swarmpit.yml
+  when: enable_swarmpit is defined and enable_swarmpit
 - include_tasks: swarmprom.yml
+  when: enable_swarmprom is defined and enable_swarmprom

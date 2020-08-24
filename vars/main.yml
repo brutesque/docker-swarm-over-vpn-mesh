@@ -10,3 +10,6 @@ admin_password: "{{ lookup('env', 'ADMIN_PASSWORD') }}"
 duckdns_token: "{{ lookup('env', 'DUCKDNS_TOKEN') }}"
 
 docker_swarm_interface: ppp0
+
+enable_swarmpit: false
+enable_swarmprom: false
