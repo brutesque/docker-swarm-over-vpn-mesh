@@ -30,4 +30,3 @@
 - include_tasks: registry.yml
 - include_tasks: swarmpit.yml
 - include_tasks: swarmprom.yml
-- include_tasks: test-apps.yml
