@@ -40,4 +40,8 @@
     registry: "registry.{{ domain_name }}"
     username: "admin"
     password: "{{ admin_password }}"
+  register: result
   changed_when: false
+  retries: 20
+  delay: 30
+  until: not result.failed
