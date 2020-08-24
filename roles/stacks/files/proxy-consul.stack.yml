@@ -3,7 +3,7 @@ version: '3.7'
 services:
 
   consul-leader:
-    image: consul:1.7.3
+    image: consul:1.8.3
     command: agent -server -client=0.0.0.0 -bootstrap -ui
     ports:
       - target: 8500
@@ -39,7 +39,7 @@ services:
         - traefik.frontend.auth.basic.usersFile=/run/secrets/traefik-pass
 
   consul-replica:
-    image: consul:1.7.3
+    image: consul:1.8.3
     command: agent -server -client=0.0.0.0 -retry-join="consul-leader"
     volumes:
       - consul-data-replica:/consul/data

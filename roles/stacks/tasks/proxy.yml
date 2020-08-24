@@ -80,7 +80,7 @@
 
 - name: check for acme data in consul
   shell:
-    cmd: "docker run --rm --network proxy_consul-network --env 'CONSUL_HTTP_ADDR=consul-leader:8500' consul:1.7.3 kv get -base64 traefik/acme/account/object | cut --characters=1-9"
+    cmd: "docker run --rm --network proxy_consul-network --env 'CONSUL_HTTP_ADDR=consul-leader:8500' consul:1.8.3 kv get -base64 traefik/acme/account/object | cut --characters=1-9"
   register: get_acme_result
   until: "'Error querying Consul agent' not in get_acme_result.stderr"
   retries: 60
@@ -91,13 +91,13 @@
 
 - name: push acme data to consul
   shell:
-    cmd: "docker run --rm --network proxy_consul-network --env 'CONSUL_HTTP_ADDR=consul-leader:8500' consul:1.7.3 kv put -base64 traefik/acme/account/object $(cat /opt/stacks/proxy/secrets/acme.json | gzip | base64 --wrap=0)"
+    cmd: "docker run --rm --network proxy_consul-network --env 'CONSUL_HTTP_ADDR=consul-leader:8500' consul:1.8.3 kv put -base64 traefik/acme/account/object $(cat /opt/stacks/proxy/secrets/acme.json | gzip | base64 --wrap=0)"
   register: kv_put_result
   when: acme_copy_result.failed == false and "Error! No key exists" in get_acme_result.stderr
 
 - name: create empty lock in consul
   shell:
-    cmd: "docker run --rm --network proxy_consul-network --env 'CONSUL_HTTP_ADDR=consul-leader:8500' consul:1.7.3 kv put traefik/acme/account/lock"
+    cmd: "docker run --rm --network proxy_consul-network --env 'CONSUL_HTTP_ADDR=consul-leader:8500' consul:1.8.3 kv put traefik/acme/account/lock"
   register: kv_put_result
   when: acme_copy_result.failed == false and "Error! No key exists" in get_acme_result.stderr
 

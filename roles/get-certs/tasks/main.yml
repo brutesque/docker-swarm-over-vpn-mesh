@@ -1,7 +1,7 @@
 ---
 
 - shell:
-    cmd: "docker run --rm --network proxy_consul-network --env 'CONSUL_HTTP_ADDR=consul-leader:8500' consul:1.7.3 kv get -base64 traefik/acme/account/object > acme.json.gz.base64"
+    cmd: "docker run --rm --network proxy_consul-network --env 'CONSUL_HTTP_ADDR=consul-leader:8500' consul:1.8.3 kv get -base64 traefik/acme/account/object > acme.json.gz.base64"
   changed_when: false
 
 - shell:
