@@ -8,7 +8,7 @@
   tags: get-certs
 
 - name: Clear ip at DuckDNS
-  hosts: entrypoints
+  hosts: all
   become: true
   roles:
     - duckdns-remove
