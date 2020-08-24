@@ -81,7 +81,6 @@ services:
       --acme.storage="traefik/acme/account"
       --acme.entryPoint=https
       --acme.httpChallenge.entryPoint=http
-      --acme.ondemand=true
       --acme.onhostrule=true
       --acme.acmelogging=true
       --logLevel=INFO
