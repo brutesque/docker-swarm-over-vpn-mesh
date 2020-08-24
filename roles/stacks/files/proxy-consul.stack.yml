@@ -5,11 +5,6 @@ services:
   consul-leader:
     image: consul:1.8.3
     command: agent -server -client=0.0.0.0 -bootstrap -ui
-#    ports:
-#      - target: 8500
-#        published: 8500
-#        protocol: tcp
-#        mode: ingress
     volumes:
       - consul-data-leader:/consul/data
     environment:
