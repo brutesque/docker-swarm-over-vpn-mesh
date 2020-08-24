@@ -16,7 +16,7 @@ Requirements:
 
 ### Execute deployment
 
-Setup a CNAME record in you domain dns pointed to your duckdns subdomain. The domain name will be used for all swarm services. Using duckdns links the domain dynamically to the swarm's ip address.
+Setup a CNAME record in your domain registrars dns records pointed to your duckdns subdomain. The domain name will be used for all swarm services. Using duckdns links the domain dynamically to the swarm's ip address.
 ```
 name: *
 type: CNAME
