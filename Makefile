@@ -14,7 +14,7 @@ deploy:
 		-var "vultr_token=${VULTR_TOKEN}" \
 		-auto-approve
 
-	sleep 10
+	sleep 20
 
 	ansible \
 		--forks 1 \
