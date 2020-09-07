@@ -61,3 +61,12 @@
   vars_files:
     - vars/main.yml
   tags: stacks
+
+- name: Store registry login data on nodes
+  hosts: swarm
+  become: true
+  roles:
+    - registry-login
+  vars_files:
+    - vars/main.yml
+  tags: stacks
