@@ -72,7 +72,7 @@ services:
       --docker.exposedbydefault=false
       --constraints=tag==traefik-public
       --entrypoints='Name:http Address::80'
-      --entrypoints='Name:https Address::443 TLS'
+      --entrypoints='Name:https Address::443 TLS TLS.MinVersion:VersionTLS12 TLS.CipherSuites:TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA'
       --acme
       --acme.email=${EMAIL}
       --acme.storage="traefik/acme/account"
