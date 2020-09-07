@@ -1,6 +1,6 @@
 deploy:
-	pip3 install --upgrade pip
-	pip3 install --upgrade -r requirements.txt
+	pip3 install --quiet --upgrade pip
+	pip3 install --quiet --upgrade --requirement requirements.txt
 
 	terraform init
 	terraform validate
@@ -62,8 +62,8 @@ clean-rebuild:
 	rm -f terraform.tfstate
 	rm -f terraform.tfstate.backup
 
-	pip3 install --upgrade pip
-	pip3 install --upgrade -r requirements.txt
+	pip3 install --quiet --upgrade pip
+	pip3 install --quiet --upgrade --requirement requirements.txt
 
 	terraform init
 	terraform validate
