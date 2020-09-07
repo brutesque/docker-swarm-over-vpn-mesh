@@ -43,7 +43,7 @@ services:
         max-size: "500k"
 
   traefik:
-    image: traefik:v1.7.25
+    image: traefik:v1.7.26
     ports:
       - target: 80
         published: 80
