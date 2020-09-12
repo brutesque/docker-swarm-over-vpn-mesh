@@ -6,6 +6,7 @@ When using the makefile to deploy the following will happen:
 - an ansible inventory is dynamically created from the manually configured secrets/hosts file and the terraformed vps-instances.
 - all nodes get some initial hardening. A user will be created using the local $USER env variable.
 - a tinc vpn mesh will be created between all the nodes.
+- Glusterfs will be set up for replicated storage across nodes using the tinc vpn mesh.
 - docker swarm will be setup to use the tinc vpn mesh for communication between swarm nodes.
 - initial admin stacks are deployed on the swarm and will be made available through reverse-proxy.
 
