@@ -1,0 +1,19 @@
+---
+
+- name: install glusterfs-client
+  apt:
+    name: glusterfs-client
+    state: present
+
+- name: make glusterfs mount dir
+  file:
+    path: "/mnt/glusterfs/gv0"
+    state: directory
+
+- name: mount glusterfs volume gv0
+  mount:
+    path: "/mnt/glusterfs/gv0"
+    src: "{{ ansible_hostname if ansible_hostname in groups.glusterpool else groups.glusterpool[0] }}:/gv0"
+    fstype: glusterfs
+    opts: "defaults,_netdev"
+    state: mounted

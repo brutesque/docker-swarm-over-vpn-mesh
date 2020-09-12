@@ -26,6 +26,26 @@
     - vars/main.yml
   tags: tinc
 
+- name: Install Glusterfs
+  hosts: glusterpool
+  become: true
+  vars_files:
+    - vars/main.yml
+  roles:
+    - glusterfs-server
+  tags:
+    - glusterfs
+
+- name: Install Glusterfs
+  hosts: swarm
+  become: true
+  vars_files:
+    - vars/main.yml
+  roles:
+    - glusterfs-client
+  tags:
+    - glusterfs
+
 - name: Install Docker
   hosts: swarm
   become: true

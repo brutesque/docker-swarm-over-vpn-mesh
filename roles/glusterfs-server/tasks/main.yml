@@ -1,0 +1,47 @@
+---
+
+- name: install glusterfs-server
+  apt:
+    name: glusterfs-server
+    state: present
+
+- name: Ensure that the glusterfs service is enabled and started at boot time
+  service:
+    name: glusterd
+    enabled: yes
+    state: started
+
+- include_tasks: ufw.yml
+
+- name: add peers to gluster cluster
+  gluster_peer:
+    state: present
+    nodes: "{{ play_hosts }}"
+  delegate_to: "{{ play_hosts | first }}"
+
+- name: create glusterfs brick dir
+  file:
+    path: "/data/glusterfs/brick"
+    state: directory
+
+- name: create gluster volume
+  gluster_volume:
+    state: present
+    name: gv0
+    bricks: "/data/glusterfs/brick"
+    rebalance: yes
+    cluster: "{{ play_hosts }}"
+    transport: tcp
+    force: yes
+    start_on_create: yes
+    options:
+      { performance.cache-size: 128MB,
+        write-behind: 'off',
+        quick-read: 'on'
+      }
+  run_once: true
+
+- name: start gluster volume
+  gluster_volume:
+    state: started
+    name: gv0

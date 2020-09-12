@@ -1,0 +1,26 @@
+---
+
+- name: UFW - Open TCP and UDP ports 24007-24008 for Gluster daemon and management
+  ufw:
+    rule: allow
+    interface: ppp0
+    direction: in
+    port: "24007:24008"
+    proto: "{{ item }}"
+    to_ip: "{{ vpn_ip }}"
+    comment: "Gluster on VPN interface for daemon and management"
+  loop:
+    - tcp
+    - udp
+
+- name: UFW - Open TCP ports 49152 and up for Gluster bricks
+  ufw:
+    rule: allow
+    interface: ppp0
+    direction: in
+    port: "{{ item }}"
+    to_ip: "{{ vpn_ip }}"
+    proto: tcp
+    comment: "Gluster on VPN interface for first brick"
+  loop:
+    - "49152"
