@@ -59,3 +59,4 @@ $ make clean
 - docker overlay network with encryption
 - tls verification for docker
 - use ansible vault for secrets
+- use chronyd to synchronize time between nodes
