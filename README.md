@@ -1,5 +1,5 @@
 # Ansible playbook for Docker Swarm using Tinc
-This ansible playbook creates a Docker Swarm that uses a Tinc vpn-mesh. It's purpose is to work cross-location and cross-provider.
+This ansible playbook creates a Docker Swarm that uses a Tinc vpn-mesh. It's purpose is to work cross-geolocation and cross-provider.
 
 When using the makefile to deploy the following will happen:
 - terraform will use the vps-instances.tf configuration to spin up a number of vps instances.
@@ -54,10 +54,10 @@ $ make clean
 
 #### Security todo:
 - Set "PermitRootLogin no" after becoming different user in playbook
-- don't allow ssh as root
-- Setup services under non-root user
-- block docker from adjusting iptables, so we can open up ports manually
-- docker overlay network with encryption
-- tls verification for docker
+- Don't allow ssh as root; implement ansible user that becomes root
+- Check services and implement non-root user where possible
+- Block docker from adjusting iptables, so we can open up ports manually
+- Docker overlay network with encryption? (probably not applicable since this already uses tinc vpn)
+- tls verification for docker? (probably not applicable since this already uses tinc vpn)
 - use ansible vault for secrets
 - use chronyd to synchronize time between nodes
