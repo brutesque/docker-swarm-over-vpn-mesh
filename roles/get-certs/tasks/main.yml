@@ -1,7 +1,7 @@
 ---
 
 - fetch:
-    src: "/mnt/glusterfs/gv0/proxy_letsencrypt/acme.json"
+    src: "/mnt/gluster0/proxy_letsencrypt/acme.json"
     dest: "secrets/backups/{{ domain_name }}/acme.json"
     flat: yes
   changed_when: false

@@ -23,14 +23,14 @@
 
 - file:
     state: directory
-    path: /mnt/glusterfs/gv0/proxy_letsencrypt
+    path: /mnt/gluster0/proxy_letsencrypt
     mode: '0600'
   run_once: true
 
 - name: Restore acme.json if it doesn't exist on the remote destination
   copy:
     src: "secrets/backups/{{ domain_name }}/acme.json"
-    dest: "/mnt/glusterfs/gv0/proxy_letsencrypt/acme.json"
+    dest: "/mnt/gluster0/proxy_letsencrypt/acme.json"
     owner: root
     group: root
     mode: '0600'
@@ -65,7 +65,7 @@
 - name: Copy traefik stack file
   copy:
     src: files/traefik.toml
-    dest: /mnt/glusterfs/gv0/traefik.toml
+    dest: /mnt/gluster0/traefik.toml
     mode: '0600'
   run_once: true
 

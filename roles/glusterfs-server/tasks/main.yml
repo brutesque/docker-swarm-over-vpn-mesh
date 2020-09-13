@@ -21,14 +21,14 @@
 
 - name: create glusterfs brick dir
   file:
-    path: "/data/glusterfs/brick"
+    path: "/data/gluster0/brick"
     state: directory
 
 - name: create gluster volume
   gluster_volume:
     state: present
-    name: gv0
-    bricks: "/data/glusterfs/brick"
+    name: gluster0
+    bricks: "/data/gluster0/brick"
     rebalance: yes
     cluster: "{{ play_hosts }}"
     transport: tcp
@@ -44,4 +44,4 @@
 - name: start gluster volume
   gluster_volume:
     state: started
-    name: gv0
+    name: gluster0
