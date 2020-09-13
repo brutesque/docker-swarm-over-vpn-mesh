@@ -23,8 +23,11 @@
 
 - file:
     state: directory
-    path: /mnt/gluster0/proxy_letsencrypt
+    path: /mnt/gluster0/{{ item }}
     mode: '0600'
+  loop:
+    - proxy_letsencrypt
+    - proxy_traefik
   run_once: true
 
 - name: Restore acme.json if it doesn't exist on the remote destination
@@ -65,7 +68,7 @@
 - name: Copy traefik stack file
   copy:
     src: files/traefik.toml
-    dest: /mnt/gluster0/traefik.toml
+    dest: /mnt/gluster0/proxy_traefik/traefik.toml
     mode: '0600'
   run_once: true
 
