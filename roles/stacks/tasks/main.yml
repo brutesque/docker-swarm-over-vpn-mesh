@@ -26,9 +26,14 @@
   run_once: true
 
 - include_tasks: proxy.yml
-- include_tasks: portainer.yml
+
 - include_tasks: registry.yml
+
+- include_tasks: portainer.yml
+  when: enable_portainer is defined and enable_portainer
+
 - include_tasks: swarmpit.yml
   when: enable_swarmpit is defined and enable_swarmpit
+
 - include_tasks: swarmprom.yml
   when: enable_swarmprom is defined and enable_swarmprom

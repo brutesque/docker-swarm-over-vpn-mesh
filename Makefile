@@ -21,12 +21,15 @@ deploy:
 		--module-name ping \
 		all
 
-	ansible-playbook deploy.yml
+	ansible-playbook playbook-deploy.yml
+
+backup:
+	ansible-playbook playbook-backup.yml
 
 destroy:
 	terraform init
 
-	ansible-playbook destroy.yml
+	ansible-playbook playbook-destroy.yml
 
 	terraform destroy \
 		-var "do_token=${DO_TOKEN}" \
@@ -50,7 +53,7 @@ clean:
 clean-rebuild:
 	terraform init
 
-	ansible-playbook destroy.yml
+	ansible-playbook playbook-destroy.yml
 
 	terraform destroy \
 		-var "do_token=${DO_TOKEN}" \
@@ -84,4 +87,4 @@ clean-rebuild:
 		--module-name ping \
 		all
 
-	ansible-playbook deploy.yml
+	ansible-playbook playbook-deploy.yml

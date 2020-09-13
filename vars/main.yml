@@ -11,5 +11,6 @@ duckdns_token: "{{ lookup('env', 'DUCKDNS_TOKEN') }}"
 
 docker_swarm_interface: ppp0
 
+enable_portainer: true
 enable_swarmpit: false
 enable_swarmprom: false

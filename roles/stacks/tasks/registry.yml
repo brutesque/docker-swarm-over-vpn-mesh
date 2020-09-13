@@ -20,5 +20,5 @@
       - /opt/stacks/registry/docker-compose.yml
   environment:
     DOMAIN: "{{ domain_name }}"
-    REGISTRY_TITLE: "{{ domain_name }}"
+    REGISTRY_TITLE: "registry.{{ domain_name }}"
     REGISTRY_HTTP_SECRET: "{{ domain_name | hash('sha1') | truncate(10, True, '') }}"

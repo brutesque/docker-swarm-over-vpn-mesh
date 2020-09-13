@@ -17,6 +17,15 @@
     - vars/main.yml
   tags: ubuntu
 
+- name: Register ip at DuckDNS
+  hosts: all
+  become: true
+  roles:
+    - duckdns
+  vars_files:
+    - vars/main.yml
+  tags: duckdns
+
 - name: Install Tinc
   hosts: vpn_mesh
   become: true
@@ -63,15 +72,6 @@
   vars_files:
     - vars/main.yml
   tags: swarm
-
-- name: Register ip at DuckDNS
-  hosts: all
-  become: true
-  roles:
-    - duckdns
-  vars_files:
-    - vars/main.yml
-  tags: duckdns
 
 - name: Deploy stacks
   hosts: managers[0]

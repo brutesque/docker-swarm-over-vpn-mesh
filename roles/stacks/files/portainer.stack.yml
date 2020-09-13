@@ -26,6 +26,8 @@ services:
     container_name: portainer
     restart: unless-stopped
     command: -H tcp://tasks.agent:9001 --tlsskipverify --admin-password-file /run/secrets/portainer-pass
+    depends_on:
+      - agent
     volumes:
       - portainer_data:/data
     networks:
@@ -48,13 +50,13 @@ services:
           cpus: '0.1'
           memory: 64M
       labels:
-        - traefik.frontend.rule=Host:portainer.${DOMAIN?Variable DOMAIN not set}
-        - traefik.enable=true
-        - traefik.port=9000
-        - traefik.tags=traefik-public
-        - traefik.docker.network=traefik-public
-        - traefik.frontend.entryPoints=http,https
-        - traefik.frontend.redirect.entryPoint=https
+        - "traefik.enable=true"
+        - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+        - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.portainer.entrypoints=websecure"
+        - "traefik.http.routers.portainer.tls=true"
+        - "traefik.http.routers.portainer.tls.certresolver=myresolver"
+        - "traefik.http.routers.portainer.middlewares=https-redirect@file,security-headers@file"
 
 networks:
   agent-network:

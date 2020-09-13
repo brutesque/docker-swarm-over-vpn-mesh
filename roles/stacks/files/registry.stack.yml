@@ -46,14 +46,13 @@ services:
           cpus: '0.1'
           memory: 32M
       labels:
-        - traefik.frontend.rule=Host:registry.${DOMAIN?Variable DOMAIN not set}
-        - traefik.enable=true
-        - traefik.port=80
-        - traefik.tags=traefik-public
-        - traefik.docker.network=traefik-public
-        - traefik.frontend.entryPoints=http,https
-        - traefik.frontend.redirect.entryPoint=https
-        - traefik.frontend.auth.basic.usersFile=/run/secrets/traefik-pass
+        - "traefik.enable=true"
+        - "traefik.http.services.registry.loadbalancer.server.port=80"
+        - "traefik.http.routers.registry.rule=Host(`registry.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.registry.entrypoints=websecure"
+        - "traefik.http.routers.registry.tls=true"
+        - "traefik.http.routers.registry.tls.certresolver=myresolver"
+        - "traefik.http.routers.registry.middlewares=auth-admin,https-redirect@file,security-headers@file"
 
 volumes:
   registry-data:

@@ -88,16 +88,13 @@ services:
         reservations:
           memory: 64M
       labels:
-        - traefik.frontend.rule=Host:grafana.${DOMAIN}
-        - traefik.enable=true
-        - traefik.port=3000
-        - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
-        - traefik.docker.network=traefik-public
-        # Traefik service that listens to HTTP
-        - traefik.redirectorservice.frontend.entryPoints=http
-        - traefik.redirectorservice.frontend.redirect.entryPoint=https
-        # Traefik service that listens to HTTPS
-        - traefik.webservice.frontend.entryPoints=https
+        - "traefik.enable=true"
+        - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+        - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.grafana.entrypoints=websecure"
+        - "traefik.http.routers.grafana.tls=true"
+        - "traefik.http.routers.grafana.tls.certresolver=myresolver"
+        - "traefik.http.routers.grafana.middlewares=https-redirect@file,security-headers@file"
 
   alertmanager:
     image: stefanprodan/swarmprom-alertmanager:v0.14.0
@@ -126,17 +123,13 @@ services:
         reservations:
           memory: 64M
       labels:
-        - traefik.frontend.rule=Host:alertmanager.${DOMAIN}
-        - traefik.enable=true
-        - traefik.port=9093
-        - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
-        - traefik.docker.network=traefik-public
-        # Traefik service that listens to HTTP
-        - traefik.redirectorservice.frontend.entryPoints=http
-        - traefik.redirectorservice.frontend.redirect.entryPoint=https
-        # Traefik service that listens to HTTPS
-        - traefik.webservice.frontend.entryPoints=https
-        - traefik.frontend.auth.basic.usersFile=/run/secrets/traefik-pass
+        - "traefik.enable=true"
+        - "traefik.http.services.alertmanager.loadbalancer.server.port=9093"
+        - "traefik.http.routers.alertmanager.rule=Host(`alertmanager.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.alertmanager.entrypoints=websecure"
+        - "traefik.http.routers.alertmanager.tls=true"
+        - "traefik.http.routers.alertmanager.tls.certresolver=myresolver"
+        - "traefik.http.routers.alertmanager.middlewares=auth-admin,https-redirect@file,security-headers@file"
 
   unsee:
     image: cloudflare/unsee:v0.8.0
@@ -150,17 +143,13 @@ services:
       mode: replicated
       replicas: 1
       labels:
-        - traefik.frontend.rule=Host:unsee.${DOMAIN}
-        - traefik.enable=true
-        - traefik.port=8080
-        - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
-        - traefik.docker.network=traefik-public
-        # Traefik service that listens to HTTP
-        - traefik.redirectorservice.frontend.entryPoints=http
-        - traefik.redirectorservice.frontend.redirect.entryPoint=https
-        # Traefik service that listens to HTTPS
-        - traefik.webservice.frontend.entryPoints=https
-        - traefik.frontend.auth.basic.usersFile=/run/secrets/traefik-pass
+        - "traefik.enable=true"
+        - "traefik.http.services.unsee.loadbalancer.server.port=8080"
+        - "traefik.http.routers.unsee.rule=Host(`unsee.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.unsee.entrypoints=websecure"
+        - "traefik.http.routers.unsee.tls=true"
+        - "traefik.http.routers.unsee.tls.certresolver=myresolver"
+        - "traefik.http.routers.unsee.middlewares=auth-admin,https-redirect@file,security-headers@file"
 
   node-exporter:
     image: stefanprodan/swarmprom-node-exporter:v0.16.0
@@ -216,14 +205,10 @@ services:
         reservations:
           memory: 128M
       labels:
-        - traefik.frontend.rule=Host:prometheus.${DOMAIN}
-        - traefik.enable=true
-        - traefik.port=9090
-        - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
-        - traefik.docker.network=traefik-public
-        # Traefik service that listens to HTTP
-        - traefik.redirectorservice.frontend.entryPoints=http
-        - traefik.redirectorservice.frontend.redirect.entryPoint=https
-        # Traefik service that listens to HTTPS
-        - traefik.webservice.frontend.entryPoints=https
-        - traefik.frontend.auth.basic.usersFile=/run/secrets/traefik-pass
+        - "traefik.enable=true"
+        - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+        - "traefik.http.routers.prometheus.rule=Host(`prometheus.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.prometheus.entrypoints=websecure"
+        - "traefik.http.routers.prometheus.tls=true"
+        - "traefik.http.routers.prometheus.tls.certresolver=myresolver"
+        - "traefik.http.routers.prometheus.middlewares=auth-admin,https-redirect@file,security-headers@file"

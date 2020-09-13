@@ -1,0 +1,129 @@
+version: '3.7'
+
+services:
+
+  docker-socket:
+    image: tecnativa/docker-socket-proxy
+    restart: always
+    networks:
+      - socket-network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      BUILD: 0
+      COMMIT: 0
+      CONFIGS: 0
+      CONTAINERS: 1
+      DISTRIBUTION: 0
+      EXEC: 0
+      IMAGES: 0
+      INFO: 0
+      NETWORKS: 1
+      NODES: 0
+      PLUGINS: 0
+      SERVICES: 1
+      SESSION: 0
+      SWARM: 1
+      SYSTEM: 0
+      TASKS: 1
+      VOLUMES: 0
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: '0.05'
+          memory: 16M
+        reservations:
+          cpus: '0.01'
+          memory: 8M
+    logging:
+      options:
+        max-size: "500k"
+
+  traefik:
+    image: traefik:v2.2.11
+    restart: always
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+      - target: 443
+        published: 443
+        protocol: tcp
+        mode: host
+    networks:
+      - socket-network
+      - traefik-public
+    depends_on:
+      - docker-socket
+    secrets:
+      - traefik-pass
+    volumes:
+      - /mnt/glusterfs/gv0/proxy_letsencrypt:/letsencrypt
+      - /mnt/glusterfs/gv0/traefik.toml:/traefik/traefik.toml
+    command:
+      - "--global.sendAnonymousUsage=false"
+      #- "--log.level=DEBUG"
+      - "--api.insecure=false"
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.endpoint=tcp://docker-socket:2375"
+      - "--providers.docker.swarmMode=true"
+      - "--providers.docker.watch=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=traefik-public"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.caserver=${CA_SERVER:-'https://acme-staging-v02.api.letsencrypt.org/directory'}"
+      - "--certificatesresolvers.myresolver.acme.email=${EMAIL}"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      - "--certificatesresolvers.myresolver.acme.keytype=RSA4096"
+      - "--providers.file.filename=/traefik/traefik.toml"
+    deploy:
+      labels:
+        # Dashboard
+        - "traefik.enable=true"
+        - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+        - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.traefik.service=api@internal"
+        - "traefik.http.routers.traefik.entrypoints=websecure"
+        - "traefik.http.routers.traefik.tls=true"
+        - "traefik.http.routers.traefik.tls.certresolver=myresolver"
+        - "traefik.http.routers.traefik.middlewares=auth-admin,https-redirect@file,security-headers@file"
+        - "traefik.http.middlewares.auth-admin.basicauth.usersfile=/run/secrets/traefik-pass"
+
+        # global redirect to https
+        - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
+        - "traefik.http.routers.http-catchall.entrypoints=web"
+        - "traefik.http.routers.http-catchall.middlewares=https-redirect,security-headers@file"
+
+        # middleware redirect
+        - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
+      mode: global
+      placement:
+        constraints:
+          - node.labels.traefik == true
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+
+networks:
+  traefik-public:
+    external: true
+  socket-network:
+    driver: overlay
+
+secrets:
+  traefik-pass:
+    external: true

@@ -1,0 +1,52 @@
+[providers.file]
+  [http.middlewares]
+    [http.middlewares.https-redirect.redirectscheme]
+      scheme = "https"
+    [http.middlewares.security-headers.headers]
+      # CORS
+      #AccessControlAllowMethods = ["GET", "OPTIONS", "PUT"]
+      AccessControlAllowOrigin = "origin-list-or-null"
+      AccessControlMaxAge = 100
+      #AddVaryHeader = true
+      BrowserXssFilter = true
+      ContentTypeNosniff = true
+      ForceSTSHeader = true
+      FrameDeny = true
+      SSLRedirect = true
+      STSIncludeSubdomains = true
+      STSPreload = true
+      #ContentSecurityPolicy = "default-src 'self' 'unsafe-inline'"
+      CustomFrameOptionsValue = "SAMEORIGIN"
+      ReferrerPolicy = "same-origin"
+      #FeaturePolicy = "vibrate 'self'"
+      STSSeconds = 315360000
+
+[tls]
+  [tls.options]
+    [tls.options.default]
+      minVersion = "VersionTLS12"
+      #minVersion = "VersionTLS13"
+      #sniStrict = true
+      cipherSuites = [
+        "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384",
+        "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256",
+
+
+        "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256",
+        "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256",
+        "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+        "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+        "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+        "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+        "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305",
+        "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305",
+
+        # TLS 1.3 cipher suites.
+        "TLS_AES_128_GCM_SHA256",
+        "TLS_AES_256_GCM_SHA384",
+        "TLS_CHACHA20_POLY1305_SHA256",
+
+        # TLS_FALLBACK_SCSV isn't a standard cipher suite but an indicator
+        # that the client is doing version fallback. See RFC 7507.
+        "TLS_FALLBACK_SCSV" # Client is doing version fallback. See RFC 7507.
+      ]
