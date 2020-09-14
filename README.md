@@ -41,9 +41,15 @@ $ make deploy
 
 ### Destroy deployment
 
-Run:
+To destroy the swarm run:
 ```
 $ make destroy
+```
+Before destroying the nodes, a backup of your certs will be created in the secrets folder. These certs will be restored on the next deployment.
+
+You can also run this backup process manually by running:
+```
+$ make backup
 ```
 
 Additionally to remove any local temporary files (terraform data, ansible data, etc), run:
