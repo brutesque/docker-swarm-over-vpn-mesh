@@ -21,6 +21,7 @@
     port: "{{ item }}"
     to_ip: "{{ vpn_ip }}"
     proto: tcp
-    comment: "Gluster on VPN interface for first brick"
+    comment: "Gluster on VPN interface for bricks"
   loop:
     - "49152"
+    - "49153"

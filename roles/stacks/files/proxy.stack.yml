@@ -63,8 +63,8 @@ services:
     secrets:
       - traefik-pass
     volumes:
-      - /mnt/gluster0/proxy_letsencrypt:/letsencrypt
-      - /mnt/gluster0/proxy_traefik/traefik.toml:/traefik/traefik.toml
+      - /mnt/gluster-admin/proxy_letsencrypt:/letsencrypt
+      - /mnt/gluster-admin/proxy_traefik/traefik.toml:/traefik/traefik.toml
     command:
       - "--global.sendAnonymousUsage=false"
       - "--log.level=INFO"

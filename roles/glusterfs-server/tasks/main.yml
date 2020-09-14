@@ -19,16 +19,19 @@
     nodes: "{{ play_hosts }}"
   delegate_to: "{{ play_hosts | first }}"
 
-- name: create glusterfs brick dir
+- name: create glusterfs brick dirs
   file:
-    path: "/data/gluster0/brick"
+    path: /data/{{ item }}/brick
     state: directory
+  loop:
+    - gluster-admin
+    - gluster-apps
 
-- name: create gluster volume
+- name: create gluster volumes
   gluster_volume:
     state: present
-    name: gluster0
-    bricks: "/data/gluster0/brick"
+    name: "{{ item }}"
+    bricks: "/data/{{ item }}/brick"
     rebalance: yes
     cluster: "{{ play_hosts }}"
     transport: tcp
@@ -39,9 +42,15 @@
         write-behind: 'off',
         quick-read: 'on'
       }
+  loop:
+    - gluster-admin
+    - gluster-apps
   run_once: true
 
 - name: start gluster volume
   gluster_volume:
     state: started
-    name: gluster0
+    name: "{{ item }}"
+  loop:
+    - gluster-admin
+    - gluster-apps
