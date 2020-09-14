@@ -4,8 +4,9 @@
       scheme = "https"
     [http.middlewares.security-headers.headers]
       # CORS
-      #AccessControlAllowMethods = ["GET", "POST", "OPTIONS", "PUT", "POST"]
-      AccessControlAllowOrigin = "origin-list-or-null"
+      AccessControlAllowMethods = ["GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "PATCH"]
+      #AccessControlAllowOrigin = "origin-list-or-null"
+      #accessControlAllowOriginList
       AccessControlMaxAge = 100
       #AddVaryHeader = true
       BrowserXssFilter = true
@@ -15,7 +16,7 @@
       SSLRedirect = true
       STSIncludeSubdomains = true
       STSPreload = true
-      ContentSecurityPolicy = "default-src 'self'; connect-src 'self' ; base-uri 'none'; base-uri 'self' ; script-src 'self'; style-src 'unsafe-inline' 'self'; style-src-elem 'self' 'unsafe-inline'; font-src 'self' 'unsafe-inline'; object-src 'self'; media-src 'self'; img-src 'self' data: blob: ; frame-src 'self' "
+      #ContentSecurityPolicy = "default-src 'self' ; connect-src 'self' ; script-src 'self' 'unsafe-inline' 'unsafe-eval' ; style-src 'unsafe-inline' 'self'; font-src 'self' 'unsafe-inline'; object-src 'self'; media-src 'self'; img-src 'self' data: blob: ; frame-src 'self' "
       CustomFrameOptionsValue = "SAMEORIGIN"
       ReferrerPolicy = "same-origin"
       #FeaturePolicy = "vibrate 'self'"
@@ -25,7 +26,7 @@
   [tls.options]
     [tls.options.default]
       minVersion = "VersionTLS12"
-      sniStrict = true
+      #sniStrict = true
       cipherSuites = [
         "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
         "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
