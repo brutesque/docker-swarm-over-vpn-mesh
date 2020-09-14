@@ -14,11 +14,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.50'
-          memory: 1024M
-        reservations:
           cpus: '0.25'
           memory: 512M
+        reservations:
+          cpus: '0.10'
+          memory: 256M
       placement:
         constraints:
           - node.role == manager
@@ -40,11 +40,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.30'
-          memory: 512M
+          cpus: '0.20'
+          memory: 128M
         reservations:
-          cpus: '0.15'
-          memory: 256M
+          cpus: '0.05'
+          memory: 64M
       placement:
         constraints:
           - node.labels.swarmpit.db-data == true
@@ -58,11 +58,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.60'
-          memory: 512M
-        reservations:
-          cpus: '0.30'
+          cpus: '0.20'
           memory: 128M
+        reservations:
+          cpus: '0.05'
+          memory: 32M
       placement:
         constraints:
           - node.labels.swarmpit.influx-data == true
