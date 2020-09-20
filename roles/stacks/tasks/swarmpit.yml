@@ -16,33 +16,24 @@
     DOMAIN: "admin.{{ domain_name }}"
   run_once: true
 
-- name: set entrypoint_host to first entry in entrypoints group
-  set_fact:
-    entrypoint_host: "{{ groups['entrypoints'][0] }}"
-
 - name: wait for swarmpit to come up
   uri:
-    headers:
-      Host: "swarmpit.admin.{{ domain_name }}"
-    validate_certs: no
+    validate_certs: yes
     method: GET
-    url: "https://{{ entrypoint_host }}/"
+    url: "https://swarmpit.admin.{{ domain_name }}"
     status_code: 200
   register: result
   until: result.status == 200
   retries: 60
-  delay: 5
+  delay: 10
   run_once: true
 
 - name: Create first admin account
   uri:
-    headers:
-      Host: "swarmpit.admin.{{ domain_name }}"
-    validate_certs: no
+    validate_certs: yes
     method: POST
     body_format: json
-    url: "https://{{ entrypoint_host }}/initialize"
+    url: "https://swarmpit.admin.{{ domain_name }}/initialize"
     body: '{"username": "admin", "password": "{{ admin_password }}"}'
     status_code: [201, 403]
-  register: result
   run_once: true

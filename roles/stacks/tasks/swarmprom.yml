@@ -29,3 +29,51 @@
     DOMAIN: "admin.{{ domain_name }}"
     TRAEFIK_PUBLIC_TAG: traefik-public
   run_once: true
+
+- name: wait for grafana to come up
+  uri:
+    validate_certs: yes
+    method: GET
+    url: "https://grafana.admin.{{ domain_name }}/"
+    status_code: 200
+  register: result
+  until: result.status == 200
+  retries: 60
+  delay: 5
+  run_once: true
+
+- name: wait for prometheus to come up
+  uri:
+    validate_certs: yes
+    method: GET
+    url: "https://prometheus.admin.{{ domain_name }}/"
+    status_code: 401
+  register: result
+  until: result.status == 401
+  retries: 60
+  delay: 5
+  run_once: true
+
+- name: wait for unsee to come up
+  uri:
+    validate_certs: yes
+    method: GET
+    url: "https://unsee.admin.{{ domain_name }}/"
+    status_code: [200, 401]
+  register: result
+  until: result.status == 401
+  retries: 60
+  delay: 5
+  run_once: true
+
+- name: wait for alertmanager to come up
+  uri:
+    validate_certs: yes
+    method: GET
+    url: "https://alertmanager.admin.{{ domain_name }}/"
+    status_code: 401
+  register: result
+  until: result.status == 401
+  retries: 60
+  delay: 5
+  run_once: true

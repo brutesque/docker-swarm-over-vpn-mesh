@@ -90,3 +90,15 @@
     DOMAIN: "admin.{{ domain_name }}"
     CA_SERVER: "{{ ca_server }}"
   run_once: true
+
+- name: wait for traefik to come up
+  uri:
+    validate_certs: yes
+    method: GET
+    url: "https://traefik.admin.{{ domain_name }}/"
+    status_code: 401
+  register: result
+  until: result.status == 401
+  retries: 60
+  delay: 5
+  run_once: true
