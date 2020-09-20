@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.8"
 
 services:
   agent:
@@ -12,11 +12,11 @@ services:
       mode: global
       resources:
         limits:
-          cpus: '0.5'
-          memory: 128M
-        reservations:
-          cpus: '0.1'
+          cpus: '0.05'
           memory: 32M
+        reservations:
+          cpus: '0.01'
+          memory: 8M
       placement:
         constraints:
           - node.platform.os == linux
@@ -44,11 +44,11 @@ services:
           - node.labels.portainer-frontend == true
       resources:
         limits:
-          cpus: '0.5'
-          memory: 128M
-        reservations:
-          cpus: '0.1'
+          cpus: '0.05'
           memory: 64M
+        reservations:
+          cpus: '0.01'
+          memory: 16M
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.portainer.loadbalancer.server.port=9000"

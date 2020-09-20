@@ -1,4 +1,4 @@
-version: "3.3"
+version: "3.8"
 
 networks:
   net:
@@ -34,9 +34,11 @@ services:
       mode: global
       resources:
         limits:
-          memory: 128M
+          cpus: '0.05'
+          memory: 32M
         reservations:
-          memory: 64M
+          cpus: '0.01'
+          memory: 8M
 
   cadvisor:
     image: google/cadvisor
@@ -53,8 +55,10 @@ services:
       mode: global
       resources:
         limits:
+          cpus: '0.20'
           memory: 128M
         reservations:
+          cpus: '0.05'
           memory: 64M
 
   grafana:
@@ -84,9 +88,11 @@ services:
           - node.role == manager
       resources:
         limits:
+          cpus: '0.05'
           memory: 128M
         reservations:
-          memory: 64M
+          cpus: '0.01'
+          memory: 32M
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.grafana.loadbalancer.server.port=3000"
@@ -119,9 +125,11 @@ services:
           - node.role == manager
       resources:
         limits:
-          memory: 128M
-        reservations:
+          cpus: '0.05'
           memory: 64M
+        reservations:
+          cpus: '0.01'
+          memory: 16M
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.alertmanager.loadbalancer.server.port=9093"
@@ -142,6 +150,13 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+      resources:
+        limits:
+          cpus: '0.05'
+          memory: 64M
+        reservations:
+          cpus: '0.01'
+          memory: 16M
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.unsee.loadbalancer.server.port=8080"

@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.8'
 
 services:
   app:
@@ -40,10 +40,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.20'
+          cpus: '0.05'
           memory: 128M
         reservations:
-          cpus: '0.05'
+          cpus: '0.01'
           memory: 64M
       placement:
         constraints:
@@ -58,10 +58,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.20'
+          cpus: '0.05'
           memory: 128M
         reservations:
-          cpus: '0.05'
+          cpus: '0.01'
           memory: 32M
       placement:
         constraints:
@@ -81,11 +81,11 @@ services:
         swarmpit.agent: 'true'
       resources:
         limits:
-          cpus: '0.10'
-          memory: 64M
-        reservations:
           cpus: '0.05'
           memory: 32M
+        reservations:
+          cpus: '0.01'
+          memory: 8M
 
 networks:
   net:

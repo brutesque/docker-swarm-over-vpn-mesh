@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.8"
 
 services:
 
@@ -35,10 +35,10 @@ services:
       resources:
         limits:
           cpus: '0.05'
-          memory: 16M
+          memory: 32M
         reservations:
           cpus: '0.01'
-          memory: 8M
+          memory: 4M
     logging:
       options:
         max-size: "500k"
@@ -112,11 +112,11 @@ services:
           - node.labels.traefik == true
       resources:
         limits:
-          cpus: '0.5'
-          memory: 256M
-        reservations:
-          cpus: '0.1'
+          cpus: '0.50'
           memory: 128M
+        reservations:
+          cpus: '0.05'
+          memory: 32M
 
 networks:
   traefik-public:
