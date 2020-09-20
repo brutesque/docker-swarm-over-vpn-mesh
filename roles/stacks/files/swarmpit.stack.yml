@@ -11,6 +11,10 @@ services:
     networks:
       - net
       - traefik-public
+    depends_on:
+      - db
+      - influxdb
+      - agent
     deploy:
       resources:
         limits:
