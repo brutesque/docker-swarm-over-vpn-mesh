@@ -67,3 +67,4 @@ $ make clean
 - tls verification for docker? (probably not applicable since this already uses tinc vpn)
 - use ansible vault for secrets
 - use chronyd to synchronize time between nodes
+- implement admin vpn to secure admin services
