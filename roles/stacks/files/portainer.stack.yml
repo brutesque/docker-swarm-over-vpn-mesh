@@ -41,7 +41,6 @@ services:
       placement:
         constraints:
           - node.role == manager
-          - node.labels.portainer-frontend == true
       resources:
         limits:
           cpus: '0.05'
