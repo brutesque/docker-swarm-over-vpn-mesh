@@ -50,7 +50,10 @@ clean:
 	rm -f terraform.tfstate
 	rm -f terraform.tfstate.backup
 
-clean-rebuild:
+clean-redeploy:
+	pip3 install --quiet --upgrade pip
+	pip3 install --quiet --upgrade --requirement requirements.txt
+
 	terraform init
 
 	ansible-playbook playbook-destroy.yml
@@ -64,9 +67,6 @@ clean-rebuild:
 	rm -Rf fetch
 	rm -f terraform.tfstate
 	rm -f terraform.tfstate.backup
-
-	pip3 install --quiet --upgrade pip
-	pip3 install --quiet --upgrade --requirement requirements.txt
 
 	terraform init
 	terraform validate
