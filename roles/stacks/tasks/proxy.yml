@@ -21,7 +21,8 @@
   when: item not in groups['entrypoints']
   loop: "{{ groups['swarm'] }}"
 
-- file:
+- name: Create directory in gluster mount
+  file:
     state: directory
     path: /mnt/gluster-admin/{{ item }}
     mode: '0600'
