@@ -1,45 +1,50 @@
 [providers.file]
   [http.middlewares]
     [http.middlewares.https-redirect.redirectscheme]
-      scheme = "https"
+        scheme = "https"
     [http.middlewares.security-headers.headers]
-      # CORS
-      AccessControlAllowMethods = ["GET", "POST"]
-      #AccessControlAllowOrigin = "origin-list-or-null"
-      #accessControlAllowOriginList
-      AccessControlMaxAge = 100
-      #AddVaryHeader = true
-      BrowserXssFilter = true
-      ContentTypeNosniff = true
-      ForceSTSHeader = true
-      FrameDeny = true
-      SSLRedirect = true
-      STSIncludeSubdomains = true
-      STSPreload = true
-      #ContentSecurityPolicy = "default-src 'self' ; connect-src 'self' ; script-src 'self' 'unsafe-inline' 'unsafe-eval' ; style-src 'unsafe-inline' 'self'; font-src 'self' 'unsafe-inline'; object-src 'self'; media-src 'self'; img-src 'self' data: blob: ; frame-src 'self' "
-      CustomFrameOptionsValue = "SAMEORIGIN"
-      ReferrerPolicy = "same-origin"
-      STSSeconds = 315360000
+        # CORS
+        AccessControlAllowMethods = ["GET", "POST"]
+        #AccessControlAllowOrigin = "origin-list-or-null"
+        #accessControlAllowOriginList
+        AccessControlMaxAge = 100
+        #AddVaryHeader = true
+        BrowserXssFilter = true
+        ContentTypeNosniff = true
+        ForceSTSHeader = true
+        FrameDeny = true
+        SSLRedirect = true
+        STSIncludeSubdomains = true
+        STSPreload = true
+        #ContentSecurityPolicy = "default-src 'self' ; connect-src 'self' ; script-src 'self' 'unsafe-inline' 'unsafe-eval' ; style-src 'unsafe-inline' 'self'; font-src 'self' 'unsafe-inline'; object-src 'self'; media-src 'self'; img-src 'self' data: blob: ; frame-src 'self'"
+        featurePolicy = "camera 'none'; geolocation 'none'; microphone 'none'; payment 'none'; usb 'none'; vr 'none';"
+        CustomFrameOptionsValue = "SAMEORIGIN"
+        ReferrerPolicy = "same-origin"
+        STSSeconds = 315360000
+        hostsProxyHeaders = ["X-Forwarded-Host"]
+        [http.middlewares.security-headers.headers.customResponseHeaders]
+            X-Robots-Tag = "none,noarchive,nosnippet,notranslate,noimageindex,"
+            server = ""
 
 [tls]
-  [tls.options]
-    [tls.options.default]
-      minVersion = "VersionTLS12"
-      #sniStrict = true
-      cipherSuites = [
-        "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
-        "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
-        "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
-        "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
-        "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305",
-        "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305",
+    [tls.options]
+        [tls.options.default]
+            minVersion = "VersionTLS12"
+            #sniStrict = true
+            cipherSuites = [
+                "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+                "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+                "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+                "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+                "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305",
+                "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305",
 
-        "TLS_AES_128_GCM_SHA256",
-        "TLS_AES_256_GCM_SHA384",
-        "TLS_CHACHA20_POLY1305_SHA256",
+                "TLS_AES_128_GCM_SHA256",
+                "TLS_AES_256_GCM_SHA384",
+                "TLS_CHACHA20_POLY1305_SHA256",
 
-        # This is a weak cipher suite. Uncomment it if you need to support for IE 11 on win7-8.1 or safari 6-8 on iOS.
-        #"TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+                # This is a weak cipher suite. Uncomment it only if you support for IE 11 on win7-8.1 or safari 6-8 on iOS is more important than security.
+                #"TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
 
-        "TLS_FALLBACK_SCSV" # Client is doing version fallback. See RFC 7507.
-      ]
+                "TLS_FALLBACK_SCSV" # Client is doing version fallback. See RFC 7507.
+            ]
