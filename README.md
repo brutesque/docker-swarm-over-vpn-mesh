@@ -69,9 +69,9 @@ $ make clean
 - Set "PermitRootLogin no" after becoming different user in playbook
 - Don't allow ssh as root; implement ansible user that becomes root
 - Check services and implement non-root user where possible
-- Block docker from adjusting iptables, so we can open up ports manually
+- Block docker from adjusting iptables, and open up ports manually where required
 - Docker overlay network with encryption? (probably not applicable since this already uses tinc vpn)
 - tls verification for docker? (probably not applicable since this already uses tinc vpn)
 - use ansible vault for secrets
 - use chronyd to synchronize time between nodes
-- implement admin vpn to secure admin services
+- implement admin vpn for secure access to admin services
