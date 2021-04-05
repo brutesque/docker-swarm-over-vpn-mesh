@@ -105,39 +105,48 @@ def _main():
             i = 1
         managers = 1
         for resource in tfstate['resources']:
-            if resource['type'] in ['digitalocean_droplet', 'vultr_server']:
-                try:
-                    resource_vpn_ip = inventory['_meta']['hostvars'][resource['name']]['vpn_ip']
-                except KeyError:
-                    resource_vpn_ip = "{}.{}".format(vpn_ip_first_part, i)
-                    i += 1
-                finally:
+            if resource['type'] in ['digitalocean_droplet', 'vultr_instance']:
+                for instance in resource['instances']:
                     if resource['type'] == 'digitalocean_droplet':
-                        ansible_host = resource['instances'][0]['attributes']['ipv4_address']
-                    elif resource['type'] == 'vultr_server':
-                        ansible_host = resource['instances'][0]['attributes']['main_ip']
-                    dict_merge(
-                        inventory['_meta']['hostvars'],
-                        {
-                            resource['name']: {
-                                'ansible_host': ansible_host,
-                                'ansible_python_interpreter': "/usr/bin/python3",
-                                'ansible_user': "root",
-                                'vpn_ip': resource_vpn_ip,
-                                'wan_interface': "eth0"
+                        resource_name = instance['attributes']['name']
+                    elif resource['type'] == 'vultr_instance':
+                        resource_name = instance['attributes']['hostname']
+                    try:
+                        resource_vpn_ip = inventory['_meta']['hostvars'][resource_name]['vpn_ip']
+                    except KeyError:
+                        resource_vpn_ip = "{}.{}".format(vpn_ip_first_part, i)
+                        i += 1
+                    finally:
+                        if resource['type'] == 'digitalocean_droplet':
+                            ansible_host = instance['attributes']['ipv4_address']
+                            wan_interface = 'eth0'
+                            ansible_user = 'root'
+                        elif resource['type'] == 'vultr_instance':
+                            ansible_host = instance['attributes']['main_ip']
+                            wan_interface = 'eth0'
+                            ansible_user = 'root'
+                        dict_merge(
+                            inventory['_meta']['hostvars'],
+                            {
+                                resource_name: {
+                                    'ansible_host': ansible_host,
+                                    'ansible_python_interpreter': "/usr/bin/python3",
+                                    'ansible_user': ansible_user,
+                                    'vpn_ip': resource_vpn_ip,
+                                    'wan_interface': wan_interface
+                                }
                             }
-                        }
-                    )
-                    for group in ['servers', 'vpn_mesh']:
-                        if resource['name'] not in inventory[group]['hosts']:
-                            inventory[group]['hosts'].append(resource['name'])
+                        )
+                        for group in ['servers', 'vpn_mesh']:
+                            if resource_name not in inventory[group]['hosts']:
+                                inventory[group]['hosts'].append(resource_name)
 
-                    if len(inventory['managers']['hosts']) < managers:
-                        if resource['name'] not in inventory['managers']['hosts']:
-                            inventory['managers']['hosts'].append(resource['name'])
-                    else:
-                        if resource['name'] not in inventory['workers']['hosts']:
-                            inventory['workers']['hosts'].append(resource['name'])
+                        if len(inventory['managers']['hosts']) < managers:
+                            if resource_name not in inventory['managers']['hosts']:
+                                inventory['managers']['hosts'].append(resource_name)
+                        else:
+                            if resource_name not in inventory['workers']['hosts']:
+                                inventory['workers']['hosts'].append(resource_name)
 
 
         sys.stdout.write(json.dumps(inventory, indent=2))

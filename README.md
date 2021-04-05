@@ -11,7 +11,7 @@ When using the makefile to deploy the following will happen:
 - initial admin stacks are deployed on the swarm and will be made available through reverse-proxy.
 
 Requirements:
-- Terraform
+- Terraform 0.14
 - Python-pip
 - duckdns account
 

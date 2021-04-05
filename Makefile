@@ -49,6 +49,7 @@ clean:
 	rm -Rf fetch
 	rm -f terraform.tfstate
 	rm -f terraform.tfstate.backup
+	rm -f .terraform.lock.hcl
 
 clean-redeploy:
 	pip3 install --quiet --upgrade pip
@@ -67,6 +68,7 @@ clean-redeploy:
 	rm -Rf fetch
 	rm -f terraform.tfstate
 	rm -f terraform.tfstate.backup
+	rm -f .terraform.lock.hcl
 
 	terraform init
 	terraform validate
