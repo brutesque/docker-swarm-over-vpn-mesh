@@ -46,7 +46,7 @@
 
 - name: ensure tinc hosts file binds to physical ip address -- bind hosts file to ansible host
   lineinfile:
-    dest: /etc/tinc/{{ netname }}/hosts/{{ inventory_hostname }}
+    dest: /etc/tinc/{{ netname }}/hosts/{{ inventory_hostname | replace('.','_') | replace('-','_') }}
     line: "Address = {{ ansible_host }}"
     create: yes
     mode: '0600'
@@ -55,14 +55,14 @@
 
 - name: ensure subnet ip address is properly set in tinc host file
   lineinfile:
-    dest: /etc/tinc/{{ netname }}/hosts/{{ inventory_hostname }}
-    line: "Subnet = {{ vpn_ip }}/{{ vpn_subnet_cidr_netmask }}"
+    dest: /etc/tinc/{{ netname }}/hosts/{{ inventory_hostname | replace('.','_') | replace('-','_') }}
+    line: "Subnet = {{ vpn_ip }}/32"
     create: yes
   notify:
     - restart tinc
 
 - name: check whether /etc/tinc/netname/hosts/inventory_hostname contains "-----END RSA PUBLIC KEY-----"
-  command: awk '/^-----END RSA PUBLIC KEY-----$/'  /etc/tinc/{{ netname }}/hosts/{{ inventory_hostname }}
+  command: awk '/^-----END RSA PUBLIC KEY-----$/'  /etc/tinc/{{ netname }}/hosts/{{ inventory_hostname | replace('.','_') | replace('-','_') }}
   changed_when: "public_key.stdout != '-----END RSA PUBLIC KEY-----'"
   register: public_key
 
@@ -80,18 +80,18 @@
   notify:
     - restart tinc
 
-- name: fetch tinc hosts file after key creation
-  fetch:
-    src: /etc/tinc/{{ netname }}/hosts/{{ inventory_hostname }}
-    dest: fetch/{{ inventory_hostname }}
-    flat: yes
-  notify:
-    - reload tinc
+- name: Get tinc hosts file after key creation
+  slurp:
+    src: "/etc/tinc/{{ netname }}/hosts/{{ inventory_hostname | replace('.','_') | replace('-','_') }}"
+  register: tinc_host_file
 
-- name: sync the fetched tinc hosts files on each host
-  synchronize:
-    src: fetch/
-    dest: /etc/tinc/{{ netname }}/hosts/
+- name: Upload all hosts files on each host
+  copy:
+    dest: "/etc/tinc/{{ netname }}/hosts/{{ item | replace('.','_') | replace('-','_') }}"
+    content: "{{ hostvars[item]['tinc_host_file']['content'] | b64decode }}"
+    mode: 0755
+  loop: "{{ ansible_play_batch }}"
+  when: item != inventory_hostname
   notify:
     - reload tinc
 
@@ -107,7 +107,7 @@
 - name: add nodes to /etc/hosts (ansible_inventory resolves to vpn_ip)
   lineinfile:
     dest: /etc/hosts
-    regexp: '.*{{ item }}$'
+    regexp: "^{{ hostvars[item].vpn_ip }}"
     line: "{{ hostvars[item].vpn_ip }} {{item}}"
     state: present
   when: hostvars[item].vpn_ip is defined
