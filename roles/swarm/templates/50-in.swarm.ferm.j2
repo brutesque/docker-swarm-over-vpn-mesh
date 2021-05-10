@@ -1,0 +1,15 @@
+# /etc/ferm/ferm.d/30-in.tinc.ferm
+
+domain ip {
+    table filter chain INPUT {
+
+        # TCP port 2377 for cluster management & raft sync communications
+        interface ppp0 saddr 10.0.0.0/16 daddr {{ vpn_ip }} proto tcp dport 2377 ACCEPT;
+
+        # TCP and UDP port 7946 for "control plane" gossip discovery communication between all nodes
+        interface ppp0 saddr 10.0.0.0/16 daddr {{ vpn_ip }} proto (tcp udp) dport 7946 ACCEPT;
+
+        # UDP port 4789 for "data plane" VXLAN overlay network traffic
+        interface ppp0 saddr 10.0.0.0/16 daddr {{ vpn_ip }} proto udp dport 4789 ACCEPT;
+    }
+}

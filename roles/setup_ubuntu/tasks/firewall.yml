@@ -1,0 +1,24 @@
+---
+
+- name: Enable Ferm
+  service:
+    name: ferm
+    state: started
+    enabled: true
+
+- copy:
+    src: ferm.conf
+    dest: /etc/ferm/ferm.conf
+    owner: root
+    group: adm
+    mode: '0644'
+
+- template:
+    src: 20-in.ssh.ferm.j2
+    dest: /etc/ferm/ferm.d/20-in.ssh.ferm
+    owner: root
+    group: adm
+    mode: '0644'
+
+- name: run ferm
+  command: ferm /etc/ferm/ferm.conf

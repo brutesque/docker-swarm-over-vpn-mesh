@@ -1,0 +1,9 @@
+# /etc/ferm/ferm.d/99-docker.ferm
+
+domain (ip ip6) table filter chain DOCKER-USER {
+    interface {{ wan_interface }} outerface docker_gwbridge {
+        mod conntrack ctstate (RELATED ESTABLISHED) ACCEPT;
+        DROP;
+    }
+    RETURN;
+}

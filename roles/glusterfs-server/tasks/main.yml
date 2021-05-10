@@ -11,7 +11,7 @@
     enabled: yes
     state: started
 
-- include_tasks: ufw.yml
+- include_tasks: firewall.yml
 
 - name: add peers to gluster cluster
   gluster_peer:

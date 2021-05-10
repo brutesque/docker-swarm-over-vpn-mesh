@@ -1,0 +1,11 @@
+---
+
+- template:
+    src: 40-in.glusterfs.ferm.j2
+    dest: /etc/ferm/ferm.d/40-in.glusterfs.ferm
+    owner: root
+    group: adm
+    mode: '0644'
+
+- name: run ferm
+  command: ferm /etc/ferm/ferm.conf

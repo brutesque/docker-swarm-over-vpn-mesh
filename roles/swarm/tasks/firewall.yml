@@ -1,0 +1,11 @@
+---
+
+- template:
+    src: 50-in.swarm.ferm.j2
+    dest: /etc/ferm/ferm.d/50-in.swarm.ferm
+    owner: root
+    group: adm
+    mode: '0644'
+
+- name: run ferm
+  command: ferm /etc/ferm/ferm.conf

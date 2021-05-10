@@ -1,6 +1,6 @@
 ---
 
-- include_tasks: ufw.yml
+- include_tasks: firewall.yml
 
 - name: Init a new swarm with default parameters
   docker_swarm:

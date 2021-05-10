@@ -1,0 +1,25 @@
+---
+
+- template:
+    src: 00-docker.ferm
+    dest: /etc/ferm/ferm.d/00-docker.ferm
+    owner: root
+    group: adm
+    mode: '0644'
+
+- template:
+    src: 10-in.docker.http.ferm.j2
+    dest: /etc/ferm/ferm.d/10-in.docker.http.ferm
+    owner: root
+    group: adm
+    mode: '0644'
+
+- template:
+    src: 99-docker.ferm.j2
+    dest: /etc/ferm/ferm.d/99-docker.ferm
+    owner: root
+    group: adm
+    mode: '0644'
+
+- name: run ferm
+  command: ferm /etc/ferm/ferm.conf

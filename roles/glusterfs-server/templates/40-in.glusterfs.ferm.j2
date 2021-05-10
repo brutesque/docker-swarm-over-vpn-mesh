@@ -1,0 +1,12 @@
+# /etc/ferm/ferm.d/30-in.tinc.ferm
+
+domain ip {
+    table filter chain INPUT {
+
+        # Open TCP and UDP ports 24007-24008 for Gluster daemon and management
+        interface ppp0 saddr 10.0.0.0/16 daddr {{ vpn_ip }} proto (tcp udp) dport 24007:24008 ACCEPT;
+
+        # Open TCP ports 49152 and up for Gluster bricks
+        interface ppp0 saddr 10.0.0.0/16 daddr {{ vpn_ip }} proto tcp dport 49152:49153 ACCEPT;
+    }
+}
