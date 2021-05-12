@@ -13,7 +13,12 @@ When using the makefile to deploy the following will happen:
 Requirements:
 - Terraform 0.14
 - Python-pip
-- duckdns account
+
+Implemented providers:
+- Digital Ocean
+- Oracle Cloud Infrastructure
+- Vultr
+- DuckDNS
 
 ### Execute deployment
 

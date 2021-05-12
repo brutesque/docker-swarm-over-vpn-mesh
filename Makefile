@@ -1,25 +1,24 @@
+terraform:
+	pip3 install --quiet --upgrade pip
+	pip3 install --quiet --upgrade --requirement requirements.txt
+
+	terraform init tf
+	terraform validate tf
+
+	terraform plan -var-file="secrets/providers.tfvars" -var-file="secrets/config.tfvars" tf
+
+	terraform apply -var-file="secrets/providers.tfvars" -var-file="secrets/config.tfvars" -auto-approve tf
+
 deploy:
 	pip3 install --quiet --upgrade pip
 	pip3 install --quiet --upgrade --requirement requirements.txt
 
-	terraform init
-	terraform validate
+	terraform init tf
+	terraform validate tf
 
-	terraform plan \
-		-var "do_token=${DO_TOKEN}" \
-		-var "vultr_token=${VULTR_TOKEN}"
+	terraform plan -var-file="secrets/providers.tfvars" -var-file="secrets/config.tfvars" tf
 
-	terraform apply \
-		-var "do_token=${DO_TOKEN}" \
-		-var "vultr_token=${VULTR_TOKEN}" \
-		-auto-approve
-
-	sleep 20
-
-	ansible \
-		--forks 1 \
-		--module-name ping \
-		all
+	terraform apply -var-file="secrets/providers.tfvars" -var-file="secrets/config.tfvars" -auto-approve tf
 
 	ansible-playbook playbook-deploy.yml
 
@@ -27,26 +26,19 @@ backup:
 	ansible-playbook playbook-backup.yml
 
 destroy:
-	terraform init
+	terraform init tf
 
 	ansible-playbook playbook-destroy.yml
 
-	terraform destroy \
-		-var "do_token=${DO_TOKEN}" \
-		-var "vultr_token=${VULTR_TOKEN}" \
-		-auto-approve
+	terraform destroy -var-file="secrets/providers.tfvars" -var-file="secrets/config.tfvars" -auto-approve tf
 
 force-destroy:
-	terraform init
+	terraform init tf
 
-	terraform destroy \
-		-var "do_token=${DO_TOKEN}" \
-		-var "vultr_token=${VULTR_TOKEN}" \
-		-auto-approve
+	terraform destroy -var-file="secrets/providers.tfvars" -var-file="secrets/config.tfvars" -auto-approve tf
 
 clean:
 	rm -Rf .terraform
-	rm -Rf fetch
 	rm -f terraform.tfstate
 	rm -f terraform.tfstate.backup
 	rm -f .terraform.lock.hcl
@@ -55,38 +47,22 @@ clean-redeploy:
 	pip3 install --quiet --upgrade pip
 	pip3 install --quiet --upgrade --requirement requirements.txt
 
-	terraform init
+	terraform init tf
 
 	ansible-playbook playbook-destroy.yml
 
-	terraform destroy \
-		-var "do_token=${DO_TOKEN}" \
-		-var "vultr_token=${VULTR_TOKEN}" \
-		-auto-approve
+	terraform destroy -var-file="secrets/providers.tfvars" -var-file="secrets/config.tfvars" -auto-approve tf
 
 	rm -Rf .terraform
-	rm -Rf fetch
 	rm -f terraform.tfstate
 	rm -f terraform.tfstate.backup
 	rm -f .terraform.lock.hcl
 
-	terraform init
-	terraform validate
+	terraform init tf
+	terraform validate tf
 
-	terraform plan \
-		-var "do_token=${DO_TOKEN}" \
-		-var "vultr_token=${VULTR_TOKEN}"
+	terraform plan -var-file="secrets/providers.tfvars" -var-file="secrets/config.tfvars" tf
 
-	terraform apply \
-		-var "do_token=${DO_TOKEN}" \
-		-var "vultr_token=${VULTR_TOKEN}" \
-		-auto-approve
-
-	sleep 10
-
-	ansible \
-		--forks 1 \
-		--module-name ping \
-		all
+	terraform apply -var-file="secrets/providers.tfvars" -var-file="secrets/config.tfvars" -auto-approve tf
 
 	ansible-playbook playbook-deploy.yml

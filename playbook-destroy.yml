@@ -5,6 +5,7 @@
   become: true
   vars_files:
     - vars/main.yml
+    - secrets/vars.yml
   roles:
     - get-certs
   tags: get-certs
@@ -16,4 +17,5 @@
     - duckdns-remove
   vars_files:
     - vars/main.yml
+    - secrets/vars.yml
   tags: duckdns

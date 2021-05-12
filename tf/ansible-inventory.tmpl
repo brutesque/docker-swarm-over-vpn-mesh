@@ -1,0 +1,51 @@
+[vpn_mesh]
+%{ for index, ipv4 in values(all-instances) ~}
+${keys(all-instances)[index]} ansible_host=${ ipv4 } vpn_ip=${cidrhost("10.0.0.0/16", index + 1)}
+%{ endfor ~}
+
+[entrypoints]
+%{ for index, hostname in entrypoints ~}
+${ hostname }${ index <= length(duckdns-subdomains) ? format(" duckdns_domain=%s", duckdns-subdomains[index]) : "" }
+%{ endfor ~}
+
+[glusterpool]
+%{ for index, hostname in glusterpool ~}
+${ hostname }
+%{ endfor ~}
+
+[managers]
+%{ for hostname in docker-managers ~}
+${ hostname }
+%{ endfor ~}
+
+[workers]
+%{ for hostname in docker-workers ~}
+${ hostname }
+%{ endfor ~}
+
+[swarm:children]
+managers
+workers
+
+[onpremise]
+%{ for index, hostname in prem-instances ~}
+${ hostname } ansible_ssh_user=root wan_interface=enp9s0
+%{ endfor ~}
+
+[oraclecloud]
+%{ for index, hostname in oci-instances ~}
+${ hostname } ansible_ssh_user=ubuntu wan_interface=ens3
+%{ endfor ~}
+
+[digitalocean]
+%{ for index, hostname in do-instances ~}
+${ hostname } ansible_ssh_user=root wan_interface=eth0
+%{ endfor ~}
+
+[vultr]
+%{ for index, hostname in vultr-instances ~}
+${ hostname } ansible_ssh_user=root wan_interface=ens3
+%{ endfor ~}
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
