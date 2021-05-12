@@ -1,6 +1,6 @@
 # Ansible playbook for Docker Swarm using Tinc
 This terraform/ansible project creates a Docker Swarm that uses a Tinc vpn-mesh for private communication between nodes. 
-The goal is to have a working swarm that has nodes across geolocations and across providers.
+The goal is to have a working swarm that has nodes across geo-locations and across providers.
 
 When using the makefile to deploy, the following will happen:
 - Terraform will use the configuration files in the tf/ folder to spin up a number of vps instances.
