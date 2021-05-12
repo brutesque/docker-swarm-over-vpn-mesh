@@ -3,10 +3,12 @@
 - name: Wait for nodes to become available
   hosts: all
   any_errors_fatal: true
+  gather_facts: no
   tasks:
   - wait_for_connection:
       delay: 10
       timeout: 600
+  - action: ping
   tags: waiting
 
 - name: Setup Ubuntu
