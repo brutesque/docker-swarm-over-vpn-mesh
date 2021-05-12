@@ -2,6 +2,7 @@
 
 - name: Get Let's Encrypts certificates
   hosts: managers[0]
+  any_errors_fatal: true
   become: true
   vars_files:
     - vars/main.yml
@@ -12,6 +13,7 @@
 
 - name: Clear ip at DuckDNS
   hosts: all
+  any_errors_fatal: true
   become: true
   roles:
     - duckdns-remove

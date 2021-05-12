@@ -10,6 +10,7 @@
 
 - name: Setup Ubuntu
   hosts: all
+  any_errors_fatal: true
   become: true
   roles:
     - setup_ubuntu
@@ -20,6 +21,7 @@
 
 - name: Register ip at DuckDNS
   hosts: all
+  any_errors_fatal: true
   become: true
   roles:
     - duckdns
@@ -30,6 +32,7 @@
 
 - name: Install Tinc
   hosts: vpn_mesh
+  any_errors_fatal: true
   become: true
   roles:
     - tinc
@@ -40,6 +43,7 @@
 
 - name: Install Glusterfs
   hosts: glusterpool
+  any_errors_fatal: true
   become: true
   vars_files:
     - vars/main.yml
@@ -51,6 +55,7 @@
 
 - name: Install Glusterfs
   hosts: swarm
+  any_errors_fatal: true
   become: true
   vars_files:
     - vars/main.yml
@@ -62,6 +67,7 @@
 
 - name: Install Docker
   hosts: swarm
+  any_errors_fatal: true
   become: true
   roles:
     - docker
@@ -72,6 +78,7 @@
 
 - name: Setup Docker Swarm
   hosts: swarm
+  any_errors_fatal: true
   become: true
   roles:
     - swarm
@@ -82,6 +89,7 @@
 
 - name: Deploy stacks
   hosts: managers[0]
+  any_errors_fatal: true
   become: true
   roles:
     - stacks
@@ -92,6 +100,7 @@
 
 - name: Store registry login data on nodes
   hosts: swarm
+  any_errors_fatal: true
   become: true
   roles:
     - registry-login
