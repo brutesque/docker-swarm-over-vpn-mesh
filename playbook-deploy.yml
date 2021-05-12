@@ -44,7 +44,7 @@
     - secrets/vars.yml
   tags: tinc
 
-- name: Install Glusterfs
+- name: Install Glusterfs servers
   hosts: glusterpool
   any_errors_fatal: true
   become: true
@@ -56,7 +56,7 @@
   tags:
     - glusterfs
 
-- name: Install Glusterfs
+- name: Install Glusterfs clients
   hosts: swarm
   any_errors_fatal: true
   become: true
