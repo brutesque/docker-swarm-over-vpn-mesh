@@ -69,7 +69,7 @@
     path: /etc/ssh/sshd_config
     state: present
     regexp: '^#?PubkeyAuthentication'
-    line: '#PubkeyAuthentication yes'
+    line: 'PubkeyAuthentication yes'
 
 - name: Disable password authentication
   lineinfile:
@@ -97,7 +97,7 @@
     path: /etc/ssh/sshd_config
     state: present
     regexp: '^#?AllowUsers'
-    line: 'AllowUsers {{ create_user }} root'  # TODO: remove root
+    line: "AllowUsers {{ [create_user, ansible_ssh_user] | unique| join(' ') }}"
 
 - name: Limit max authentication attempts
   lineinfile:
