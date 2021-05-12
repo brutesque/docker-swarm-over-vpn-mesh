@@ -2,7 +2,7 @@
 
 - name: Updating DuckDNS records
   get_url:
-    url: "https://www.duckdns.org/update?domains={{ duckdns_domain }}&token={{ duckdns_token }}"
+    url: "https://www.duckdns.org/update?domains={{ duckdns_domain }}&token={{ duckdns_token }}&ip={{ ansible_host }}"
     dest: /dev/null
   retries: 60
   delay: 10
