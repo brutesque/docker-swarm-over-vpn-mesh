@@ -1,14 +1,16 @@
 # Ansible playbook for Docker Swarm using Tinc
-This ansible playbook creates a Docker Swarm that uses a Tinc vpn-mesh. It's purpose is to work cross-geolocation and cross-provider.
+This terraform/ansible project creates a Docker Swarm that uses a Tinc vpn-mesh for private communication between nodes. 
+The goal is to have a working swarm that has nodes cross-geolocation and cross-provider.
 
-When using the makefile to deploy the following will happen:
-- terraform will use the vps-instances.tf configuration to spin up a number of vps instances.
-- an ansible inventory is dynamically created from the manually configured secrets/hosts file and the terraformed vps-instances.
-- all nodes get some initial hardening. A user will be created using the local $USER env variable.
-- a tinc vpn mesh will be created between all the nodes.
-- Glusterfs will be set up for replicated storage across nodes using the tinc vpn mesh.
-- docker swarm will be setup to use the tinc vpn mesh for communication between swarm nodes.
-- initial admin stacks are deployed on the swarm and will be made available through reverse-proxy.
+When using the makefile to deploy, the following will happen:
+- Terraform will use the configuration files in the tf/ folder to spin up a number of vps instances.
+- An ansible inventory is dynamically created by terraform, as well a vars.yml for the ansible-playbook to use.
+- All nodes get some initial hardening. A user will be created using the local $USER env variable.
+- Node ip-addresses are linked to DuckDNS subdomains, if configured.
+- A tinc vpn mesh will be created between all the nodes.
+- Glusterfs will be set up for replicated storage across nodes over the tinc vpn mesh.
+- Docker Swarm will be set up to use the tinc vpn mesh for communication between swarm nodes.
+- Initial admin stacks are deployed on the swarm and will be made available through reverse-proxy.
 
 Requirements:
 - Terraform 0.14
@@ -30,14 +32,8 @@ value: my-duckdns-subdomain.duckdns.org.
 ```
 Make sure to include the dot at the end.
 
-- Create a hosts file in the secrets folder using hosts.default as a template.
-- Adjust vps-instances.tf to your liking.
-
-- Set the following environment variables:
-    - DO_TOKEN: Digital Ocean API token
-    - VULTR_TOKEN: Vultr API token
-    - DUCKDNS_TOKEN: DuckDNS API token
-    - ADMIN_PASSWORD: admin password for swarm services
+- Create and populate the providers.tfvars with credentials from your providers. See providers.tfvars.example.
+- Copy config.tfvars.example to config.tfvars and adjust swarm settings to your liking.
 
 Run:
 ```
@@ -46,11 +42,11 @@ $ make deploy
 
 ### Backups
 
-Backup your certs to the local secrets folder by running:
+Backup your certs to the local secrets/backups folder by running:
 ```
 $ make backup
 ```
-These certs will get automatically restored on the next deployment.
+These certs will get automatically restored on the next deployment if the configured domain_name matches.
 
 ### Destroy deployment
 
