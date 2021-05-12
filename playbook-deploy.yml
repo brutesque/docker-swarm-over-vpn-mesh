@@ -2,6 +2,7 @@
 
 - name: Wait for nodes to become available
   hosts: all
+  any_errors_fatal: true
   tasks:
   - wait_for_connection:
       delay: 10
