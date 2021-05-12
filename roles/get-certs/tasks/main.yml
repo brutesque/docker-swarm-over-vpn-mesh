@@ -1,7 +1,13 @@
 ---
 
+- name: Check that the acme.json exists
+  stat:
+    path: "/mnt/gluster-admin/proxy_letsencrypt/acme.json"
+  register: stat_result
+
 - fetch:
     src: "/mnt/gluster-admin/proxy_letsencrypt/acme.json"
     dest: "secrets/backups/{{ domain_name }}/acme.json"
     flat: yes
-  changed_when: false
+  when: stat_result.stat.exists
+#  changed_when: false
