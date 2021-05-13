@@ -13,6 +13,14 @@
     group: adm
     mode: '0644'
 
+- copy:
+    src: "{{ extra_ferm_config }}"
+    dest: "/etc/ferm/ferm.d/{{ extra_ferm_config }}"
+    owner: root
+    group: adm
+    mode: '0644'
+  when: extra_ferm_config is defined
+
 - template:
     src: 20-in.ssh.ferm.j2
     dest: /etc/ferm/ferm.d/20-in.ssh.ferm

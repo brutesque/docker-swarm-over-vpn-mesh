@@ -1,0 +1,29 @@
+# /etc/ferm/ferm.d/01-out.oci_specific.ferm
+
+# See the Oracle-Provided Images section in the Oracle Cloud Infrastructure
+# documentation for security impact of modifying or removing these rule
+
+domain ip {
+    table filter {
+        chain InstanceServices;
+        chain OUTPUT daddr 169.254.0.0/16 jump InstanceServices;
+        chain InstanceServices {
+            daddr (169.254.0.2/32 169.254.2.0/24 169.254.4.0/24 169.254.5.0/24) protocol tcp mod owner uid-owner 0 dport 3260 mod comment comment 'See the Oracle-Provided Images section in the Oracle Cloud Infrastructure documentation for security impact of modifying or removing this rule' ACCEPT;
+            daddr 169.254.0.2/32 protocol tcp dport 80 mod comment comment 'See the Oracle-Provided Images section in the Oracle Cloud Infrastructure documentation for security impact of modifying or removing this rule' ACCEPT;
+            daddr 169.254.169.254/32 {
+                protocol udp dport 53 mod comment comment 'See the Oracle-Provided Images section in the Oracle Cloud Infrastructure documentation for security impact of modifying or removing this rule' ACCEPT;
+                protocol tcp dport 53 mod comment comment 'See the Oracle-Provided Images section in the Oracle Cloud Infrastructure documentation for security impact of modifying or removing this rule' ACCEPT;
+            }
+            daddr 169.254.0.3/32 protocol tcp mod owner uid-owner 0 dport 80 mod comment comment 'See the Oracle-Provided Images section in the Oracle Cloud Infrastructure documentation for security impact of modifying or removing this rule' ACCEPT;
+            daddr 169.254.0.4/32 protocol tcp dport 80 mod comment comment 'See the Oracle-Provided Images section in the Oracle Cloud Infrastructure documentation for security impact of modifying or removing this rule' ACCEPT;
+            daddr 169.254.169.254/32 {
+                protocol tcp dport 80 mod comment comment 'See the Oracle-Provided Images section in the Oracle Cloud Infrastructure documentation for security impact of modifying or removing this rule' ACCEPT;
+                protocol udp dport (67 69 123) mod comment comment 'See the Oracle-Provided Images section in the Oracle Cloud Infrastructure documentation for security impact of modifying or removing this rule' ACCEPT;
+            }
+            daddr 169.254.0.0/16 {
+                protocol tcp mod comment comment 'See the Oracle-Provided Images section in the Oracle Cloud Infrastructure documentation for security impact of modifying or removing this rule' REJECT reject-with tcp-reset;
+                protocol udp mod comment comment 'See the Oracle-Provided Images section in the Oracle Cloud Infrastructure documentation for security impact of modifying or removing this rule' REJECT reject-with icmp-port-unreachable;
+            }
+        }
+    }
+}

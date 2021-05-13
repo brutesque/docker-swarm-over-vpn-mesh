@@ -28,24 +28,41 @@ managers
 workers
 
 [onpremise]
-%{ for index, hostname in prem-instances ~}
-${ hostname } ansible_ssh_user=root wan_interface=enp9s0
+%{ for hostname in prem-instances ~}
+${ hostname }
 %{ endfor ~}
 
 [oraclecloud]
-%{ for index, hostname in oci-instances ~}
-${ hostname } ansible_ssh_user=ubuntu wan_interface=ens3
+%{ for hostname in oci-instances ~}
+${ hostname }
 %{ endfor ~}
 
 [digitalocean]
-%{ for index, hostname in do-instances ~}
-${ hostname } ansible_ssh_user=root wan_interface=eth0
+%{ for hostname in do-instances ~}
+${ hostname }
 %{ endfor ~}
 
 [vultr]
-%{ for index, hostname in vultr-instances ~}
-${ hostname } ansible_ssh_user=root wan_interface=ens3
+%{ for hostname in vultr-instances ~}
+${ hostname }
 %{ endfor ~}
+
+[onpremise:vars]
+ansible_ssh_user=root
+wan_interface=enp9s0
+
+[oraclecloud:vars]
+ansible_ssh_user=ubuntu
+wan_interface=ens3
+extra_ferm_config=01-out.oracle_provided.ferm
+
+[digitalocean:vars]
+ansible_ssh_user=root
+wan_interface=eth0
+
+[vultr:vars]
+ansible_ssh_user=root
+wan_interface=ens3
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
