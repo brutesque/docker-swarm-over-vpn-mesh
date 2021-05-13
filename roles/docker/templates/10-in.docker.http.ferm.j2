@@ -1,6 +1,6 @@
 # /etc/ferm/ferm.d/20-in.docker.http.ferm
 
-domain (ip ip6) {
+domain ip {
     table filter chain DOCKER-USER
 
     # Incoming traffic bound for a docker service will come in
