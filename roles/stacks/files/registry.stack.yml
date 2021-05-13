@@ -25,11 +25,12 @@ services:
 
   registry-ui:
     restart: always
-    image: joxit/docker-registry-ui:static
+    image: joxit/docker-registry-ui:2.0
     environment:
       - DELETE_IMAGES=true
       - REGISTRY_TITLE=${REGISTRY_TITLE?Variable REGISTRY_TITLE not set}
-      - REGISTRY_URL=http://registry:5000
+      - NGINX_PROXY_PASS_URL=http://registry:5000
+      - SINGLE_REGISTRY=true
     depends_on:
       - registry
     networks:
