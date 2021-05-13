@@ -1,5 +1,5 @@
 locals {
-  prem_instances = {}
+  prem_instances = var.prem_instances
   do_instances = zipmap(digitalocean_droplet.instances.*.name, digitalocean_droplet.instances.*.ipv4_address)
   oci_instances = zipmap(oci_core_instance.instances.*.hostname_label, oci_core_instance.instances.*.public_ip)
   vultr_instances = zipmap(vultr_instance.instances.*.hostname, vultr_instance.instances.*.main_ip)

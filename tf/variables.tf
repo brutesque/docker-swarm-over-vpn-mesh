@@ -8,6 +8,10 @@ variable "vultr_instance_count" {
   description = "Number of instances on Vultr"
 }
 
+variable "prem_instances" {
+  default = {}
+}
+
 variable "ssh_public_key_path" {
   sensitive = true
 }
