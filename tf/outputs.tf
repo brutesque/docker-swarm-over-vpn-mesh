@@ -49,6 +49,7 @@ resource "local_file" "AnsibleVars" {
       domain_name = var.domain_name,
       admin_password = var.admin_password,
       admin_email = var.admin_email,
+      user_name = var.user_name,
       user_password = var.user_password,
       stacks_portainer = var.stacks_portainer,
       stacks_swarmpit = var.stacks_swarmpit,

@@ -1,6 +1,7 @@
 ---
-create_user: "{{ lookup('env','USER') }}"
+create_user: "${ user_name }"
 copy_local_key: "${ trimspace(ssh_public_key) }"
+user_password: "${ user_password }"
 
 ca_email: "${ admin_email }"
 

@@ -9,21 +9,24 @@ variable "vultr_instance_count" {
 }
 
 variable "ssh_public_key_path" {
-  sensitive   = true
+  sensitive = true
 }
 variable "duckdns_token" {
-  sensitive   = true
+  sensitive = true
 }
 variable "domain_name" {}
 variable "admin_password" {
-  sensitive   = true
+  sensitive = true
 }
 variable "admin_email" {
   default = ""
-  sensitive   = true
+  sensitive = true
+}
+variable "user_name" {
+  sensitive = true
 }
 variable "user_password" {
-  sensitive   = true
+  sensitive = true
 }
 variable "stacks_portainer" {
   default = true
@@ -38,5 +41,5 @@ variable "stacks_tests" {
   default = false
 }
 variable "duckdns_subdomains" {
-  sensitive   = true
+  sensitive = true
 }
