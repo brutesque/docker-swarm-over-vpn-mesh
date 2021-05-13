@@ -5,7 +5,7 @@ ${keys(all-instances)[index]} ansible_host=${ ipv4 } vpn_ip=${cidrhost("10.0.0.0
 
 [entrypoints]
 %{ for index, hostname in entrypoints ~}
-${ hostname }${ index <= length(duckdns-subdomains) ? format(" duckdns_domain=%s", duckdns-subdomains[index]) : "" }
+${ hostname }${ index <= length(duckdns-subdomains) ? format(" duckdns_subdomain=%s", duckdns-subdomains[index]) : "" }
 %{ endfor ~}
 
 [glusterpool]
