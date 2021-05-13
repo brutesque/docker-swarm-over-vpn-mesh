@@ -9,13 +9,13 @@ ${ hostname }${ index <= length(duckdns-subdomains) ? format(" duckdns_domain=%s
 %{ endfor ~}
 
 [glusterpool]
-%{ for index, hostname in glusterpool ~}
+%{ for hostname in glusterpool ~}
 ${ hostname }
 %{ endfor ~}
 
 [managers]
-%{ for hostname in docker-managers ~}
-${ hostname }
+%{ for index, hostname in docker-managers ~}
+${ hostname }${ index == 0 ? " swarm_labels=\"{'swarmpit.db-data': 'true', 'swarmpit.influx-data': 'true'}\"" : "" }
 %{ endfor ~}
 
 [workers]
