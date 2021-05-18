@@ -1,6 +1,6 @@
 [vpn_mesh]
 %{ for index, ipv4 in values(all-instances) ~}
-${keys(all-instances)[index]} ansible_host=${ ipv4 } vpn_ip=${cidrhost("10.0.0.0/16", index + 1)}
+${keys(all-instances)[index]} vpn_ip=${cidrhost("10.0.0.0/16", index + 1)}
 %{ endfor ~}
 
 [entrypoints]
@@ -32,37 +32,9 @@ workers
 ${ hostname }
 %{ endfor ~}
 
-[oraclecloud]
-%{ for hostname in oci-instances ~}
-${ hostname }
-%{ endfor ~}
-
-[digitalocean]
-%{ for hostname in do-instances ~}
-${ hostname }
-%{ endfor ~}
-
-[vultr]
-%{ for hostname in vultr-instances ~}
-${ hostname }
-%{ endfor ~}
-
 [onpremise:vars]
 ansible_ssh_user=root
 wan_interface=enp9s0
-
-[oraclecloud:vars]
-ansible_ssh_user=ubuntu
-wan_interface=ens3
-extra_ferm_config=01-out.oracle_provided.ferm
-
-[digitalocean:vars]
-ansible_ssh_user=root
-wan_interface=eth0
-
-[vultr:vars]
-ansible_ssh_user=root
-wan_interface=ens3
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3

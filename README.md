@@ -13,7 +13,7 @@ When using the makefile to deploy, the following will happen:
 - Initial admin stacks are deployed on the swarm and will be made available through reverse-proxy.
 
 Requirements:
-- Terraform 0.14
+- Terraform 0.15.3
 - Python-pip
 
 Implemented providers:
@@ -22,9 +22,18 @@ Implemented providers:
 - Vultr
 - DuckDNS
 
-### Execute deployment
+### Prepare deployment
 
-Setup a CNAME record in your domain registrars dns records pointed to your duckdns subdomain. The domain name will be used for all swarm services. Using duckdns links the domain dynamically to the swarm's ip address.
+```
+$ git clone https://github.com/brutesque/docker-swarm-over-vpn-mesh.git
+$ cd docker-swarm-over-vpn-mesh/
+```
+
+- Copy tf/modules.tf.example to tf/modules.tf and uncomment the providers you want to you.
+- Copy secrets/credentials.tfvars.example to secrets/credentials.tfvars and populate the credentials for your providers.
+- Copy secrets/config.tfvars.example to secrets/config.tfvars and adjust swarm settings to your liking.
+
+Setup a CNAME record in your domain registrars dns records pointed to one of your duckdns subdomains. The domain name will be used to configure all swarm services. Using duckdns links the domain dynamically to the swarm's ip address.
 ```
 name: *
 type: CNAME
@@ -32,8 +41,7 @@ value: my-duckdns-subdomain.duckdns.org.
 ```
 Make sure to include the dot at the end.
 
-- Create and populate the providers.tfvars with credentials from your providers. See providers.tfvars.example.
-- Copy config.tfvars.example to config.tfvars and adjust swarm settings to your liking.
+### Execute deployment
 
 Run:
 ```

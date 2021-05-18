@@ -1,8 +1,8 @@
 locals {
   prem_instances = var.prem_instances
-  do_instances = zipmap(digitalocean_droplet.instances.*.name, digitalocean_droplet.instances.*.ipv4_address)
-  oci_instances = zipmap(oci_core_instance.instances.*.hostname_label, oci_core_instance.instances.*.public_ip)
-  vultr_instances = zipmap(vultr_instance.instances.*.hostname, vultr_instance.instances.*.main_ip)
+  do_instances = module.digitalocean.instances
+  oci_instances = module.oraclecloud.instances
+  vultr_instances = module.vultr.instances
 
   all_instances = merge(
           local.prem_instances,
@@ -23,13 +23,10 @@ locals {
 
 ### Ansible inventory file
 resource "local_file" "AnsibleInventory" {
-  content = templatefile("tf/ansible-inventory.tmpl",
+  content = templatefile("ansible-inventory.tmpl",
     {
       all-instances = local.all_instances,
       prem-instances = keys(local.prem_instances),
-      oci-instances = keys(local.oci_instances),
-      do-instances = keys(local.do_instances),
-      vultr-instances = keys(local.vultr_instances),
       docker-managers = local.docker_managers,
       docker-workers = local.docker_workers,
       entrypoints = local.entrypoints,
@@ -37,12 +34,12 @@ resource "local_file" "AnsibleInventory" {
       duckdns-subdomains = local.duckdns_subdomains,
     }
   )
-  filename = "secrets/inventory"
+  filename = "../secrets/inventory/hosts"
 }
 
 ### Ansible vars file
 resource "local_file" "AnsibleVars" {
-  content = templatefile("tf/ansible-vars.tmpl",
+  content = templatefile("ansible-vars.tmpl",
     {
       duckdns_token = var.duckdns_token,
       ssh_public_key = file(var.ssh_public_key_path),
@@ -57,8 +54,9 @@ resource "local_file" "AnsibleVars" {
       stacks_tests = var.stacks_tests,
     }
   )
-  filename = "secrets/vars.yml"
+  filename = "../secrets/vars.yml"
 }
+
 
 output "instances" {
   value = local.all_instances

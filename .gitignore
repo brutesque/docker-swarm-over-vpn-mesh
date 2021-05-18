@@ -8,12 +8,12 @@ venv/
 fetch
 
 # Terraform
-.terraform
-.terraform.tfstate.lock.info
-terraform.tfstate
-terraform.tfstate.backup
-.terraform.lock.hcl
-
+tf/.terraform
+tf/.terraform.tfstate.lock.info
+tf/terraform.tfstate
+tf/terraform.tfstate.backup
+tf/.terraform.lock.hcl
+tf/modules.tf
 
 # Secrets
 secrets/ssh/*

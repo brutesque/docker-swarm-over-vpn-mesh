@@ -1,0 +1,8 @@
+[digitalocean]
+%{ for index, ipv4 in values(instances) ~}
+${keys(instances)[index]} ansible_host=${ ipv4 }
+%{ endfor ~}
+
+[digitalocean:vars]
+ansible_ssh_user=root
+wan_interface=eth0

@@ -1,0 +1,9 @@
+[oraclecloud]
+%{ for index, ipv4 in values(instances) ~}
+${keys(instances)[index]} ansible_host=${ ipv4 }
+%{ endfor ~}
+
+[oraclecloud:vars]
+ansible_ssh_user=ubuntu
+wan_interface=ens3
+extra_ferm_config=01-out.oracle_provided.ferm
