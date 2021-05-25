@@ -7,11 +7,10 @@
     cmd: "echo {{ inventory_hostname }} > /etc/hostname"
   when: inventory_hostname != ansible_hostname
 
-- name: Upgrade
+- name: Update apt cache
   apt:
     force_apt_get: yes
     update_cache: yes
-    cache_valid_time: 3600
   register: apt_action
   retries: 100
   until: apt_action is success or ('Failed to lock apt for exclusive operation' not in apt_action.msg and '/var/lib/dpkg/lock' not in apt_action.msg)
