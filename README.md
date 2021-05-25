@@ -63,9 +63,9 @@ To destroy the swarm run:
 $ make destroy
 ```
 Before destroying the nodes, the backup process for the certs will run.
-If the backup process fails (possibly by interupting deployment process), the nodes won't be destroyed. In that case run:
+If the ansible backup playbook fails (usually caused by an interupted deployment playbook), terraform won't destroy the running instances. In that case run:
 ```
-make force-destroy
+make terraform-destroy
 ```
 
 Additionally to remove any local temporary files (terraform data, ansible data, etc), run:
