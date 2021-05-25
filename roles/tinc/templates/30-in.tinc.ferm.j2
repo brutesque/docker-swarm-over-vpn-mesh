@@ -2,9 +2,11 @@
 
 domain ip {
     table filter chain INPUT {
+
         # Allow incoming access to port 655 on WAN interface
         {% for item in (ansible_play_batch | difference([ansible_hostname])) %}
         interface {{ wan_interface }} saddr {{ hostvars[item]['ansible_host'] }} daddr {{ ansible_host }} proto (tcp udp) dport 655 ACCEPT;
         {% endfor %}
+
     }
 }

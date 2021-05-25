@@ -1,6 +1,8 @@
 # /etc/ferm/ferm.d/20-in.ssh.ferm
 
 domain ip {
+
     # Allow SSH connections on WAN interface
     table filter chain INPUT interface {{ wan_interface }} proto tcp dport 22 ACCEPT;
+
 }

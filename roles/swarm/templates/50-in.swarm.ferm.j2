@@ -11,5 +11,6 @@ domain ip {
 
         # UDP port 4789 for "data plane" VXLAN overlay network traffic
         interface ppp0 saddr 10.0.0.0/16 daddr {{ vpn_ip }} proto udp dport 4789 ACCEPT;
+
     }
 }
