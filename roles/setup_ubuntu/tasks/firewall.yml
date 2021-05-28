@@ -28,5 +28,23 @@
     group: adm
     mode: '0644'
 
+- template:
+    src: 99-logging.ferm.j2
+    dest: /etc/ferm/ferm.d/99-logging.ferm
+    owner: root
+    group: adm
+    mode: '0644'
+
 - name: run ferm
   command: ferm /etc/ferm/ferm.conf
+
+- copy:
+    src: 01-iptables-logging.conf
+    dest: /etc/rsyslog.d/01-iptables-logging.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- service:
+    name: rsyslog
+    state: restarted

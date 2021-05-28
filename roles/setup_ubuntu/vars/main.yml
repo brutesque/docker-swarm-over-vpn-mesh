@@ -9,6 +9,7 @@ sys_packages:
   - net-tools
   - iputils-ping
   - ferm
+  - rsyslog
 
 remove_packages:
   - iptables-persistent

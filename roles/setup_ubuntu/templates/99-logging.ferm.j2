@@ -1,0 +1,13 @@
+# /etc/ferm/ferm.d/99-logging.ferm
+
+domain ip {
+    table filter {
+        chain LOGGING;
+        chain INPUT {
+            jump LOGGING;
+        }
+        chain LOGGING {
+            mod limit limit 2/min LOG log-prefix 'IPTables Unfiltered: ';
+        }
+    }
+}
