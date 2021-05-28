@@ -1,16 +1,18 @@
-variable "api_key" {
-  description = "Vultr API Token"
-  sensitive   = true
-  default = null
+variable "instance_count" {
+  description = "Number of instances on Vultr"
+  default = 0
 }
+
 variable "ssh_public_key_path" {
   description = "Path to public key file"
-  sensitive   = true
+  sensitive = true
   default = null
 }
-variable "instance_count" {
-  description = "Number of instances on Digital Ocean"
-  default = 0
+
+variable "api_key" {
+  description = "Vultr API Token"
+  sensitive = true
+  default = null
 }
 
 variable "vultr_regions" {

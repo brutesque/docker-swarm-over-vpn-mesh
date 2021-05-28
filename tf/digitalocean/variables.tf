@@ -1,16 +1,20 @@
+variable "instance_count" {
+  description = "Number of instances on Digital Ocean"
+  default = 0
+}
+
+variable "ssh_public_key_path" {
+  description = "Path to public key file"
+  sensitive = true
+  default = null
+}
+
 variable "api_key" {
   description = "Digital Ocean API Key"
   sensitive = true
   default = null
 }
-variable "ssh_public_key_path" {
-  description = "Path to public key file"
-  sensitive   = true
-  default = null
-}
-variable "instance_count" {
-  description = "Number of instances on Digital Ocean"
-}
+
 variable "digitalocean_regions" {
   type = list
 

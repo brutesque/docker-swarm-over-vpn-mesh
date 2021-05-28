@@ -3,7 +3,6 @@ resource "digitalocean_ssh_key" "deploy" {
   public_key = trimspace(file(var.ssh_public_key_path))
 }
 
-# Droplets
 resource "digitalocean_droplet" "instances" {
   count = var.instance_count
   image = "ubuntu-20-04-x64"

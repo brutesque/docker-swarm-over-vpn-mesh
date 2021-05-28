@@ -1,36 +1,44 @@
-variable "ssh_public_key_path" {
-  description = "Path to public key file"
-  sensitive   = true
-  default = null
-}
 variable "instance_count" {
   description = "Number of instances on Oracle Cloud Infrastructure"
   default = 0
 }
-variable "api_key_fingerprint" {
-  sensitive   = true
+
+variable "ssh_public_key_path" {
+  description = "Path to public key file"
+  sensitive = true
   default = null
 }
+
+variable "api_key_fingerprint" {
+  sensitive = true
+  default = null
+}
+
 variable "api_private_key_path" {
   sensitive = true
   default = null
 }
+
 variable "compartment_ocid" {
-  sensitive   = true
+  sensitive = true
   default = null
 }
+
 variable "tenancy_ocid" {
-  sensitive   = true
+  sensitive = true
   default = null
 }
+
 variable "user_ocid" {
-  sensitive   = true
+  sensitive = true
   default = null
 }
+
 variable "region" {
   sensitive = true
   default = null
 }
+
 variable "free_tier_availability_domain" {
   sensitive = true
   default = null
