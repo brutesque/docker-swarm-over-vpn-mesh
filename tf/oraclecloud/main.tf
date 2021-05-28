@@ -44,79 +44,72 @@ resource "oci_core_security_list" "swarm_security_list" {
     protocol    = "all"
   }
 
+  // allow inbound ssh traffic
   ingress_security_rules {
-    protocol  = "all"
+    protocol  = "6" // tcp
     source    = "0.0.0.0/0"
     stateless = false
 
+    tcp_options {
+      source_port_range {
+        min = 1
+        max = 65535
+      }
+      min = 22
+      max = 22
+    }
   }
 
-  // allow inbound ssh traffic
-//  ingress_security_rules {
-//    protocol  = "6" // tcp
-//    source    = "0.0.0.0/0"
-//    stateless = false
-//
-//    tcp_options {
-//      source_port_range {
-//        min = 1
-//        max = 65535
-//      }
-//
-//      // These values correspond to the destination port range.
-//      min = 22
-//      max = 22
-//    }
-//  }
-
   // allow inbound icmp traffic of a specific type
-//  ingress_security_rules {
-//    description = "icmp_inbound"
-//    protocol    = 1
-//    source      = "0.0.0.0/0"
-//    stateless   = false
-//
-//    icmp_options {
-//      type = 3
-//      code = 4
-//    }
-//  }
+  ingress_security_rules {
+    description = "icmp_inbound"
+    protocol    = 1
+    source      = "0.0.0.0/0"
+    stateless   = false
 
-//  ingress_security_rules {
-//    protocol = "6" # TCP
-//    source   = "0.0.0.0/0"
-//    tcp_options {
-//      min = 655
-//      max = 655
-//    }
-//  }
+    icmp_options {
+      type = 3
+      code = 4
+    }
+  }
 
-//  ingress_security_rules {
-//    protocol = "17" # UDP
-//    source   = "0.0.0.0/0"
-//    udp_options {
-//      min = 655
-//      max = 655
-//    }
-//  }
+  // allow inbound tinc traffic
+  ingress_security_rules {
+    protocol = "6" # TCP
+    source   = "0.0.0.0/0"
+    tcp_options {
+      min = 655
+      max = 655
+    }
+  }
 
-//  ingress_security_rules {
-//    protocol = "6" # TCP
-//    source   = "0.0.0.0/0"
-//    tcp_options {
-//      min = 80
-//      max = 80
-//    }
-//  }
+  ingress_security_rules {
+    protocol = "17" # UDP
+    source   = "0.0.0.0/0"
+    udp_options {
+      min = 655
+      max = 655
+    }
+  }
 
-//  ingress_security_rules {
-//    protocol = "6" # TCP
-//    source   = "0.0.0.0/0"
-//    tcp_options {
-//      min = 443
-//      max = 443
-//    }
-//  }
+  // allow inbound web traffic
+  ingress_security_rules {
+    protocol = "6" # TCP
+    source   = "0.0.0.0/0"
+    tcp_options {
+      min = 80
+      max = 80
+    }
+  }
+
+  ingress_security_rules {
+    protocol = "6" # TCP
+    source   = "0.0.0.0/0"
+    tcp_options {
+      min = 443
+      max = 443
+    }
+  }
 
 }
 
