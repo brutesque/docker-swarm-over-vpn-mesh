@@ -10,6 +10,7 @@ sys_packages:
   - iputils-ping
   - ferm
   - rsyslog
+  - rsync
 
 remove_packages:
   - iptables-persistent
