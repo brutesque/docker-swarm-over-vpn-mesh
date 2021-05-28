@@ -4,8 +4,8 @@
   get_url:
     url: "https://www.duckdns.org/update?domains={{ duckdns_subdomain }}&token={{ duckdns_token }}&clear=true"
     dest: /dev/null
-  retries: 60
-  delay: 10
+  retries: 20
+  delay: 30
   register: duckdns_update_result
   until: duckdns_update_result is not failed
   when: duckdns_token is defined and duckdns_subdomain is defined
