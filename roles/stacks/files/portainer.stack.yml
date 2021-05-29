@@ -12,11 +12,11 @@ services:
       mode: global
       resources:
         limits:
-          cpus: '0.05'
+          cpus: '0.02'
           memory: 32M
         reservations:
           cpus: '0.01'
-          memory: 8M
+          memory: 16M
       placement:
         constraints:
           - node.platform.os == linux
@@ -47,7 +47,7 @@ services:
           memory: 64M
         reservations:
           cpus: '0.01'
-          memory: 16M
+          memory: 32M
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.portainer.loadbalancer.server.port=9000"

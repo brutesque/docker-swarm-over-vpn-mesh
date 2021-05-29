@@ -34,8 +34,8 @@ services:
           - node.role == manager
       resources:
         limits:
-          cpus: '0.05'
-          memory: 32M
+          cpus: '0.02'
+          memory: 8M
         reservations:
           cpus: '0.01'
           memory: 4M
@@ -112,10 +112,10 @@ services:
           - node.labels.traefik == true
       resources:
         limits:
-          cpus: '0.50'
+          cpus: '0.20'
           memory: 128M
         reservations:
-          cpus: '0.05'
+          cpus: '0.01'
           memory: 32M
 
 networks:
