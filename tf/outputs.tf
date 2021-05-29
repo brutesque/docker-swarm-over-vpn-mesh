@@ -15,9 +15,6 @@ locals {
   docker_workers = slice(keys(local.all_instances), min(2, length(local.all_instances)), length(local.all_instances))
   entrypoints = slice(keys(local.all_instances), 0, min(5, length(local.all_instances)))
   glusterpool = keys(local.all_instances)
-}
-
-locals {
   duckdns_subdomains = var.duckdns_subdomains
 }
 
@@ -56,7 +53,6 @@ resource "local_file" "AnsibleVars" {
   )
   filename = "../secrets/vars.yml"
 }
-
 
 output "instances" {
   value = local.all_instances
