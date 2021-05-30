@@ -10,4 +10,3 @@
     dest: "secrets/backups/{{ domain_name }}/acme.json"
     flat: yes
   when: stat_result.stat.exists
-#  changed_when: false
