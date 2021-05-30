@@ -116,6 +116,7 @@ variable "vultr_token" {
   sensitive   = true
   default     = null
 }
+
 variable "manager_count" {
   type        = number
   description = "Number of manager nodes in the docker swarm"
