@@ -23,7 +23,6 @@ resource "local_file" "AnsibleInventory" {
   content = templatefile("ansible-inventory.tmpl",
     {
       all-instances      = local.all_instances,
-      prem-instances     = keys(local.prem_instances),
       docker-managers    = local.docker_managers,
       docker-workers     = local.docker_workers,
       entrypoints        = local.entrypoints,
