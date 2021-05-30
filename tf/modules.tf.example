@@ -1,32 +1,31 @@
-//module "digitalocean" {
-//  source = "./digitalocean"
-//
-//  ssh_public_key_path = var.ssh_public_key_path
-//  instance_count = var.do_instance_count
-//
-//  api_key = var.do_token
-//}
-//
-//module "oraclecloud" {
-//  source = "./oraclecloud"
-//
-//  ssh_public_key_path = var.ssh_public_key_path
-//  instance_count = var.oci_instance_count
-//
-//  user_ocid = var.oci_user_ocid
-//  api_key_fingerprint = var.oci_api_key_fingerprint
-//  tenancy_ocid = var.oci_tenancy_ocid
-//  region = var.oci_region
-//  api_private_key_path = var.oci_api_private_key_path
-//  compartment_ocid = var.oci_compartment_ocid
-//  free_tier_availability_domain = var.oci_free_tier_availability_domain
-//}
-//
-//module "vultr" {
-//  source = "./vultr"
-//
-//  ssh_public_key_path = var.ssh_public_key_path
-//  instance_count = var.vultr_instance_count
-//
-//  api_key = var.vultr_token
-//}
+module "onpremise" {
+  source              = "./onpremise"
+  instances           = var.prem_instances
+}
+
+module "digitalocean" {
+  source              = "./digitalocean"
+  instance_count      = var.do_instance_count
+  ssh_public_key_path = var.ssh_public_key_path
+  api_key             = var.do_token
+}
+
+module "oraclecloud" {
+  source                        = "./oraclecloud"
+  instance_count                = var.oci_instance_count
+  ssh_public_key_path           = var.ssh_public_key_path
+  user_ocid                     = var.oci_user_ocid
+  api_key_fingerprint           = var.oci_api_key_fingerprint
+  tenancy_ocid                  = var.oci_tenancy_ocid
+  region                        = var.oci_region
+  api_private_key_path          = var.oci_api_private_key_path
+  compartment_ocid              = var.oci_compartment_ocid
+  free_tier_availability_domain = var.oci_free_tier_availability_domain
+}
+
+module "vultr" {
+  source              = "./vultr"
+  instance_count      = var.vultr_instance_count
+  ssh_public_key_path = var.ssh_public_key_path
+  api_key             = var.vultr_token
+}

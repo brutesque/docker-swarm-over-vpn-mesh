@@ -1,16 +1,16 @@
 locals {
-  prem_instances = var.prem_instances
-  do_instances = module.digitalocean.instances
-  oci_instances = module.oraclecloud.instances
-  vultr_instances = module.vultr.instances
-
-  all_instances = merge(
-          local.prem_instances,
-          local.do_instances,
-          local.oci_instances,
-          local.vultr_instances,
+  instances       = {
+    onpremise     = module.onpremise.instances,
+    digitalocean  = module.digitalocean.instances,
+    oraclecloud   = module.oraclecloud.instances,
+    vultr         = module.vultr.instances,
+  }
+  all_instances   = merge(
+          module.onpremise.instances,
+          module.digitalocean.instances,
+          module.oraclecloud.instances,
+          module.vultr.instances,
   )
-
   docker_managers = slice(keys(local.all_instances), 0, min(var.manager_count, length(local.all_instances)))
   docker_workers  = slice(keys(local.all_instances), min(var.manager_count, length(local.all_instances)), length(local.all_instances))
   entrypoints     = slice(keys(local.all_instances), 0, min(5, length(local.all_instances)))

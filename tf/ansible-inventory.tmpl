@@ -26,15 +26,3 @@ ${ hostname }
 [swarm:children]
 managers
 workers
-
-[onpremise]
-%{ for hostname in prem-instances ~}
-${ hostname }
-%{ endfor ~}
-
-[onpremise:vars]
-ansible_ssh_user=root
-wan_interface=enp9s0
-
-[all:vars]
-ansible_python_interpreter=/usr/bin/python3
