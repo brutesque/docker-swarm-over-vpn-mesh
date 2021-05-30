@@ -1,47 +1,47 @@
 variable "instance_count" {
   description = "Number of instances on Oracle Cloud Infrastructure"
-  default = 0
+  default     = 0
 }
 
 variable "ssh_public_key_path" {
   description = "Path to public key file"
-  sensitive = true
-  default = null
+  sensitive   = true
+  default     = null
 }
 
 variable "api_key_fingerprint" {
   sensitive = true
-  default = null
+  default   = null
 }
 
 variable "api_private_key_path" {
   sensitive = true
-  default = null
+  default   = null
 }
 
 variable "compartment_ocid" {
   sensitive = true
-  default = null
+  default   = null
 }
 
 variable "tenancy_ocid" {
   sensitive = true
-  default = null
+  default   = null
 }
 
 variable "user_ocid" {
   sensitive = true
-  default = null
+  default   = null
 }
 
 variable "region" {
   sensitive = true
-  default = null
+  default   = null
 }
 
 variable "free_tier_availability_domain" {
   sensitive = true
-  default = null
+  default   = null
 }
 
 variable "vcn_cidr_block" {
@@ -58,8 +58,7 @@ variable "instance_shape" {
 }
 
 variable "instance_image_ocid" {
-  type = map
-
+  type    = map
   default = {
     # See https://docs.oracle.com/en-us/iaas/images/image/f54a6c52-ce85-4265-93c8-3f73a04e0417/
     # Oracle-provided image "Canonical-Ubuntu-20.04-2020.07.16-0"
