@@ -70,6 +70,11 @@ variable "vultr_instance_count" {
   default     = 0
 }
 
+variable "transip_instance_count" {
+  description = "Number of instances on Transip"
+  default     = 0
+}
+
 variable "do_token" {
   description = "Digital Ocean API Token"
   sensitive   = true
@@ -117,9 +122,33 @@ variable "vultr_token" {
   default     = null
 }
 
+variable "transip_account_name" {
+  description = "Name of the Transip account"
+  sensitive   = true
+  default     = null
+}
+
+variable "transip_private_key_path" {
+  description = "Path to the private key file to be used to authenticate"
+  sensitive   = true
+  default     = null
+}
+
+variable "transip_instance_names" {
+  description = "Names of existing Transip instances to include"
+  sensitive = false
+  default = []
+}
+
 variable "manager_count" {
   type        = number
   description = "Number of manager nodes in the docker swarm"
   sensitive   = false
   default     = 3
+}
+
+variable "manager_providers" {
+  description = "Number of manager nodes in the docker swarm"
+  sensitive   = false
+  default     = ["onpremise", "digitalocean", "oraclecloud", "transip", "vultr"]
 }

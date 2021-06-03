@@ -1,18 +1,18 @@
 locals {
-  instances       = {
-    onpremise     = module.onpremise.instances,
-    digitalocean  = module.digitalocean.instances,
-    oraclecloud   = module.oraclecloud.instances,
-    vultr         = module.vultr.instances,
-  }
-  all_instances   = merge(
-          module.onpremise.instances,
-          module.digitalocean.instances,
-          module.oraclecloud.instances,
-          module.vultr.instances,
-  )
-  docker_managers = slice(keys(local.all_instances), 0, min(var.manager_count, length(local.all_instances)))
-  docker_workers  = slice(keys(local.all_instances), min(var.manager_count, length(local.all_instances)), length(local.all_instances))
+  all_instances = zipmap(flatten([for hosts in values(local.instances) : keys(hosts)]), flatten([for hosts in values(local.instances) : values(hosts)]))
+
+  manager_candidates  = [
+    for provider in keys(local.instances) : keys(local.instances[provider])
+    if contains(var.manager_providers, provider)
+  ]
+  max_length = max([for provider in keys(local.instances) : length(local.instances[provider])]...)
+  manager_selection_order = distinct(flatten([
+    for i in range(local.max_length) : [for hosts in local.manager_candidates : element(hosts, i)
+    if length(hosts) > 0]
+  ]))
+  docker_managers = slice(local.manager_selection_order, 0, min(3, length(local.manager_selection_order)))
+  docker_workers  = setsubtract(keys(local.all_instances), local.docker_managers)
+
   entrypoints     = slice(keys(local.all_instances), 0, min(5, length(local.all_instances)))
   glusterpool     = keys(local.all_instances)
   duckdns_subdomains = var.duckdns_subdomains
