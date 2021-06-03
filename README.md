@@ -16,10 +16,13 @@ Requirements:
 - Terraform 0.15.3
 - Python-pip
 
-Implemented providers:
+Implemented instance providers:
 - Digital Ocean
 - Oracle Cloud Infrastructure
+- Transip
 - Vultr
+
+Implemented dns providers:
 - DuckDNS
 
 ### Prepare deployment
@@ -29,7 +32,7 @@ $ git clone https://github.com/brutesque/docker-swarm-over-vpn-mesh.git
 $ cd docker-swarm-over-vpn-mesh/
 ```
 
-- Copy tf/modules.tf.example to tf/modules.tf and uncomment the providers you want to you.
+- Copy tf/modules.tf.example to tf/modules.tf and comment out the providers you don't have credentials for.
 - Copy secrets/credentials.tfvars.example to secrets/credentials.tfvars and populate the credentials for your providers.
 - Copy secrets/config.tfvars.example to secrets/config.tfvars and adjust swarm settings to your liking.
 
