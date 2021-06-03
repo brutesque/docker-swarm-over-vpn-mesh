@@ -1,6 +1,3 @@
-data "transip_domain" "primary" {
-  name = "argw.ml"
-}
 
 data "transip_vps" "instances" {
   for_each = toset( var.instance_names )
