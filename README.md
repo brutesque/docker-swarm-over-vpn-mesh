@@ -17,6 +17,7 @@ Requirements:
 - Python-pip
 
 Implemented instance providers:
+- On-premise
 - Digital Ocean
 - Oracle Cloud Infrastructure
 - Transip
