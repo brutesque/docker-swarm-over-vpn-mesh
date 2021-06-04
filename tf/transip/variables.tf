@@ -23,6 +23,6 @@ variable "private_key" {
 
 variable "instance_names" {
   description = "Names of existing Transip instances to include"
-  sensitive = false
-  default = []
+  sensitive   = false
+  default     = []
 }

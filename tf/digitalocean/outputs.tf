@@ -3,12 +3,12 @@ locals {
 }
 
 resource "local_file" "AnsibleInventory" {
-  content = templatefile("${path.module}/ansible-inventory.tmpl",
+  filename = "../secrets/inventory/digitalocean"
+  content  = templatefile("${path.module}/ansible-inventory.tmpl",
     {
       instances = local.instances,
     }
   )
-  filename = "../secrets/inventory/digitalocean"
 }
 
 output "instances" {

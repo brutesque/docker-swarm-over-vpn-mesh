@@ -1,7 +1,7 @@
 
 data "transip_vps" "instances" {
   for_each = toset( var.instance_names )
-  name  = each.key
+  name     = each.key
 }
 
 resource "transip_vps" "instances" {

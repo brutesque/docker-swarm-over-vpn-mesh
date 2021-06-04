@@ -39,6 +39,7 @@ module "vultr" {
   api_key             = var.vultr_token
 }
 
+// Instances:
 locals {
   instances = {
     onpremise = module.onpremise.instances,

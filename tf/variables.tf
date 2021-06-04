@@ -150,5 +150,11 @@ variable "manager_count" {
 variable "manager_providers" {
   description = "Number of manager nodes in the docker swarm"
   sensitive   = false
-  default     = ["onpremise", "digitalocean", "oraclecloud", "transip", "vultr"]
+  default     = [
+    "onpremise",
+    "digitalocean",
+    "oraclecloud",
+    "transip",
+    "vultr",
+  ]
 }

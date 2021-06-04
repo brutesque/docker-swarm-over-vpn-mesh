@@ -1,10 +1,10 @@
 resource "local_file" "AnsibleInventory" {
-  content = templatefile("${path.module}/ansible-inventory.tmpl",
+  filename = "../secrets/inventory/onpremise"
+  content  = templatefile("${path.module}/ansible-inventory.tmpl",
     {
       instances = var.instances,
     }
   )
-  filename = "../secrets/inventory/onpremise"
 }
 
 output "instances" {
