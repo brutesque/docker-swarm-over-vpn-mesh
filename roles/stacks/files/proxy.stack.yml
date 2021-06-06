@@ -35,10 +35,10 @@ services:
       resources:
         limits:
           cpus: '0.02'
-          memory: 8M
+          memory: 16M
         reservations:
           cpus: '0.01'
-          memory: 4M
+          memory: 8M
     logging:
       options:
         max-size: "500k"
