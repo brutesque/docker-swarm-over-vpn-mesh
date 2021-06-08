@@ -30,7 +30,7 @@
     DOMAIN: "admin.{{ domain_name }}"
   run_once: true
 
-- name: wait for portainer to come up
+- name: wait for portainer interface to become available
   uri:
     validate_certs: yes
     method: GET
