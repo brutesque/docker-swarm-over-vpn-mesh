@@ -1,3 +1,8 @@
+resource "transip_sshkey" "deploy" {
+  for_each    = toset( compact([var.ssh_public_key_path]) )
+  description = "Deploy"
+  key         = trimspace(file(each.key))
+}
 
 data "transip_vps" "instances" {
   for_each = toset( var.instance_names )
