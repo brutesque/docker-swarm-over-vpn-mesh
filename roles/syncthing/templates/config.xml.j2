@@ -1,0 +1,165 @@
+<configuration version="35">
+{% for item in folders %}
+    <folder id="{{ item }}" label="{{ item|title|replace('-', ' ') }}" path="/var/syncthing/{{ item }}" type="sendreceive" rescanIntervalS="3600" fsWatcherEnabled="true" fsWatcherDelayS="10" ignorePerms="false" autoNormalize="true">
+        <filesystemType>basic</filesystemType>
+    {% for item in ansible_play_batch %}
+        <device id="{{ hostvars[item]['syncthing_device_id'] }}" introducedBy="">
+            <encryptionPassword></encryptionPassword>
+        </device>
+    {% endfor %}
+        <minDiskFree unit="%">1</minDiskFree>
+        <versioning type="staggered">
+            <param key="cleanInterval" val="3600"></param>
+            <param key="maxAge" val="31536000"></param>
+            <cleanupIntervalS>3600</cleanupIntervalS>
+            <fsPath></fsPath>
+            <fsType>basic</fsType>
+        </versioning>
+        <copiers>0</copiers>
+        <pullerMaxPendingKiB>0</pullerMaxPendingKiB>
+        <hashers>0</hashers>
+        <order>oldestFirst</order>
+        <ignoreDelete>false</ignoreDelete>
+        <scanProgressIntervalS>0</scanProgressIntervalS>
+        <pullerPauseS>0</pullerPauseS>
+        <maxConflicts>10</maxConflicts>
+        <disableSparseFiles>false</disableSparseFiles>
+        <disableTempIndexes>false</disableTempIndexes>
+        <paused>false</paused>
+        <weakHashThresholdPct>25</weakHashThresholdPct>
+        <markerName>.stfolder</markerName>
+        <copyOwnershipFromParent>false</copyOwnershipFromParent>
+        <modTimeWindowS>0</modTimeWindowS>
+        <maxConcurrentWrites>2</maxConcurrentWrites>
+        <disableFsync>false</disableFsync>
+        <blockPullOrder>standard</blockPullOrder>
+        <copyRangeMethod>standard</copyRangeMethod>
+        <caseSensitiveFS>false</caseSensitiveFS>
+        <junctionsAsDirs>false</junctionsAsDirs>
+    </folder>
+{% endfor %}
+{% for item in (ansible_play_batch | difference([ansible_hostname])) %}
+    <device id="{{ hostvars[item]['syncthing_device_id'] }}" name="{{ hostvars[item]['ansible_hostname'] }}" compression="metadata" introducer="false" skipIntroductionRemovals="false" introducedBy="">
+        <address>tcp4://{{ hostvars[item]['ansible_hostname'] }}:22000</address>
+        <paused>false</paused>
+        <allowedNetwork>10.0.0.0/16</allowedNetwork>
+        <autoAcceptFolders>false</autoAcceptFolders>
+        <maxSendKbps>0</maxSendKbps>
+        <maxRecvKbps>0</maxRecvKbps>
+        <maxRequestKiB>0</maxRequestKiB>
+        <untrusted>false</untrusted>
+        <remoteGUIPort>0</remoteGUIPort>
+    </device>
+{% endfor %}
+    <device id="{{ syncthing_device_id }}" name="{{ ansible_hostname }}" compression="metadata" introducer="false" skipIntroductionRemovals="false" introducedBy="">
+        <address>tcp4://{{ ansible_hostname }}:22000</address>
+        <paused>false</paused>
+        <allowedNetwork>10.0.0.0/16</allowedNetwork>
+        <autoAcceptFolders>false</autoAcceptFolders>
+        <maxSendKbps>0</maxSendKbps>
+        <maxRecvKbps>0</maxRecvKbps>
+        <maxRequestKiB>0</maxRequestKiB>
+        <untrusted>false</untrusted>
+        <remoteGUIPort>0</remoteGUIPort>
+    </device>
+    <gui enabled="true" tls="false" debugging="false">
+        <address>0.0.0.0:8384</address>
+        <theme>default</theme>
+    </gui>
+    <ldap></ldap>
+    <options>
+        <listenAddress>tcp4://{{ vpn_ip }}:22000</listenAddress>
+        <globalAnnounceServer>default</globalAnnounceServer>
+        <globalAnnounceEnabled>false</globalAnnounceEnabled>
+        <localAnnounceEnabled>false</localAnnounceEnabled>
+        <localAnnouncePort>21027</localAnnouncePort>
+        <localAnnounceMCAddr>[ff12::8384]:21027</localAnnounceMCAddr>
+        <maxSendKbps>0</maxSendKbps>
+        <maxRecvKbps>0</maxRecvKbps>
+        <reconnectionIntervalS>60</reconnectionIntervalS>
+        <relaysEnabled>false</relaysEnabled>
+        <relayReconnectIntervalM>10</relayReconnectIntervalM>
+        <startBrowser>false</startBrowser>
+        <natEnabled>false</natEnabled>
+        <natLeaseMinutes>60</natLeaseMinutes>
+        <natRenewalMinutes>30</natRenewalMinutes>
+        <natTimeoutSeconds>10</natTimeoutSeconds>
+        <urAccepted>-1</urAccepted>
+        <urSeen>3</urSeen>
+        <urUniqueID></urUniqueID>
+        <urURL>https://data.syncthing.net/newdata</urURL>
+        <urPostInsecurely>false</urPostInsecurely>
+        <urInitialDelayS>1800</urInitialDelayS>
+        <restartOnWakeup>true</restartOnWakeup>
+        <autoUpgradeIntervalH>12</autoUpgradeIntervalH>
+        <upgradeToPreReleases>false</upgradeToPreReleases>
+        <keepTemporariesH>24</keepTemporariesH>
+        <cacheIgnoredFiles>false</cacheIgnoredFiles>
+        <progressUpdateIntervalS>5</progressUpdateIntervalS>
+        <limitBandwidthInLan>false</limitBandwidthInLan>
+        <minHomeDiskFree unit="%">1</minHomeDiskFree>
+        <releasesURL>https://upgrades.syncthing.net/meta.json</releasesURL>
+        <overwriteRemoteDeviceNamesOnConnect>false</overwriteRemoteDeviceNamesOnConnect>
+        <tempIndexMinBlocks>10</tempIndexMinBlocks>
+        <trafficClass>0</trafficClass>
+        <setLowPriority>true</setLowPriority>
+        <maxFolderConcurrency>0</maxFolderConcurrency>
+        <crashReportingURL>https://crash.syncthing.net/newcrash</crashReportingURL>
+        <crashReportingEnabled>true</crashReportingEnabled>
+        <stunKeepaliveStartS>180</stunKeepaliveStartS>
+        <stunKeepaliveMinS>20</stunKeepaliveMinS>
+        <stunServer>default</stunServer>
+        <databaseTuning>auto</databaseTuning>
+        <maxConcurrentIncomingRequestKiB>0</maxConcurrentIncomingRequestKiB>
+        <announceLANAddresses>true</announceLANAddresses>
+        <sendFullIndexOnUpgrade>false</sendFullIndexOnUpgrade>
+        <connectionLimitEnough>0</connectionLimitEnough>
+        <connectionLimitMax>0</connectionLimitMax>
+        <insecureAllowOldTLSVersions>false</insecureAllowOldTLSVersions>
+    </options>
+    <defaults>
+        <folder id="" label="" path="~" type="sendreceive" rescanIntervalS="3600" fsWatcherEnabled="true" fsWatcherDelayS="10" ignorePerms="false" autoNormalize="true">
+            <filesystemType>basic</filesystemType>
+            <device id="{{ syncthing_device_id }}" introducedBy="">
+                <encryptionPassword></encryptionPassword>
+            </device>
+            <minDiskFree unit="%">1</minDiskFree>
+            <versioning>
+                <cleanupIntervalS>3600</cleanupIntervalS>
+                <fsPath></fsPath>
+                <fsType>basic</fsType>
+            </versioning>
+            <copiers>0</copiers>
+            <pullerMaxPendingKiB>0</pullerMaxPendingKiB>
+            <hashers>0</hashers>
+            <order>random</order>
+            <ignoreDelete>false</ignoreDelete>
+            <scanProgressIntervalS>0</scanProgressIntervalS>
+            <pullerPauseS>0</pullerPauseS>
+            <maxConflicts>10</maxConflicts>
+            <disableSparseFiles>false</disableSparseFiles>
+            <disableTempIndexes>false</disableTempIndexes>
+            <paused>false</paused>
+            <weakHashThresholdPct>25</weakHashThresholdPct>
+            <markerName>.stfolder</markerName>
+            <copyOwnershipFromParent>false</copyOwnershipFromParent>
+            <modTimeWindowS>0</modTimeWindowS>
+            <maxConcurrentWrites>2</maxConcurrentWrites>
+            <disableFsync>false</disableFsync>
+            <blockPullOrder>standard</blockPullOrder>
+            <copyRangeMethod>standard</copyRangeMethod>
+            <caseSensitiveFS>false</caseSensitiveFS>
+            <junctionsAsDirs>false</junctionsAsDirs>
+        </folder>
+        <device id="" compression="metadata" introducer="false" skipIntroductionRemovals="false" introducedBy="">
+            <address>dynamic</address>
+            <paused>false</paused>
+            <autoAcceptFolders>false</autoAcceptFolders>
+            <maxSendKbps>0</maxSendKbps>
+            <maxRecvKbps>0</maxRecvKbps>
+            <maxRequestKiB>0</maxRequestKiB>
+            <untrusted>false</untrusted>
+            <remoteGUIPort>0</remoteGUIPort>
+        </device>
+    </defaults>
+</configuration>

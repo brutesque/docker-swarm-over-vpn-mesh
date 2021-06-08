@@ -1,0 +1,10 @@
+# /etc/ferm/ferm.d/30-in.tinc.ferm
+
+domain ip {
+    table filter chain INPUT {
+
+        # Open TCP and UDP port 22000 for Syncthing
+        interface ppp0 saddr 10.0.0.0/16 daddr {{ vpn_ip }} proto (tcp udp) dport 22000 ACCEPT;
+
+    }
+}

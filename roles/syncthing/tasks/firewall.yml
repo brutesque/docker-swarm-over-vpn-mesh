@@ -1,0 +1,13 @@
+---
+
+- template:
+    src: 40-in.syncthing.ferm.j2
+    dest: /etc/ferm/ferm.d/40-in.syncthing.ferm
+    owner: root
+    group: adm
+    mode: '0644'
+  register: ferm_result
+
+- name: run ferm
+  command: ferm /etc/ferm/ferm.conf
+  when: ferm_result.changed

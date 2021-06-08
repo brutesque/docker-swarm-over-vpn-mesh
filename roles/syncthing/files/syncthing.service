@@ -1,0 +1,12 @@
+[Unit]
+Description=Syncthing service
+After=network.target
+
+[Service]
+User=root
+Group=root
+ExecStart=/usr/bin/syncthing
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

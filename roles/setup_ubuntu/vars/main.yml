@@ -11,6 +11,7 @@ sys_packages:
   - ferm
   - rsyslog
   - rsync
+  - apt-transport-https
 
 remove_packages:
   - iptables-persistent

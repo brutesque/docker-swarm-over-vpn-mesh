@@ -1,0 +1,46 @@
+---
+
+- file:
+    state: directory
+    path: /var/syncthing
+    mode: '0700'
+    owner: root
+    group: root
+
+- file:
+    state: directory
+    path: /var/syncthing/{{ item }}
+    mode: '0700'
+    owner: root
+    group: root
+  with_items:
+    - swarm-management
+    - swarm-apps
+
+- pip:
+    name: lxml
+    state: latest
+
+- xml:
+    path: /root/.config/syncthing/config.xml
+    xpath: /configuration/device
+    content: attribute
+  register: xmlresponse
+
+- set_fact:
+    syncthing_device_id: "{{ item.device.id }}"
+  when: item.device.name == ansible_hostname
+  loop: "{{ xmlresponse.matches }}"
+  no_log: yes
+
+- template:
+    src: config.xml.j2
+    dest: /root/.config/syncthing/config.xml
+    owner: root
+    group: root
+    mode: '0600'
+  vars:
+    folders:
+      - swarm-management
+      - swarm-apps
+  notify: restart syncthing
