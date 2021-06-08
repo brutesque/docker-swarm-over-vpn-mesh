@@ -1,5 +1,18 @@
 ---
 
+- file:
+    state: directory
+    path: /opt/stacks/portainer/
+    mode: '0600'
+  run_once: true
+
+- name: Copy portainer stack file
+  copy:
+    src: files/portainer.stack.yml
+    dest: /opt/stacks/portainer/docker-compose.yml
+    mode: '0600'
+  run_once: true
+
 - name: Create portainer secret
   docker_secret:
     name: portainer-pass
@@ -7,19 +20,12 @@
     data_is_b64: true
     state: present
 
-- name: Copy portainer stack file
-  copy:
-    src: files/portainer.stack.yml
-    dest: /opt/stacks/portainer.stack.yml
-    mode: '0600'
-  run_once: true
-
 - name: Deploy portainer stack
   docker_stack:
     state: present
     name: portainer
     compose:
-      - /opt/stacks/portainer.stack.yml
+      - /opt/stacks/portainer/docker-compose.yml
   environment:
     DOMAIN: "admin.{{ domain_name }}"
   run_once: true
