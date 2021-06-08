@@ -1,0 +1,95 @@
+version: '3.7'
+
+services:
+
+  app1:
+    image: tutum/hello-world:latest
+    networks:
+      - traefik-public
+    deploy:
+      mode: global
+      resources:
+        limits:
+          cpus: '0.02'
+          memory: 32M
+        reservations:
+          cpus: '0.01'
+          memory: 16M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.services.app1.loadbalancer.server.port=80"
+        - "traefik.http.routers.app1.rule=Host(`app1.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.app1.entrypoints=websecure"
+        - "traefik.http.routers.app1.tls=true"
+        - "traefik.http.routers.app1.tls.certresolver=myresolver"
+        - "traefik.http.routers.app1.middlewares=https-redirect@file,security-headers@file"
+
+  app2:
+    image: containous/whoami
+    networks:
+      - traefik-public
+    deploy:
+      mode: global
+      resources:
+        limits:
+          cpus: '0.02'
+          memory: 32M
+        reservations:
+          cpus: '0.01'
+          memory: 16M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.services.app2.loadbalancer.server.port=80"
+        - "traefik.http.routers.app2.rule=Host(`app2.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.app2.entrypoints=websecure"
+        - "traefik.http.routers.app2.tls=true"
+        - "traefik.http.routers.app2.tls.certresolver=myresolver"
+        - "traefik.http.routers.app2.middlewares=https-redirect@file,security-headers@file"
+
+  app3:
+    image: jwilder/whoami
+    networks:
+      - traefik-public
+    deploy:
+      mode: global
+      resources:
+        limits:
+          cpus: '0.02'
+          memory: 32M
+        reservations:
+          cpus: '0.01'
+          memory: 16M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.services.app3.loadbalancer.server.port=8000"
+        - "traefik.http.routers.app3.rule=Host(`app3.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.app3.entrypoints=websecure"
+        - "traefik.http.routers.app3.tls=true"
+        - "traefik.http.routers.app3.tls.certresolver=myresolver"
+        - "traefik.http.routers.app3.middlewares=https-redirect@file,security-headers@file"
+
+  app4:
+    image: emilevauge/whoami
+    networks:
+      - traefik-public
+    deploy:
+      mode: global
+      resources:
+        limits:
+          cpus: '0.02'
+          memory: 32M
+        reservations:
+          cpus: '0.01'
+          memory: 16M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.services.app4.loadbalancer.server.port=80"
+        - "traefik.http.routers.app4.rule=Host(`app4.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.app4.entrypoints=websecure"
+        - "traefik.http.routers.app4.tls=true"
+        - "traefik.http.routers.app4.tls.certresolver=myresolver"
+        - "traefik.http.routers.app4.middlewares=https-redirect@file,security-headers@file"
+
+networks:
+  traefik-public:
+    external: true

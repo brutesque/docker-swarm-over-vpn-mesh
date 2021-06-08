@@ -37,3 +37,6 @@
 
 - include_tasks: swarmprom.yml
   when: enable_swarmprom is defined and enable_swarmprom
+
+- include_tasks: tests.yml
+  when: enable_tests is defined and enable_tests
