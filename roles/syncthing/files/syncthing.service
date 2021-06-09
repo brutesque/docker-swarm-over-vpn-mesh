@@ -3,8 +3,8 @@ Description=Syncthing service
 After=network.target
 
 [Service]
-User=root
-Group=root
+User=syncthing
+Group=syncthing
 ExecStart=/usr/bin/syncthing
 Restart=on-abort
 

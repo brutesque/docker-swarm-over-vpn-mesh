@@ -17,6 +17,13 @@
     state: present
     update_cache: yes
 
+- name: add user
+  user:
+    name: syncthing
+    state: present
+    home: /home/syncthing
+    shell: /bin/bash
+
 - name: Install service
   copy:
     src: syncthing.service
@@ -38,4 +45,4 @@
 
 - name: Wait until configfile becomes available
   wait_for:
-    path: /root/.config/syncthing/config.xml
+    path: /home/syncthing/.config/syncthing/config.xml

@@ -4,15 +4,15 @@
     state: directory
     path: /var/syncthing
     mode: '0700'
-    owner: root
-    group: root
+    owner: syncthing
+    group: syncthing
 
 - file:
     state: directory
     path: /var/syncthing/{{ item }}
     mode: '0700'
-    owner: root
-    group: root
+    owner: syncthing
+    group: syncthing
   with_items:
     - swarm-management
     - swarm-apps
@@ -22,7 +22,7 @@
     state: latest
 
 - xml:
-    path: /root/.config/syncthing/config.xml
+    path: /home/syncthing/.config/syncthing/config.xml
     xpath: /configuration/device
     content: attribute
   register: xmlresponse
@@ -35,9 +35,9 @@
 
 - template:
     src: config.xml.j2
-    dest: /root/.config/syncthing/config.xml
-    owner: root
-    group: root
+    dest: /home/syncthing/.config/syncthing/config.xml
+    owner: syncthing
+    group: syncthing
     mode: '0600'
   vars:
     folders:
