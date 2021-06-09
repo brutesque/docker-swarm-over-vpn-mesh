@@ -15,7 +15,6 @@
     group: syncthing
   with_items:
     - swarm-management
-    - swarm-apps
 
 - pip:
     name: lxml
@@ -42,5 +41,4 @@
   vars:
     folders:
       - swarm-management
-      - swarm-apps
   notify: restart syncthing
