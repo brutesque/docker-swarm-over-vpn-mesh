@@ -11,10 +11,10 @@ services:
       resources:
         limits:
           cpus: '0.02'
-          memory: 32M
+          memory: 16M
         reservations:
           cpus: '0.01'
-          memory: 16M
+          memory: 8M
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.app1.loadbalancer.server.port=80"
@@ -33,10 +33,10 @@ services:
       resources:
         limits:
           cpus: '0.02'
-          memory: 32M
+          memory: 16M
         reservations:
           cpus: '0.01'
-          memory: 16M
+          memory: 8M
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.app2.loadbalancer.server.port=80"
@@ -55,10 +55,10 @@ services:
       resources:
         limits:
           cpus: '0.02'
-          memory: 32M
+          memory: 16M
         reservations:
           cpus: '0.01'
-          memory: 16M
+          memory: 8M
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.app3.loadbalancer.server.port=8000"
@@ -77,10 +77,10 @@ services:
       resources:
         limits:
           cpus: '0.02'
-          memory: 32M
+          memory: 16M
         reservations:
           cpus: '0.01'
-          memory: 16M
+          memory: 8M
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.app4.loadbalancer.server.port=80"
