@@ -16,6 +16,8 @@ services:
       - influxdb
       - agent
     deploy:
+      mode: replicated
+      replicas: 1
       resources:
         limits:
           cpus: '0.05'
@@ -42,10 +44,12 @@ services:
     networks:
       - net
     deploy:
+      mode: replicated
+      replicas: 1
       resources:
         limits:
           cpus: '0.02'
-          memory: 64M
+          memory: 128M
         reservations:
           cpus: '0.01'
           memory: 32M
@@ -60,6 +64,8 @@ services:
     networks:
       - net
     deploy:
+      mode: replicated
+      replicas: 1
       resources:
         limits:
           cpus: '0.02'
