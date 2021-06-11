@@ -1,11 +1,11 @@
 resource "transip_sshkey" "deploy" {
-  for_each    = toset( compact([var.ssh_public_key_path]) )
+  count       = length(compact([var.ssh_public_key_path]))
   description = format("Deploy: %s", var.project_name)
-  key         = trimspace(file(each.key))
+  key         = trimspace(file(var.ssh_public_key_path))
 }
 
 data "transip_vps" "instances" {
-  for_each = toset( var.instance_names )
+  for_each = toset(compact(var.instance_names))
   name     = each.key
 }
 
