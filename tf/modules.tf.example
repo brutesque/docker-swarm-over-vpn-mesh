@@ -8,6 +8,7 @@ module "digitalocean" {
   instance_count      = var.do_instance_count
   ssh_public_key_path = var.ssh_public_key_path
   api_key             = var.do_token
+  project_name        = var.project_name
 }
 
 module "oraclecloud" {
@@ -21,6 +22,7 @@ module "oraclecloud" {
   api_private_key_path          = var.oci_api_private_key_path
   compartment_ocid              = var.oci_compartment_ocid
   free_tier_availability_domain = var.oci_free_tier_availability_domain
+  project_name                  = var.project_name
 }
 
 //module "transip" {
@@ -30,6 +32,7 @@ module "oraclecloud" {
 //  ssh_public_key_path = var.ssh_public_key_path
 //  account_name        = var.transip_account_name
 //  private_key         = trimspace(file(var.transip_private_key_path))
+//  project_name        = var.project_name
 //}
 
 module "vultr" {
@@ -37,6 +40,7 @@ module "vultr" {
   instance_count      = var.vultr_instance_count
   ssh_public_key_path = var.ssh_public_key_path
   api_key             = var.vultr_token
+  project_name        = var.project_name
 }
 
 // Instances:

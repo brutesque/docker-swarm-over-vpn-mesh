@@ -1,5 +1,5 @@
 resource "digitalocean_ssh_key" "deploy" {
-  name       = "Deploy"
+  name       = format("Deploy: %s", var.project_name)
   public_key = trimspace(file(var.ssh_public_key_path))
 }
 
@@ -17,7 +17,6 @@ resource "digitalocean_droplet" "instances" {
 }
 
 resource "digitalocean_project" "playground" {
-  name        = "playground"
-  environment = "Development"
+  name        = var.project_name
   resources   = digitalocean_droplet.instances.*.urn
 }

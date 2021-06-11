@@ -40,6 +40,7 @@ resource "local_file" "AnsibleVars" {
       ssh_public_key   = file(var.ssh_public_key_path),
       domain_name      = var.domain_name,
       swarm_subdomain  = var.swarm_subdomain,
+      project_name     = var.project_name,
       admin_password   = var.admin_password,
       admin_email      = var.admin_email,
       user_name        = var.user_name,

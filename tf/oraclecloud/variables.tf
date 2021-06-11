@@ -91,3 +91,9 @@ variable "instance_image_ocid" {
     us-sanjose-1     = "ocid1.image.oc1.us-sanjose-1.aaaaaaaan4g4q527bljtyczck6xrsutbzps6h7mut2xcfhnbzw66sbbsvwoq"
   }
 }
+
+variable "project_name" {
+  description = "Name for the swarm project"
+  sensitive = true
+  default = "Playground"
+}

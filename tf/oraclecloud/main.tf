@@ -1,16 +1,16 @@
 resource "oci_core_vcn" "swarm_vcn" {
   cidr_block     = var.vcn_cidr_block
   compartment_id = var.compartment_ocid
-  display_name   = "SwarmVCN"
-  dns_label      = "SwarmVCN"
+  display_name   = format("%s VCN", var.project_name)
+  dns_label      = format("%sVCN", regex("[[:alnum:]]+", var.project_name))
 }
 
 resource "oci_core_subnet" "swarm_subnet" {
   availability_domain = var.free_tier_availability_domain
   cidr_block          = var.vcn_cidr_block
-  display_name        = "SwarmSubnet"
-  dns_label           = "SwarmSubnet"
   security_list_ids   = [oci_core_security_list.swarm_security_list.id]
+  display_name        = format("%sSubnet", var.project_name)
+  dns_label           = format("%sSubnet", regex("[[:alnum:]]+", var.project_name))
   compartment_id      = var.compartment_ocid
   vcn_id              = oci_core_vcn.swarm_vcn.id
   route_table_id      = oci_core_vcn.swarm_vcn.default_route_table_id
@@ -19,8 +19,8 @@ resource "oci_core_subnet" "swarm_subnet" {
 
 resource "oci_core_internet_gateway" "swarm_internet_gateway" {
   compartment_id = var.compartment_ocid
-  display_name   = "Swarm_IG"
   vcn_id         = oci_core_vcn.swarm_vcn.id
+  display_name   = format("%s Internet Gateway", var.project_name)
 }
 
 resource "oci_core_default_route_table" "test_route_table" {
@@ -36,7 +36,7 @@ resource "oci_core_default_route_table" "test_route_table" {
 resource "oci_core_security_list" "swarm_security_list" {
   compartment_id = var.compartment_ocid
   vcn_id         = oci_core_vcn.swarm_vcn.id
-  display_name   = "Swarm Security List"
+  display_name   = format("%s Security List", var.project_name)
 
   // allow all outbound traffic on all ports
   egress_security_rules {
@@ -122,7 +122,7 @@ resource "oci_core_instance" "instances" {
 
   create_vnic_details {
     subnet_id        = oci_core_subnet.swarm_subnet.id
-    display_name     = "PrimaryVNIC"
+    display_name     = format("%s VNIC", var.project_name)
     assign_public_ip = true
     hostname_label   = format("oci-instance-%02d", count.index + 1)
   }

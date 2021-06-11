@@ -20,7 +20,7 @@
       - /opt/stacks/registry/docker-compose.yml
   environment:
     DOMAIN: "{{ swarm_subdomain }}.{{ domain_name }}"
-    REGISTRY_TITLE: "registry.{{ swarm_subdomain }}.{{ domain_name }}"
+    REGISTRY_TITLE: "{{ project_name | title }} Registry"
     REGISTRY_HTTP_SECRET: "{{ domain_name | hash('sha1') | truncate(10, True, '') }}"
 
 - name: wait for registry to come up

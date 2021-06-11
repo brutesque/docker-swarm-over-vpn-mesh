@@ -1,5 +1,5 @@
 resource "vultr_ssh_key" "deploy" {
-  name    = "Deploy"
+  name    = format("Deploy: %s", var.project_name)
   ssh_key = trimspace(file(var.ssh_public_key_path))
 }
 

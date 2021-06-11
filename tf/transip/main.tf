@@ -1,6 +1,6 @@
 resource "transip_sshkey" "deploy" {
   for_each    = toset( compact([var.ssh_public_key_path]) )
-  description = "Deploy"
+  description = format("Deploy: %s", var.project_name)
   key         = trimspace(file(each.key))
 }
 

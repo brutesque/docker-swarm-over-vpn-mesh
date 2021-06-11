@@ -29,3 +29,8 @@ variable "digitalocean_regions" {
   ]
 }
 
+variable "project_name" {
+  description = "Name for the swarm project"
+  sensitive = true
+  default = "Playground"
+}

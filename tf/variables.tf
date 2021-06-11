@@ -23,6 +23,12 @@ variable "swarm_subdomain" {
   sensitive = true
 }
 
+variable "project_name" {
+  description = "Name for the swarm project"
+  sensitive = true
+  default = "Playground"
+}
+
 variable "admin_password" {
   sensitive = true
 }
