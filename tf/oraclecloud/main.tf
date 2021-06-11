@@ -1,41 +1,41 @@
-resource "oci_core_vcn" "swarm_vcn" {
+resource "oci_core_vcn" "primary" {
   cidr_block     = var.vcn_cidr_block
   compartment_id = var.compartment_ocid
   display_name   = format("%s VCN", var.project_name)
   dns_label      = format("%sVCN", regex("[[:alnum:]]+", var.project_name))
 }
 
-resource "oci_core_subnet" "swarm_subnet" {
+resource "oci_core_subnet" "primary" {
   availability_domain = var.free_tier_availability_domain
   cidr_block          = var.vcn_cidr_block
-  security_list_ids   = [oci_core_security_list.swarm_security_list.id]
   display_name        = format("%sSubnet", var.project_name)
   dns_label           = format("%sSubnet", regex("[[:alnum:]]+", var.project_name))
+  security_list_ids   = [oci_core_security_list.primary.id]
   compartment_id      = var.compartment_ocid
-  vcn_id              = oci_core_vcn.swarm_vcn.id
-  route_table_id      = oci_core_vcn.swarm_vcn.default_route_table_id
-  dhcp_options_id     = oci_core_vcn.swarm_vcn.default_dhcp_options_id
+  vcn_id              = oci_core_vcn.primary.id
+  route_table_id      = oci_core_vcn.primary.default_route_table_id
+  dhcp_options_id     = oci_core_vcn.primary.default_dhcp_options_id
 }
 
-resource "oci_core_internet_gateway" "swarm_internet_gateway" {
+resource "oci_core_internet_gateway" "primary" {
   compartment_id = var.compartment_ocid
-  vcn_id         = oci_core_vcn.swarm_vcn.id
   display_name   = format("%s Internet Gateway", var.project_name)
+  vcn_id         = oci_core_vcn.primary.id
 }
 
 resource "oci_core_default_route_table" "test_route_table" {
-  manage_default_resource_id = oci_core_vcn.swarm_vcn.default_route_table_id
+  manage_default_resource_id = oci_core_vcn.primary.default_route_table_id
 
   route_rules {
     destination       = "0.0.0.0/0"
     destination_type  = "CIDR_BLOCK"
-    network_entity_id = oci_core_internet_gateway.swarm_internet_gateway.id
+    network_entity_id = oci_core_internet_gateway.primary.id
   }
 }
 
-resource "oci_core_security_list" "swarm_security_list" {
+resource "oci_core_security_list" "primary" {
   compartment_id = var.compartment_ocid
-  vcn_id         = oci_core_vcn.swarm_vcn.id
+  vcn_id         = oci_core_vcn.primary.id
   display_name   = format("%s Security List", var.project_name)
 
   // allow all outbound traffic on all ports
@@ -121,7 +121,7 @@ resource "oci_core_instance" "instances" {
   shape               = var.instance_shape
 
   create_vnic_details {
-    subnet_id        = oci_core_subnet.swarm_subnet.id
+    subnet_id        = oci_core_subnet.primary.id
     display_name     = format("%s VNIC", var.project_name)
     assign_public_ip = true
     hostname_label   = format("oci-instance-%02d", count.index + 1)
