@@ -47,9 +47,9 @@ module "vultr" {
 locals {
   instances = {
     digitalocean = module.digitalocean.instances,
-    oraclecloud = module.oraclecloud.instances,
-//    transip = module.transip.instances,
-    vultr = module.vultr.instances,
-//    onpremise = module.onpremise.instances,
+    oraclecloud  = module.oraclecloud.instances,
+//    transip      = module.transip.instances,
+    vultr        = module.vultr.instances,
+//    onpremise    = module.onpremise.instances,
   }
 }
