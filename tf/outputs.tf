@@ -4,10 +4,7 @@ locals {
   manager_candidates      = [for provider in keys(local.instances) : keys(local.instances[provider]) if contains(var.manager_providers, provider)]
 
   max_length              = max([for provider in keys(local.instances) : length(local.instances[provider])]...)
-  manager_selection_order = distinct(flatten([
-    for i in range(local.max_length) : [for hosts in local.manager_candidates : element(hosts, i)
-    if length(hosts) > 0]
-  ]))
+  manager_selection_order = distinct(flatten([for i in range(local.max_length) : [for hosts in local.manager_candidates : element(hosts, i) if length(hosts) > 0]]))
   docker_managers         = slice(local.manager_selection_order, 0, min(3, length(local.manager_selection_order)))
   docker_workers          = setsubtract(keys(local.merged_instances), local.docker_managers)
 
