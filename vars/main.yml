@@ -1,5 +1,6 @@
 ---
 
 ca_server: "https://acme-v02.api.letsencrypt.org/directory"
+#ca_server: "https://acme-staging-v02.api.letsencrypt.org/directory"
 
 docker_swarm_interface: ppp0
