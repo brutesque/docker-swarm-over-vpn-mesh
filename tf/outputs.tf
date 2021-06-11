@@ -10,7 +10,6 @@ locals {
 
   entrypoints             = slice(keys(local.merged_instances), 0, min(5, length(local.merged_instances)))
   glusterpool             = keys(local.merged_instances)
-  duckdns_subdomains      = var.duckdns_subdomains
 }
 
 ### Ansible inventory file
@@ -23,7 +22,7 @@ resource "local_file" "AnsibleInventory" {
       docker-workers     = local.docker_workers,
       entrypoints        = local.entrypoints,
       glusterpool        = local.glusterpool,
-      duckdns-subdomains = local.duckdns_subdomains,
+      duckdns-subdomains = var.duckdns_subdomains,
     }
   )
 }
