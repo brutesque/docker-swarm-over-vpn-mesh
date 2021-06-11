@@ -18,6 +18,11 @@ variable "domain_name" {
   default = null
 }
 
+variable "swarm_subdomain" {
+  default   = "swarm"
+  sensitive = true
+}
+
 variable "admin_password" {
   sensitive = true
 }

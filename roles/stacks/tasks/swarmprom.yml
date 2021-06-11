@@ -26,7 +26,7 @@
   environment:
     ADMIN_USER: "admin"
     ADMIN_PASSWORD: "{{ admin_password }}"
-    DOMAIN: "admin.{{ domain_name }}"
+    DOMAIN: "{{ swarm_subdomain }}.{{ domain_name }}"
     TRAEFIK_PUBLIC_TAG: traefik-public
   run_once: true
 
@@ -34,7 +34,7 @@
   uri:
     validate_certs: yes
     method: GET
-    url: "https://grafana.admin.{{ domain_name }}/"
+    url: "https://grafana.{{ swarm_subdomain }}.{{ domain_name }}/"
     status_code: 200
   register: result
   until: result.status == 200
@@ -46,7 +46,7 @@
   uri:
     validate_certs: yes
     method: GET
-    url: "https://prometheus.admin.{{ domain_name }}/"
+    url: "https://prometheus.{{ swarm_subdomain }}.{{ domain_name }}/"
     status_code: 401
   register: result
   until: result.status == 401
@@ -58,7 +58,7 @@
   uri:
     validate_certs: yes
     method: GET
-    url: "https://unsee.admin.{{ domain_name }}/"
+    url: "https://unsee.{{ swarm_subdomain }}.{{ domain_name }}/"
     status_code: [200, 401]
   register: result
   until: result.status == 401
@@ -70,7 +70,7 @@
   uri:
     validate_certs: yes
     method: GET
-    url: "https://alertmanager.admin.{{ domain_name }}/"
+    url: "https://alertmanager.{{ swarm_subdomain }}.{{ domain_name }}/"
     status_code: 401
   register: result
   until: result.status == 401

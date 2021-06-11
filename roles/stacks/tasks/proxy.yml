@@ -33,7 +33,7 @@
 
 - name: Restore acme.json if it doesn't exist on the remote destination
   copy:
-    src: "secrets/backups/{{ domain_name }}/acme.json"
+    src: "secrets/backups/{{ swarm_subdomain }}.{{ domain_name }}/acme.json"
     dest: "/mnt/gluster-admin/proxy_letsencrypt/acme.json"
     owner: root
     group: root
@@ -88,7 +88,7 @@
       - /opt/stacks/proxy/docker-compose.yml
   environment:
     EMAIL: "{{ ca_email }}"
-    DOMAIN: "admin.{{ domain_name }}"
+    DOMAIN: "{{ swarm_subdomain }}.{{ domain_name }}"
     CA_SERVER: "{{ ca_server }}"
   run_once: true
 
@@ -96,7 +96,7 @@
   uri:
     validate_certs: yes
     method: GET
-    url: "https://traefik.admin.{{ domain_name }}/"
+    url: "https://traefik.{{ swarm_subdomain }}.{{ domain_name }}/"
     status_code: 401
   register: result
   until: result.status == 401

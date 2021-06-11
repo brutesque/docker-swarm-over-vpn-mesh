@@ -37,9 +37,10 @@ $ cd docker-swarm-over-vpn-mesh/
 - Copy secrets/credentials.tfvars.example to secrets/credentials.tfvars and populate the credentials for your providers.
 - Copy secrets/config.tfvars.example to secrets/config.tfvars and adjust swarm settings to your liking.
 
-Setup a CNAME record in your domain registrars dns records pointed to one of your duckdns subdomains. The domain name will be used to configure all swarm services. Using duckdns links the domain dynamically to the swarm's ip address.
+Setup a CNAME record in your domain registrars dns records pointed to one of your duckdns subdomains. 
+Swarm services will be published under this subdomain. Make sure the domain_name and swarm_subdomain in the config.tfvars match with this dns record.
 ```
-name: *
+name: *.swarm
 type: CNAME
 value: my-duckdns-subdomain.duckdns.org.
 ```

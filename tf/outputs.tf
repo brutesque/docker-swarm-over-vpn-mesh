@@ -39,6 +39,7 @@ resource "local_file" "AnsibleVars" {
       duckdns_token    = var.duckdns_token,
       ssh_public_key   = file(var.ssh_public_key_path),
       domain_name      = var.domain_name,
+      swarm_subdomain  = var.swarm_subdomain,
       admin_password   = var.admin_password,
       admin_email      = var.admin_email,
       user_name        = var.user_name,
