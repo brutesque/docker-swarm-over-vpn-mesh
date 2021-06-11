@@ -1,7 +1,7 @@
-module "onpremise" {
-  source              = "./onpremise"
-  instances           = var.prem_instances
-}
+//module "onpremise" {
+//  source              = "./onpremise"
+//  instances           = var.prem_instances
+//}
 
 module "digitalocean" {
   source              = "./digitalocean"
@@ -23,14 +23,14 @@ module "oraclecloud" {
   free_tier_availability_domain = var.oci_free_tier_availability_domain
 }
 
-module "transip" {
-  source              = "./transip"
-  instance_names      = var.transip_instance_names
-  instance_count      = var.transip_instance_count
-  ssh_public_key_path = var.ssh_public_key_path
-  account_name        = var.transip_account_name
-  private_key         = trimspace(file(var.transip_private_key_path))
-}
+//module "transip" {
+//  source              = "./transip"
+//  instance_names      = var.transip_instance_names
+//  instance_count      = var.transip_instance_count
+//  ssh_public_key_path = var.ssh_public_key_path
+//  account_name        = var.transip_account_name
+//  private_key         = trimspace(file(var.transip_private_key_path))
+//}
 
 module "vultr" {
   source              = "./vultr"
@@ -42,10 +42,10 @@ module "vultr" {
 // Instances:
 locals {
   instances = {
-    onpremise = module.onpremise.instances,
+//    onpremise = module.onpremise.instances,
     digitalocean = module.digitalocean.instances,
     oraclecloud = module.oraclecloud.instances,
-    transip = module.transip.instances,
+//    transip = module.transip.instances,
     vultr = module.vultr.instances,
   }
 }
