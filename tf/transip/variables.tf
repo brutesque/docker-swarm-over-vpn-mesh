@@ -1,5 +1,5 @@
 variable "instance_count" {
-  description = "Number of instances on Transip"
+  description = "Number of instances on TransIP"
   default     = 0
 }
 
@@ -10,7 +10,7 @@ variable "ssh_public_key_path" {
 }
 
 variable "account_name" {
-  description = "Name of the Transip account"
+  description = "Name of the TransIP account"
   sensitive   = true
   default     = null
 }
@@ -22,7 +22,7 @@ variable "private_key" {
 }
 
 variable "instance_names" {
-  description = "Names of existing Transip instances to include"
+  description = "Names of existing TransIP instances to include"
   sensitive   = false
   default     = []
 }
