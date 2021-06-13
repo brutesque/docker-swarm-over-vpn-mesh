@@ -1,15 +1,11 @@
 locals {
-  merged_instances        = merge(values(local.instances)...)
+  selection_order = distinct(flatten([for i in range(max([for provider in keys(local.instances) : length(local.instances[provider])]...)) : [for hosts in [for provider in keys(local.instances) : keys(local.instances[provider]) if contains(var.manager_providers, provider)] : element(hosts, i) if length(hosts) > 0]]))
 
-  manager_candidates      = [for provider in keys(local.instances) : keys(local.instances[provider]) if contains(var.manager_providers, provider)]
+  docker_managers = slice(local.selection_order, 0, min(3, length(local.selection_order)))
+  docker_workers  = setsubtract(local.selection_order, local.docker_managers)
 
-  max_length              = max([for provider in keys(local.instances) : length(local.instances[provider])]...)
-  manager_selection_order = distinct(flatten([for i in range(local.max_length) : [for hosts in local.manager_candidates : element(hosts, i) if length(hosts) > 0]]))
-  docker_managers         = slice(local.manager_selection_order, 0, min(3, length(local.manager_selection_order)))
-  docker_workers          = setsubtract(keys(local.merged_instances), local.docker_managers)
-
-  entrypoints             = slice(keys(local.merged_instances), 0, min(5, length(local.merged_instances)))
-  glusterpool             = keys(local.merged_instances)
+  entrypoints     = local.selection_order  //slice(local.selection_order, 0, min(5, length(local.selection_order)))
+  glusterpool     = local.selection_order
 }
 
 ### Ansible inventory file

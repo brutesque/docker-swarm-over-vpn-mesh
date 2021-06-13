@@ -52,4 +52,5 @@ locals {
     vultr        = module.vultr.instances,
 //    onpremise    = module.onpremise.instances,
   }
+  merged_instances = merge(values(local.instances)...)
 }
