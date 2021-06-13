@@ -43,9 +43,9 @@ module "vultr" {
 //  instances           = var.prem_instances
 //}
 
-// Instances:
+### Collect instances:
 locals {
-  instances = {
+  instances        = {
     digitalocean = module.digitalocean.instances,
     oraclecloud  = module.oraclecloud.instances,
 //    transip      = module.transip.instances,
