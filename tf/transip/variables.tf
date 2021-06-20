@@ -29,6 +29,6 @@ variable "instance_names" {
 
 variable "project_name" {
   description = "Name for the swarm project"
-  sensitive = true
-  default = "Playground"
+  sensitive   = true
+  default     = "Playground"
 }
