@@ -105,3 +105,4 @@ After succesful deployment, you can browse to the following admin interfaces (if
 - Configure Tinc nodes to use private networking, if made available by the provider. Minimizes data cost.
 - Create upgrade playbook, that safely drains an upgraded node before it reboots it.
 - Check deployment logs thoroughly and make sure sensitive data is being masked
+- Automate manager promotion when manager instance has been removed by terraform
