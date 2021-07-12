@@ -82,7 +82,6 @@ resource "oci_core_security_list" "primary" {
       max = 655
     }
   }
-
   ingress_security_rules {
     protocol = "17" # UDP
     source   = "0.0.0.0/0"
@@ -101,7 +100,6 @@ resource "oci_core_security_list" "primary" {
       max = 80
     }
   }
-
   ingress_security_rules {
     protocol = "6" # TCP
     source   = "0.0.0.0/0"
