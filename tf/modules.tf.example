@@ -2,15 +2,16 @@
 
 module "digitalocean" {
   source              = "./digitalocean"
-  instance_count      = var.do_instance_count
+//  instance_count      = var.do_instance_count
   ssh_public_key_path = var.ssh_public_key_path
   api_key             = var.do_token
   project_name        = var.project_name
+  instances           = var.digitalocean_instances
 }
 
 module "oraclecloud" {
   source                        = "./oraclecloud"
-  instance_count                = var.oci_instance_count
+//  instance_count                = var.oci_instance_count
   ssh_public_key_path           = var.ssh_public_key_path
   user_ocid                     = var.oci_user_ocid
   api_key_fingerprint           = var.oci_api_key_fingerprint
@@ -20,24 +21,27 @@ module "oraclecloud" {
   compartment_ocid              = var.oci_compartment_ocid
   free_tier_availability_domain = var.oci_free_tier_availability_domain
   project_name                  = var.project_name
+  instances                     = var.oraclecloud_instances
 }
 
-//module "transip" {
-//  source              = "./transip"
-//  instance_names      = var.transip_instance_names
+module "transip" {
+  source              = "./transip"
 //  instance_count      = var.transip_instance_count
-//  ssh_public_key_path = var.ssh_public_key_path
-//  account_name        = var.transip_account_name
-//  private_key         = trimspace(file(var.transip_private_key_path))
-//  project_name        = var.project_name
-//}
+  ssh_public_key_path = var.ssh_public_key_path
+  account_name        = var.transip_account_name
+  private_key         = trimspace(file(var.transip_private_key_path))
+  project_name        = var.project_name
+  instances           = var.transip_instances
+  existing_instances  = var.existing_transip_instances
+}
 
 module "vultr" {
   source              = "./vultr"
-  instance_count      = var.vultr_instance_count
+//  instance_count      = var.vultr_instance_count
   ssh_public_key_path = var.ssh_public_key_path
   api_key             = var.vultr_token
   project_name        = var.project_name
+  instances           = var.vultr_instances
 }
 
 module "onpremise" {
@@ -49,7 +53,7 @@ locals {
   instances             = {
     digitalocean = module.digitalocean.instances,
     oraclecloud  = module.oraclecloud.instances,
-//    transip      = module.transip.instances,
+    transip      = module.transip.instances,
     vultr        = module.vultr.instances,
     onpremise    = module.onpremise.instances,
   }

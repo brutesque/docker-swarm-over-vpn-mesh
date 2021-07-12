@@ -4,11 +4,11 @@ resource "digitalocean_ssh_key" "deploy" {
 }
 
 resource "digitalocean_droplet" "instances" {
-  count              = var.instance_count
+  count              = length(var.instances)
   image              = "ubuntu-20-04-x64"
   name               = format("do-instance-%02d", count.index + 1)
-  region             = element(var.digitalocean_regions, count.index)
-  size               = "s-1vcpu-1gb"
+  region             = element(var.instances, count.index)[1]
+  size               = element(var.instances, count.index)[0]
   monitoring         = false
   private_networking = false
   ssh_keys           = [

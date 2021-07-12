@@ -1,8 +1,3 @@
-variable "instance_count" {
-  description = "Number of instances on Vultr"
-  default     = 0
-}
-
 variable "ssh_public_key_path" {
   description = "Path to public key file"
   sensitive   = true
@@ -42,4 +37,9 @@ variable "project_name" {
   description = "Name for the swarm project"
   sensitive = true
   default = "Playground"
+}
+
+variable "instances" {
+  description = "List of plans and regions for instances on Vultr"
+  default = []
 }

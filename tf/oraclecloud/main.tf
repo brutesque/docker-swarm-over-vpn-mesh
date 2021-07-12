@@ -114,11 +114,11 @@ resource "oci_core_security_list" "primary" {
 }
 
 resource "oci_core_instance" "instances" {
-  count               = var.instance_count
+  count               = length(var.instances)
   availability_domain = var.free_tier_availability_domain
   compartment_id      = var.compartment_ocid
   display_name        = format("oci-instance-%02d", count.index + 1)
-  shape               = var.instance_shape
+  shape               = element(var.instances, count.index)
 
   create_vnic_details {
     subnet_id        = oci_core_subnet.primary.id

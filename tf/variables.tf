@@ -57,24 +57,24 @@ variable "duckdns_subdomains" {
   sensitive = false
 }
 
-variable "do_instance_count" {
-  description = "Digital Ocean API Token"
-  default     = 0
+variable "digitalocean_instances" {
+  description = "List of sizes and regions for instances on Digital Ocean"
+  default = []
 }
 
-variable "oci_instance_count" {
-  description = "Number of instances on Oracle Cloud Infrastructure"
-  default     = 0
+variable "oraclecloud_instances" {
+  description = "List of shapes for instances on Oracle Cloud Infrastructure"
+  default = []
 }
 
-variable "vultr_instance_count" {
-  description = "Number of instances on Vultr"
-  default     = 0
+variable "transip_instances" {
+  description = "List of product names for instances on TransIP"
+  default = []
 }
 
-variable "transip_instance_count" {
-  description = "Number of instances on TransIP"
-  default     = 0
+variable "vultr_instances" {
+  description = "List of plans and regions for instances on Vultr"
+  default = []
 }
 
 variable "do_token" {
@@ -136,7 +136,7 @@ variable "transip_private_key_path" {
   default     = null
 }
 
-variable "transip_instance_names" {
+variable "existing_transip_instances" {
   description = "Names of existing TransIP instances to include"
   sensitive = false
   default = []

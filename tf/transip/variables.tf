@@ -1,8 +1,3 @@
-variable "instance_count" {
-  description = "Number of instances on TransIP"
-  default     = 0
-}
-
 variable "ssh_public_key_path" {
   description = "Path to public key file"
   sensitive   = true
@@ -21,7 +16,7 @@ variable "private_key" {
   default     = null
 }
 
-variable "instance_names" {
+variable "existing_instances" {
   description = "Names of existing TransIP instances to include"
   sensitive   = false
   default     = []
@@ -31,4 +26,9 @@ variable "project_name" {
   description = "Name for the swarm project"
   sensitive   = true
   default     = "Playground"
+}
+
+variable "instances" {
+  description = "List of product names for instances on TransIP"
+  default = []
 }
