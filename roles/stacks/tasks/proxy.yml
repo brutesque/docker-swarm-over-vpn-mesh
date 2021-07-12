@@ -33,7 +33,7 @@
 
 - name: Restore acme.json if it doesn't exist on the remote destination
   copy:
-    src: "secrets/backups/{{ project_name }}/acme.json"
+    src: "secrets/backups/{{ project_name }}-{{ services_subdomain }}/acme.json"
     dest: "/mnt/gluster-admin/proxy_letsencrypt/acme.json"
     owner: root
     group: root
