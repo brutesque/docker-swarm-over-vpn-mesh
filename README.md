@@ -88,7 +88,7 @@ $ make terraform-clean
 
 After succesful deployment, you can access to the admin services if enabled in the config.tfvars. The services are
 available at [https://service-name.services-subdomain.your-domain.com/](), eg. [https://portainer.swarm.brandx.com]()
-and also at [https://portainer.your-duckdns-subdomain.duckdns.org]() if you've configured DuckDNS.
+and also at [https://portainer.swarm.your-duckdns-subdomain.duckdns.org]() if you've configured DuckDNS.
 The following services are included in stacks that can be enabled in the config.tfvars file
 
 - portainer
