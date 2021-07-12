@@ -55,4 +55,4 @@ backup:
 
 destroy: ansible-destroy terraform-destroy
 
-full-redeploy: destroy clean deploy
+full-redeploy: destroy terraform-clean deploy
