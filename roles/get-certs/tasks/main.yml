@@ -7,6 +7,6 @@
 
 - fetch:
     src: "/mnt/gluster-admin/proxy_letsencrypt/acme.json"
-    dest: "secrets/backups/{{ swarm_subdomain }}.{{ domain_name }}/acme.json"
+    dest: "secrets/backups/{{ project_name }}/acme.json"
     flat: yes
   when: stat_result.stat.exists

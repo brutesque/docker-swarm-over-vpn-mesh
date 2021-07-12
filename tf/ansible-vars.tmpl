@@ -14,6 +14,13 @@ enable_swarmpit: ${ stacks_swarmpit }
 enable_swarmprom: ${ stacks_swarmprom }
 enable_tests: ${ stacks_tests }
 
-domain_name: "${ domain_name }"
-swarm_subdomain: "${ swarm_subdomain }"
 project_name: "${ project_name }"
+services_subdomain: "${ services_subdomain }"
+
+swarm_hostnames:
+%{ if services_subdomain != null ~}%{ for domain_name in domain_names ~}
+  - "${ services_subdomain }.${ domain_name }"
+%{ endfor ~}%{ endif ~}
+%{ if duckdns_hosts != null ~}%{ for hostname, duckdns_subdomain in duckdns_hosts ~}%{ if contains(entrypoints, hostname) ~}
+  - "${ duckdns_subdomain }.duckdns.org"
+%{ endif ~}%{ endfor ~}%{ endif ~}

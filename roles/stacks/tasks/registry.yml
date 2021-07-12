@@ -19,15 +19,15 @@
     compose:
       - /opt/stacks/registry/docker-compose.yml
   environment:
-    DOMAIN: "{{ swarm_subdomain }}.{{ domain_name }}"
+    ROUTERS_RULE: "Host(`{{ ['registry'] | product(swarm_hostnames) | map('join', '.') | join('`,`') }}`)"
     REGISTRY_TITLE: "{{ project_name | title }} Registry"
-    REGISTRY_HTTP_SECRET: "{{ domain_name | hash('sha1') | truncate(10, True, '') }}"
+    REGISTRY_HTTP_SECRET: "{{ project_name | hash('sha1') | truncate(10, True, '') }}"
 
 - name: wait for registry to come up
   uri:
     validate_certs: yes
     method: GET
-    url: "https://registry.{{ swarm_subdomain }}.{{ domain_name }}"
+    url: "https://registry.{{ swarm_hostnames[0] }}/"
     status_code: 401
   register: result
   until: result.status == 401

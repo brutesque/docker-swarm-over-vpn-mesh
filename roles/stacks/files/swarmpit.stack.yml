@@ -31,7 +31,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.swarmpit.loadbalancer.server.port=8080"
-        - "traefik.http.routers.swarmpit.rule=Host(`swarmpit.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.swarmpit.rule=${ROUTERS_RULE?Variable ROUTERS_RULE not set}"
         - "traefik.http.routers.swarmpit.entrypoints=websecure"
         - "traefik.http.routers.swarmpit.tls=true"
         - "traefik.http.routers.swarmpit.tls.certresolver=myresolver"

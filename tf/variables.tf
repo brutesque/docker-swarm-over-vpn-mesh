@@ -14,15 +14,6 @@ variable "duckdns_token" {
   default   = null
 }
 
-variable "domain_name" {
-  default = null
-}
-
-variable "swarm_subdomain" {
-  default   = "swarm"
-  sensitive = true
-}
-
 variable "project_name" {
   description = "Name for the swarm project"
   sensitive   = true
@@ -63,7 +54,7 @@ variable "stacks_tests" {
 }
 
 variable "duckdns_subdomains" {
-  sensitive = true
+  sensitive = false
 }
 
 variable "do_instance_count" {
@@ -151,21 +142,58 @@ variable "transip_instance_names" {
   default = []
 }
 
+variable "manager_providers" {
+  description = "Prioritized providers to spread out managers"
+  sensitive   = false
+  default     = []
+}
+
 variable "manager_count" {
   type        = number
-  description = "Number of manager nodes in the docker swarm"
+  description = "Number of managers in the docker swarm"
   sensitive   = false
   default     = 3
 }
 
-variable "manager_providers" {
-  description = "Number of manager nodes in the docker swarm"
+variable "entrypoint_providers" {
+  description = "Prioritized providers to spread out entrypoints"
   sensitive   = false
-  default     = [
-    "onpremise",
-    "digitalocean",
-    "oraclecloud",
-    "transip",
-    "vultr",
-  ]
+  default     = []
+}
+
+variable "entrypoint_count" {
+  type        = number
+  description = "Number of entrypoints in the docker swarm"
+  sensitive   = false
+  default     = 5
+}
+
+variable "cloudflare_api_token" {
+  description = "Cloudflare API Token"
+  sensitive   = true
+  default     = null
+}
+
+variable "services_subdomain" {
+  description = "Subdomain for swarm services"
+  sensitive   = false
+  default     = null
+}
+
+variable "manual_domains" {
+  description = "Manually configured domains"
+  sensitive   = false
+  default     = []
+}
+
+variable "cloudflare_domains" {
+  description = "Cloudflare zones"
+  sensitive   = false
+  default     = []
+}
+
+variable "transip_domains" {
+  description = "TransIP domains"
+  sensitive   = false
+  default     = []
 }

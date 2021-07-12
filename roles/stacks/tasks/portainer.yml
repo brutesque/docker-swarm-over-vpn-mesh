@@ -27,14 +27,14 @@
     compose:
       - /opt/stacks/portainer/docker-compose.yml
   environment:
-    DOMAIN: "{{ swarm_subdomain }}.{{ domain_name }}"
+    ROUTERS_RULE: "Host(`{{ ['portainer'] | product(swarm_hostnames) | map('join', '.') | join('`,`') }}`)"
   run_once: true
 
-- name: wait for portainer interface to become available
+- name: wait for portainer to become available
   uri:
     validate_certs: yes
     method: GET
-    url: "https://portainer.{{ swarm_subdomain }}.{{ domain_name }}"
+    url: "https://portainer.{{ swarm_hostnames[0] }}/"
     status_code: 200
   register: result
   until: result.status == 200

@@ -51,7 +51,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.portainer.loadbalancer.server.port=9000"
-        - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.portainer.rule=${ROUTERS_RULE?Variable ROUTERS_RULE not set}"
         - "traefik.http.routers.portainer.entrypoints=websecure"
         - "traefik.http.routers.portainer.tls=true"
         - "traefik.http.routers.portainer.tls.certresolver=myresolver"

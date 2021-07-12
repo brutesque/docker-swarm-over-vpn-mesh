@@ -23,7 +23,7 @@
   tags: ubuntu
 
 - name: Register ip at DuckDNS
-  hosts: all
+  hosts: duckdns
   any_errors_fatal: true
   become: true
   roles:

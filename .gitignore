@@ -9,10 +9,11 @@ fetch
 
 # Terraform
 tf/.terraform
+tf/.terraform.lock.hcl
 tf/.terraform.tfstate.lock.info
 tf/terraform.tfstate
 tf/terraform.tfstate.backup
-tf/.terraform.lock.hcl
+tf/tfplan
 tf/modules.tf
 
 # Secrets

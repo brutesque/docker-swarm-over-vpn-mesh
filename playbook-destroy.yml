@@ -22,7 +22,7 @@
   tags: get-certs
 
 - name: Clear ip at DuckDNS
-  hosts: all
+  hosts: duckdns
   any_errors_fatal: true
   become: true
   roles:

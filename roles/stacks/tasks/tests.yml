@@ -20,14 +20,17 @@
     compose:
       - /opt/stacks/tests/docker-compose.yml
   environment:
-    DOMAIN: "{{ swarm_subdomain }}.{{ domain_name }}"
+    ROUTERS_RULE_APP1: "Host(`{{ ['app1'] | product(swarm_hostnames) | map('join', '.') | join('`,`') }}`)"
+    ROUTERS_RULE_APP2: "Host(`{{ ['app2'] | product(swarm_hostnames) | map('join', '.') | join('`,`') }}`)"
+    ROUTERS_RULE_APP3: "Host(`{{ ['app3'] | product(swarm_hostnames) | map('join', '.') | join('`,`') }}`)"
+    ROUTERS_RULE_APP4: "Host(`{{ ['app4'] | product(swarm_hostnames) | map('join', '.') | join('`,`') }}`)"
   run_once: true
 
-- name: wait for tests to come up
+- name: wait for test services to become available
   uri:
     validate_certs: yes
     method: GET
-    url: "https://{{ item }}.{{ swarm_subdomain }}.{{ domain_name }}"
+    url: "https://{{ item }}.{{ swarm_hostnames[0] }}/"
     status_code: 200
   register: result
   until: result.status == 200

@@ -26,54 +26,26 @@
   environment:
     ADMIN_USER: "admin"
     ADMIN_PASSWORD: "{{ admin_password }}"
-    DOMAIN: "{{ swarm_subdomain }}.{{ domain_name }}"
+    ROUTERS_RULE_GRAFANA: "Host(`{{ ['grafana'] | product(swarm_hostnames) | map('join', '.') | join('`,`') }}`)"
+    ROUTERS_RULE_ALERTMANAGER: "Host(`{{ ['alertmanager'] | product(swarm_hostnames) | map('join', '.') | join('`,`') }}`)"
+    ROUTERS_RULE_UNSEE: "Host(`{{ ['unsee'] | product(swarm_hostnames) | map('join', '.') | join('`,`') }}`)"
+    ROUTERS_RULE_PROMETHEUS: "Host(`{{ ['prometheus'] | product(swarm_hostnames) | map('join', '.') | join('`,`') }}`)"
     TRAEFIK_PUBLIC_TAG: traefik-public
   run_once: true
 
-- name: wait for grafana to come up
+- name: wait for swarmprom to become available
   uri:
     validate_certs: yes
     method: GET
-    url: "https://grafana.{{ swarm_subdomain }}.{{ domain_name }}/"
+    url: "https://{{ item }}.{{ swarm_hostnames[0] }}/"
     status_code: 200
   register: result
   until: result.status == 200
   retries: 60
   delay: 5
-  run_once: true
-
-- name: wait for prometheus to come up
-  uri:
-    validate_certs: yes
-    method: GET
-    url: "https://prometheus.{{ swarm_subdomain }}.{{ domain_name }}/"
-    status_code: 401
-  register: result
-  until: result.status == 401
-  retries: 60
-  delay: 5
-  run_once: true
-
-- name: wait for unsee to come up
-  uri:
-    validate_certs: yes
-    method: GET
-    url: "https://unsee.{{ swarm_subdomain }}.{{ domain_name }}/"
-    status_code: [200, 401]
-  register: result
-  until: result.status == 401
-  retries: 60
-  delay: 5
-  run_once: true
-
-- name: wait for alertmanager to come up
-  uri:
-    validate_certs: yes
-    method: GET
-    url: "https://alertmanager.{{ swarm_subdomain }}.{{ domain_name }}/"
-    status_code: 401
-  register: result
-  until: result.status == 401
-  retries: 60
-  delay: 5
+  with_items:
+    - grafana
+    - prometheus
+    - unsee
+    - alertmanager
   run_once: true

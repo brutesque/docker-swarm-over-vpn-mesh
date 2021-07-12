@@ -96,7 +96,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.grafana.loadbalancer.server.port=3000"
-        - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.grafana.rule=${ROUTERS_RULE_GRAFANA?Variable ROUTERS_RULE_GRAFANA not set}"
         - "traefik.http.routers.grafana.entrypoints=websecure"
         - "traefik.http.routers.grafana.tls=true"
         - "traefik.http.routers.grafana.tls.certresolver=myresolver"
@@ -133,7 +133,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.alertmanager.loadbalancer.server.port=9093"
-        - "traefik.http.routers.alertmanager.rule=Host(`alertmanager.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.alertmanager.rule=${ROUTERS_RULE_ALERTMANAGER?Variable ROUTERS_RULE_ALERTMANAGER not set}"
         - "traefik.http.routers.alertmanager.entrypoints=websecure"
         - "traefik.http.routers.alertmanager.tls=true"
         - "traefik.http.routers.alertmanager.tls.certresolver=myresolver"
@@ -160,7 +160,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.unsee.loadbalancer.server.port=8080"
-        - "traefik.http.routers.unsee.rule=Host(`unsee.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.unsee.rule=${ROUTERS_RULE_UNSEE?Variable ROUTERS_RULE_UNSEE not set}"
         - "traefik.http.routers.unsee.entrypoints=websecure"
         - "traefik.http.routers.unsee.tls=true"
         - "traefik.http.routers.unsee.tls.certresolver=myresolver"
@@ -222,7 +222,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
-        - "traefik.http.routers.prometheus.rule=Host(`prometheus.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.prometheus.rule=${ROUTERS_RULE_PROMETHEUS?Variable ROUTERS_RULE_PROMETHEUS not set}"
         - "traefik.http.routers.prometheus.entrypoints=websecure"
         - "traefik.http.routers.prometheus.tls=true"
         - "traefik.http.routers.prometheus.tls.certresolver=myresolver"

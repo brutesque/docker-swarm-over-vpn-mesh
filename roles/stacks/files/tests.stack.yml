@@ -18,7 +18,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.app1.loadbalancer.server.port=80"
-        - "traefik.http.routers.app1.rule=Host(`app1.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.app1.rule=${ROUTERS_RULE_APP1?Variable ROUTERS_RULE_APP1 not set}"
         - "traefik.http.routers.app1.entrypoints=websecure"
         - "traefik.http.routers.app1.tls=true"
         - "traefik.http.routers.app1.tls.certresolver=myresolver"
@@ -40,7 +40,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.app2.loadbalancer.server.port=80"
-        - "traefik.http.routers.app2.rule=Host(`app2.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.app2.rule=${ROUTERS_RULE_APP2?Variable ROUTERS_RULE_APP2 not set}"
         - "traefik.http.routers.app2.entrypoints=websecure"
         - "traefik.http.routers.app2.tls=true"
         - "traefik.http.routers.app2.tls.certresolver=myresolver"
@@ -62,7 +62,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.app3.loadbalancer.server.port=8000"
-        - "traefik.http.routers.app3.rule=Host(`app3.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.app3.rule=${ROUTERS_RULE_APP3?Variable ROUTERS_RULE_APP3 not set}"
         - "traefik.http.routers.app3.entrypoints=websecure"
         - "traefik.http.routers.app3.tls=true"
         - "traefik.http.routers.app3.tls.certresolver=myresolver"
@@ -84,7 +84,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.app4.loadbalancer.server.port=80"
-        - "traefik.http.routers.app4.rule=Host(`app4.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.app4.rule=${ROUTERS_RULE_APP4?Variable ROUTERS_RULE_APP4 not set}"
         - "traefik.http.routers.app4.entrypoints=websecure"
         - "traefik.http.routers.app4.tls=true"
         - "traefik.http.routers.app4.tls.certresolver=myresolver"

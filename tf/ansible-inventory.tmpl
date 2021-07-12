@@ -1,11 +1,11 @@
 [vpn_mesh]
-%{ for index, ipv4 in values(all-instances) ~}
-${keys(all-instances)[index]} vpn_ip=${cidrhost("10.0.0.0/16", index + 1)}
+%{ for index, ipv4 in values(instances) ~}
+${ keys(instances)[index] } vpn_ip=${cidrhost("10.0.0.0/16", index + 1)}
 %{ endfor ~}
 
-[entrypoints]
-%{ for index, hostname in entrypoints ~}
-${ hostname }${ index < length(duckdns-subdomains) ? format(" duckdns_subdomain=%s", duckdns-subdomains[index]) : "" }
+[duckdns]
+%{ for hostname, duckdns_subdomain in duckdns_hosts ~}
+${ hostname } duckdns_subdomain=${ duckdns_subdomain }
 %{ endfor ~}
 
 [glusterpool]
@@ -14,12 +14,17 @@ ${ hostname }
 %{ endfor ~}
 
 [managers]
-%{ for index, hostname in docker-managers ~}
+%{ for index, hostname in managers ~}
 ${ hostname }${ index == 0 ? " swarm_labels=\"{'swarmpit.db-data': 'true', 'swarmpit.influx-data': 'true'}\"" : "" }
 %{ endfor ~}
 
 [workers]
-%{ for hostname in docker-workers ~}
+%{ for hostname in workers ~}
+${ hostname }
+%{ endfor ~}
+
+[entrypoints]
+%{ for hostname in entrypoints ~}
 ${ hostname }
 %{ endfor ~}
 

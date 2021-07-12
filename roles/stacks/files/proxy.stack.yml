@@ -91,7 +91,7 @@ services:
         # Dashboard
         - "traefik.enable=true"
         - "traefik.http.services.traefik.loadbalancer.server.port=8080"
-        - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN?Variable DOMAIN not set}`)"
+        - "traefik.http.routers.traefik.rule=${ROUTERS_RULE?Variable ROUTERS_RULE not set}"
         - "traefik.http.routers.traefik.service=api@internal"
         - "traefik.http.routers.traefik.entrypoints=websecure"
         - "traefik.http.routers.traefik.tls=true"

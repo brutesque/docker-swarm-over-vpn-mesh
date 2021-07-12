@@ -1,3 +1,5 @@
+### Instances
+
 module "digitalocean" {
   source              = "./digitalocean"
   instance_count      = var.do_instance_count
@@ -38,19 +40,53 @@ module "vultr" {
   project_name        = var.project_name
 }
 
-//module "onpremise" {
-//  source              = "./onpremise"
-//  instances           = var.prem_instances
-//}
+module "onpremise" {
+  source    = "./onpremise"
+  instances = var.prem_instances
+}
 
-### Collect instances:
 locals {
-  instances        = {
+  instances             = {
     digitalocean = module.digitalocean.instances,
     oraclecloud  = module.oraclecloud.instances,
 //    transip      = module.transip.instances,
     vultr        = module.vultr.instances,
-//    onpremise    = module.onpremise.instances,
+    onpremise    = module.onpremise.instances,
   }
-  merged_instances = merge(values(local.instances)...)
+  merged_instances      = merge(values(local.instances)...)
+  selection_order       = distinct(flatten([for i in range(max([for provider in keys(local.instances) : length(local.instances[provider])]...)) : [for hosts in [for provider in keys(local.instances) : keys(local.instances[provider])] : element(hosts, i) if length(hosts) > 0]]))
+  manager_candidates    = distinct(concat(flatten([for i in range(max([for provider in var.manager_providers : length(local.instances[provider])]...)) : [for hosts in [for provider in var.manager_providers : keys(local.instances[provider])] : element(hosts, i) if length(hosts) > 0]]), local.selection_order))
+  worker_candidates     = setsubtract(local.selection_order, local.managers)
+  entrypoint_candidates = distinct(concat(flatten([for i in range(max([for provider in var.entrypoint_providers : length(local.instances[provider])]...)) : [for hosts in [for provider in var.entrypoint_providers : keys(local.instances[provider])] : element(hosts, i) if length(hosts) > 0]]), local.selection_order))
+  managers              = slice(local.manager_candidates, 0, min(var.manager_count, length(local.manager_candidates)))
+  workers               = [for host in local.selection_order : host if contains(local.worker_candidates, host)]
+  entrypoints           = slice(local.entrypoint_candidates, 0, min(var.entrypoint_count, length(local.entrypoint_candidates)))
+}
+
+### DNS records
+
+module "cloudflare" {
+  source       = "./cloudflare"
+  api_token    = var.cloudflare_api_token
+  domain_names = var.cloudflare_domains
+  entrypoints  = [for hostname in local.entrypoints : local.merged_instances[hostname]]
+  subdomain    = var.services_subdomain
+}
+
+module "transip_dns" {
+  source       = "./transip_dns"
+  account_name = var.transip_account_name
+  private_key  = trimspace(file(var.transip_private_key_path))
+  domain_names = var.transip_domains
+  entrypoints  = [for hostname in local.entrypoints : local.merged_instances[hostname]]
+  subdomain    = var.services_subdomain
+}
+
+locals {
+  domain_names        = {
+    manual     = var.manual_domains,
+    cloudflare = module.cloudflare.domain_names,
+    transip    = module.transip_dns.domain_names,
+  }
+  merged_domain_names = concat(values(local.domain_names)...)
 }

@@ -1,68 +1,49 @@
-terraform:
+terraform-deploy:
 	pip3 install --quiet --upgrade pip
 	pip3 install --quiet --upgrade --requirement requirements.txt
 
 	terraform -chdir=tf/ init
 	terraform -chdir=tf/ validate
 
-	terraform -chdir=tf/ plan -var-file="../secrets/credentials.tfvars" -var-file="../secrets/config.tfvars"
+	# Terraform create instances first
+	terraform -chdir=tf/ plan -out="tfplan" -var-file="../secrets/credentials.tfvars" -var-file="../secrets/config.tfvars" \
+		-target="module.digitalocean" \
+		-target="module.onpremise" \
+		-target="module.oraclecloud" \
+		-target="module.transip" \
+		-target="module.vultr"
+	terraform -chdir=tf/ apply tfplan
 
-	terraform -chdir=tf/ apply -var-file="../secrets/credentials.tfvars" -var-file="../secrets/config.tfvars" -auto-approve
+	# Terraform finish
+	terraform -chdir=tf/ plan -out="tfplan" -var-file="../secrets/credentials.tfvars" -var-file="../secrets/config.tfvars"
+	terraform -chdir=tf/ apply tfplan
 
-deploy:
-	pip3 install --quiet --upgrade pip
-	pip3 install --quiet --upgrade --requirement requirements.txt
-
+terraform-destroy:
 	terraform -chdir=tf/ init
-	terraform -chdir=tf/ validate
+	terraform -chdir=tf/ destroy -var-file="../secrets/credentials.tfvars" -var-file="../secrets/config.tfvars" -auto-approve
 
-	terraform -chdir=tf/ plan -var-file="../secrets/credentials.tfvars" -var-file="../secrets/config.tfvars"
+terraform-clean:
+	rm -Rf tf/.terraform
+	rm -f tf/terraform.tfstate
+	rm -f tf/terraform.tfstate.backup
+	rm -f tf/.terraform.lock.hcl
+	rm -f tf/tfplan
 
-	terraform -chdir=tf/ apply -var-file="../secrets/credentials.tfvars" -var-file="../secrets/config.tfvars" -auto-approve
+terraform: terraform-deploy
 
+ansible-deploy:
 	ansible-playbook playbook-deploy.yml
+
+ansible-destroy:
+	ansible-playbook playbook-destroy.yml
+
+ansible: ansible-deploy
+
+deploy: terraform-deploy ansible-deploy
 
 backup:
 	ansible-playbook playbook-backup.yml
 
-destroy:
-	terraform -chdir=tf/ init
+destroy: ansible-destroy terraform-destroy
 
-	ansible-playbook playbook-destroy.yml
-
-	terraform -chdir=tf/ destroy -var-file="../secrets/credentials.tfvars" -var-file="../secrets/config.tfvars" -auto-approve
-
-terraform-destroy:
-	terraform -chdir=tf/ init
-
-	terraform -chdir=tf/ destroy -var-file="../secrets/credentials.tfvars" -var-file="../secrets/config.tfvars" -auto-approve
-
-clean:
-	rm -Rf tf/.terraform
-	rm -f tf/terraform.tfstate
-	rm -f tf/terraform.tfstate.backup
-	rm -f tf/.terraform.lock.hcl
-
-clean-redeploy:
-	pip3 install --quiet --upgrade pip
-	pip3 install --quiet --upgrade --requirement requirements.txt
-
-	terraform -chdir=tf/ init
-
-	ansible-playbook playbook-destroy.yml
-
-	terraform -chdir=tf/ destroy -var-file="../secrets/credentials.tfvars" -var-file="../secrets/config.tfvars" -auto-approve
-
-	rm -Rf tf/.terraform
-	rm -f tf/terraform.tfstate
-	rm -f tf/terraform.tfstate.backup
-	rm -f tf/.terraform.lock.hcl
-
-	terraform -chdir=tf/ init
-	terraform -chdir=tf/ validate
-
-	terraform -chdir=tf/ plan -var-file="../secrets/credentials.tfvars" -var-file="../secrets/config.tfvars"
-
-	terraform -chdir=tf/ apply -var-file="../secrets/credentials.tfvars" -var-file="../secrets/config.tfvars" -auto-approve
-
-	ansible-playbook playbook-deploy.yml
+full-redeploy: destroy clean deploy
