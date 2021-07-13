@@ -20,12 +20,13 @@
   uri:
     validate_certs: yes
     method: GET
-    url: "https://swarmpit.{{ swarm_hostnames[0] }}/"
+    url: "https://{{ item }}/"
     status_code: 200
   register: result
   until: result.status == 200
   retries: 60
   delay: 15
+  with_items: "{{ ['swarmpit'] | product(swarm_hostnames) | map('join', '.') }}"
   run_once: true
 
 - name: Create first admin account

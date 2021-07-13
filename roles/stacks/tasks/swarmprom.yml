@@ -37,15 +37,11 @@
   uri:
     validate_certs: yes
     method: GET
-    url: "https://{{ item }}.{{ swarm_hostnames[0] }}/"
+    url: "https://{{ item }}/"
     status_code: 200
   register: result
   until: result.status == 200
   retries: 60
   delay: 5
-  with_items:
-    - grafana
-    - prometheus
-    - unsee
-    - alertmanager
+  with_items: "{{ ['grafana', 'prometheus', 'unsee', 'alertmanager'] | product(swarm_hostnames) | map('join', '.') }}"
   run_once: true
