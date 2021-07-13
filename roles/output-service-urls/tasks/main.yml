@@ -1,0 +1,41 @@
+---
+
+- name: Traefik
+  debug:
+    msg: "https://{{ item }}/"
+  with_items: "{{ ['traefik'] | product(swarm_hostnames) | map('join', '.') }}"
+  run_once: true
+
+- name: Registry
+  debug:
+    msg: "https://{{ item }}/"
+  with_items: "{{ ['registry'] | product(swarm_hostnames) | map('join', '.') }}"
+  run_once: true
+
+- name: Portainer
+  debug:
+    msg: "https://{{ item }}/"
+  with_items: "{{ ['portainer'] | product(swarm_hostnames) | map('join', '.') }}"
+  when: enable_portainer
+  run_once: true
+
+- name: Swarmpit
+  debug:
+    msg: "https://{{ item }}/"
+  with_items: "{{ ['swarmpit'] | product(swarm_hostnames) | map('join', '.') }}"
+  when: enable_swarmpit
+  run_once: true
+
+- name: Swarmprom
+  debug:
+    msg: "https://{{ item }}/"
+  with_items: "{{ ['swarmprom'] | product(swarm_hostnames) | map('join', '.') }}"
+  when: enable_swarmprom
+  run_once: true
+
+- name: Tests
+  debug:
+    msg: "https://{{ item }}/"
+  with_items: "{{ ['app1', 'app2', 'app3', 'app4'] | product(swarm_hostnames) | map('join', '.') }}"
+  when: enable_tests
+  run_once: true
