@@ -43,10 +43,12 @@ services:
       TASKS: 1
       VOLUMES: 0
     deploy:
-      mode: global
+      mode: replicated
+      replicas: 2
       placement:
         constraints:
           - node.role == manager
+        max_replicas_per_node: 1
       resources:
         limits:
           cpus: '0.02'
@@ -121,8 +123,10 @@ services:
 
         # middleware redirect
         - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
-      mode: global
+      mode: replicated
+      replicas: 1
       placement:
+        max_replicas_per_node: 1
         constraints:
           - node.labels.traefik == true
       resources:

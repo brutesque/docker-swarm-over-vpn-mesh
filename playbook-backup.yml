@@ -1,7 +1,7 @@
 ---
 
 - name: Wait for nodes to become available
-  hosts: all
+  hosts: entrypoints
   any_errors_fatal: true
   gather_facts: no
   tasks:
@@ -11,7 +11,7 @@
   tags: waiting
 
 - name: Get Let's Encrypts certificates
-  hosts: managers[0]
+  hosts: entrypoints
   any_errors_fatal: true
   become: true
   vars_files:

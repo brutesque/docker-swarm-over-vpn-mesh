@@ -165,7 +165,7 @@ variable "entrypoint_count" {
   type        = number
   description = "Number of entrypoints in the docker swarm"
   sensitive   = false
-  default     = 5
+  default     = 1
 }
 
 variable "cloudflare_api_token" {
