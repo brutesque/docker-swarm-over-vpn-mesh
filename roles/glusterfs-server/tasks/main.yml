@@ -32,7 +32,7 @@
     state: present
     name: "{{ item }}"
     bricks: "/data/{{ item }}/brick"
-    rebalance: yes
+    replicas: "{{ play_hosts|length|int }}"
     cluster: "{{ play_hosts }}"
     transport: tcp
     force: yes
@@ -50,6 +50,7 @@
 - name: start gluster volume
   gluster_volume:
     state: started
+    rebalance: yes
     name: "{{ item }}"
   loop:
     - gluster-admin
