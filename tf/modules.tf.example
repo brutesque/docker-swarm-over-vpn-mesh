@@ -92,5 +92,5 @@ locals {
     cloudflare = module.cloudflare.domain_names,
     transip    = module.transip_dns.domain_names,
   }
-  merged_domain_names = concat(values(local.domain_names)...)
+  merged_domain_names = distinct(concat(values(local.domain_names)...))
 }
