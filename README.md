@@ -41,16 +41,17 @@ $ cd docker-swarm-over-vpn-mesh/
 - Copy tf/modules.tf.example to tf/modules.tf and comment out the providers you haven't configured credentials for.
 - Copy secrets/config.tfvars.example to secrets/config.tfvars and adjust swarm settings to your liking.
 
-If you have a domain that you want to manual setup to connect to the swarm, add a CNAME to your DNS records pointed to one of your duckdns subdomains.
-Add your domain to the manual_domains list in config.tfvars. Make sure that the subdomain matches the services_subdomain variable in config.tfvars.
-Swarm services will be published under this subdomain. Note the wildcard prepended to the subdomain.
+If you have a domain that you want to manually setup to connect to the swarm, add a CNAME to your DNS records pointed to 
+the first of your configured duckdns subdomains. Add your domain to the manual_domains list in config.tfvars. Make sure
+that the new subdomain matches the services_subdomain variable in config.tfvars. Swarm services will be published under
+this subdomain.
 
 ```
 name: *.swarm
 type: CNAME
 value: my-duckdns-subdomain.duckdns.org.
 ```
-Make sure to include the dot at the end.
+Make sure to include the wildcard in the name field and the dot at the end of the value field.
 
 ### Execute deployment
 
@@ -74,19 +75,21 @@ To destroy the swarm run:
 $ make destroy
 ```
 Before destroying the nodes, the backup process for the certs will run.
+
+
 If the ansible backup playbook fails (usually caused by an interupted deployment playbook), terraform won't destroy the running instances. In that case run:
 ```
 make terraform-destroy
 ```
 
-Additionally to remove any local temporary files (terraform data, ansible data, etc), run:
+Remove any local temporary files, run:
 ```
-$ make terraform-clean
+$ make clean
 ```
 
 ### Use admin apps and test stacks
 
-After succesful deployment, you can access to the admin services if enabled in the config.tfvars. The services are
+After succesful deployment, you can access the admin services the you have enabled in the config.tfvars. The services are
 available at [https://service-name.services-subdomain.your-domain.com/](), eg. [https://portainer.swarm.brandx.com]()
 and also at [https://portainer.swarm.your-duckdns-subdomain.duckdns.org]() if you've configured DuckDNS.
 The following services are included in stacks that can be enabled in the config.tfvars file
