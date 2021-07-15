@@ -3,13 +3,28 @@ version: "3.8"
 services:
 
   docker-socket:
-    image: tecnativa/docker-socket-proxy
+    image: tecnativa/docker-socket-proxy:0.1.1
     restart: always
     networks:
       - socket-network
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
+      # Access granted by default
+      # These API sections are mostly harmless and almost required for any service that uses the API, so they are granted by default.
+      EVENTS: 1
+      PING: 1
+      VERSION: 1
+
+      # Security-critical
+      # These API sections are considered security-critical, and thus access is revoked by default. Maximum caution when enabling these.
+      AUTH: 0
+      SECRETS: 0
+      POST: 0
+
+      # Not always needed
+      # You will possibly need to grant access to some of these API sections, which are not so extremely critical but
+      # can expose some information that your service does not need.
       BUILD: 0
       COMMIT: 0
       CONFIGS: 0
