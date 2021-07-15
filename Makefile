@@ -20,16 +20,7 @@ terraform-deploy:
 
 terraform-destroy:
 	terraform -chdir=tf/ init
-
-	# Terraform destroy dns records first
-	terraform -chdir=tf/ plan -destroy -out="tfplan" -var-file="../secrets/credentials.tfvars" -var-file="../secrets/config.tfvars" \
-		-target="module.cloudflare" \
-		-target="module.transip_dns"
-	terraform -chdir=tf/ apply tfplan
-
-	# Terraform finish destroy
-	terraform -chdir=tf/ plan -destroy -out="tfplan" -var-file="../secrets/credentials.tfvars" -var-file="../secrets/config.tfvars"
-	terraform -chdir=tf/ apply tfplan
+	terraform -chdir=tf/ destroy -auto-approve -var-file="../secrets/credentials.tfvars" -var-file="../secrets/config.tfvars"
 
 terraform-clean:
 	rm -Rf tf/.terraform
