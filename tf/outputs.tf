@@ -54,3 +54,16 @@ output "instances" {
 output "domains" {
   value = local.merged_domain_names
 }
+
+output "managers" {
+  value = local.managers
+}
+
+output "workers" {
+  value = local.workers
+}
+
+output "entrypoints" {
+  value = local.entrypoints
+}
+
