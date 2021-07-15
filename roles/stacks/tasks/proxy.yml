@@ -66,7 +66,7 @@
     mode: '0600'
   run_once: true
 
-- name: Copy traefik stack file
+- name: Copy traefik config file
   copy:
     src: files/traefik.toml
     dest: /mnt/gluster-admin/proxy_traefik/traefik.toml
