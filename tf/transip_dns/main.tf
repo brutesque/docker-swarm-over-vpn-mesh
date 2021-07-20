@@ -10,17 +10,8 @@ locals {
 resource "transip_dns_record" "entrypoints" {
   count   = length(local.domain_names)
   domain  = local.domain_names[count.index]
-  name    = "@"
+  name    = format("*.%s", var.subdomain)
   type    = "A"
   content = var.entrypoints
-  expire  = 60
-}
-
-resource "transip_dns_record" "service_subdomains" {
-  count   = length(local.domain_names)
-  domain  = local.domain_names[count.index]
-  name    = format("*.%s", var.subdomain)
-  type    = "CNAME"
-  content = ["@"]
   expire  = 60
 }
