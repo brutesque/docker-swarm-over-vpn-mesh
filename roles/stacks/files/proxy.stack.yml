@@ -61,7 +61,7 @@ services:
         max-size: "500k"
 
   traefik:
-    image: traefik:v2.2.11
+    image: traefik:v2.3.7
     restart: always
     ports:
       - target: 80
