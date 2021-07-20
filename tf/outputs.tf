@@ -1,7 +1,7 @@
 locals {
   glusterpool        = local.selection_order
 
-  duckdns_candidates = distinct(concat(local.managers, local.entrypoints, local.workers))
+  duckdns_candidates = distinct(concat(local.entrypoints, local.managers, local.workers))
   duckdns_hosts      = zipmap(
     slice(local.duckdns_candidates, 0, min(length(local.duckdns_candidates), length(var.duckdns_subdomains))),
     slice(var.duckdns_subdomains, 0, min(length(local.duckdns_candidates), length(var.duckdns_subdomains))),
