@@ -3,7 +3,7 @@ version: "3.8"
 services:
 
   docker-socket:
-    image: tecnativa/docker-socket-proxy:0.1.1
+    image: tecnativa/docker-socket-proxy
     restart: always
     networks:
       - socket-network
