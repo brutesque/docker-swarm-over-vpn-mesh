@@ -113,3 +113,4 @@ ansible-playbook playbook-deploy --tag urls
 - Create upgrade playbook, that safely drains an upgraded node before it reboots it.
 - Check deployment logs thoroughly and make sure sensitive data is being masked
 - Automate manager promotion when manager instance has been removed by terraform
+- Figure out if it's possible to have certbot in it's own service dealing the certificates for a cluster of traefik instances to use.
