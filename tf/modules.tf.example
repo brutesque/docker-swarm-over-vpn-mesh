@@ -87,10 +87,9 @@ module "transip_dns" {
 
 locals {
   domain_names        = {
-    main       = [var.main_domain],
     manual     = var.manual_domains,
     cloudflare = module.cloudflare.domain_names,
     transip    = module.transip_dns.domain_names,
   }
-  merged_domain_names = distinct(concat(values(local.domain_names)...))
+  merged_domain_names = distinct(concat([var.main_domain], values(local.domain_names)...))
 }
