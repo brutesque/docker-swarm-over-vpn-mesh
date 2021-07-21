@@ -10,6 +10,7 @@
   until: result.status == 401
   retries: 60
   delay: 5
+  when: enable_registry is defined and enable_registry
 
 - name: Login to registry
   docker_login:
@@ -21,3 +22,4 @@
   retries: 20
   delay: 30
   until: not result.failed
+  when: enable_registry is defined and enable_registry
