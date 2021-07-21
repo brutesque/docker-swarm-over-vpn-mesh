@@ -9,7 +9,7 @@ resource "oci_core_subnet" "primary" {
   availability_domain = var.free_tier_availability_domain
   cidr_block          = var.vcn_cidr_block
   display_name        = format("%sSubnet", var.project_name)
-  dns_label           = format("%sSubnet", regex("[[:alnum:]]+", var.project_name))
+  dns_label           = format("%sSubnet", substr(regex("[[:alnum:]]+", var.project_name), 0, 9))
   security_list_ids   = [oci_core_security_list.primary.id]
   compartment_id      = var.compartment_ocid
   vcn_id              = oci_core_vcn.primary.id
