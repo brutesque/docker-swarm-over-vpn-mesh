@@ -38,3 +38,4 @@
   delay: 5
   with_items: "{{ ['app1', 'app2', 'app3', 'app4'] | product(swarm_hostnames) | map('join', '.') }}"
   run_once: true
+  ignore_errors: yes

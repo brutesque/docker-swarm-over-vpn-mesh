@@ -35,3 +35,4 @@
   delay: 5
   with_items: "{{ ['registry'] | product(swarm_hostnames) | map('join', '.') }}"
   run_once: true
+  ignore_errors: yes

@@ -28,6 +28,7 @@
   delay: 15
   with_items: "{{ ['swarmpit'] | product(swarm_hostnames) | map('join', '.') }}"
   run_once: true
+  ignore_errors: yes
 
 - name: Create first admin account
   uri:
@@ -38,3 +39,4 @@
     body: '{"username": "admin", "password": "{{ admin_password }}"}'
     status_code: [201, 403]
   run_once: true
+  ignore_errors: yes
