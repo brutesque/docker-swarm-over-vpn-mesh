@@ -23,3 +23,13 @@ resource "cloudflare_record" "entrypoints" {
   ttl      = 600
   proxied  = false
 }
+
+resource "cloudflare_record" "leader" {
+  count    = length(local.zone_ids)
+  zone_id  = values(local.zone_ids)[count.index]
+  name     = format("leader.%s", var.subdomain)
+  type     = "A"
+  value    = var.leader
+  ttl      = 600
+  proxied  = false
+}

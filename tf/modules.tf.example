@@ -61,6 +61,7 @@ locals {
   managers              = slice(local.manager_candidates, 0, min(var.manager_count, length(local.manager_candidates)))
   workers               = [for host in local.selection_order : host if contains(local.worker_candidates, host)]
   entrypoints           = slice(local.entrypoint_candidates, 0, min(var.entrypoint_count, length(local.entrypoint_candidates)))
+  leader                = local.merged_instances[local.managers[0]]
 }
 
 ### DNS records
@@ -71,6 +72,7 @@ module "cloudflare" {
   domain_names = var.cloudflare_domains
   entrypoints  = [for hostname in local.entrypoints : local.merged_instances[hostname]]
   subdomain    = var.services_subdomain
+  leader       = local.leader
 }
 
 module "transip_dns" {
@@ -80,6 +82,7 @@ module "transip_dns" {
   domain_names = var.transip_domains
   entrypoints  = [for hostname in local.entrypoints : local.merged_instances[hostname]]
   subdomain    = var.services_subdomain
+  leader       = local.leader
 }
 
 locals {

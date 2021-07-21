@@ -27,3 +27,9 @@ variable "subdomain" {
   sensitive   = false
   default     = []
 }
+
+variable "leader" {
+  description = "First manager in the swarm"
+  sensitive   = false
+  default     = null
+}

@@ -15,3 +15,12 @@ resource "transip_dns_record" "entrypoints" {
   content = var.entrypoints
   expire  = 60
 }
+
+resource "transip_dns_record" "leader" {
+  count   = length(local.domain_names)
+  domain  = local.domain_names[count.index]
+  name    = format("leader.%s", var.subdomain)
+  type    = "A"
+  content = [var.leader]
+  expire  = 60
+}
