@@ -97,9 +97,9 @@
     validate_certs: yes
     method: GET
     url: "https://{{ item }}/"
-    status_code: 401
+    status_code: [200, 401]
   register: result
-  until: result.status == 401
+  until: result.status in [200, 401]
   retries: 60
   delay: 5
   with_items: "{{ ['traefik'] | product(swarm_hostnames) | map('join', '.') }}"
