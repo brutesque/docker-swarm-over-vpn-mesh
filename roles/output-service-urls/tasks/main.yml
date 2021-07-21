@@ -30,7 +30,7 @@
 - name: Swarmprom
   debug:
     msg: "https://{{ item }}/"
-  with_items: "{{ ['swarmprom'] | product(swarm_hostnames) | map('join', '.') }}"
+  with_items: "{{ ['grafana', 'prometheus', 'unsee', 'alertmanager'] | product(swarm_hostnames) | map('join', '.') }}"
   when: enable_swarmprom is defined and enable_swarmprom
   run_once: true
 
