@@ -40,6 +40,7 @@ resource "local_file" "AnsibleVars" {
       user_name          = var.user_name,
       user_password      = var.user_password,
       stacks_portainer   = var.stacks_portainer,
+      stacks_registry    = var.stacks_registry,
       stacks_swarmpit    = var.stacks_swarmpit,
       stacks_swarmprom   = var.stacks_swarmprom,
       stacks_tests       = var.stacks_tests,
@@ -66,4 +67,3 @@ output "workers" {
 output "entrypoints" {
   value = local.entrypoints
 }
-

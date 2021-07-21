@@ -41,6 +41,10 @@ variable "stacks_portainer" {
   default = true
 }
 
+variable "stacks_registry" {
+  default = true
+}
+
 variable "stacks_swarmpit" {
   default = false
 }
