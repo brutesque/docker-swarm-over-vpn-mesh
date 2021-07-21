@@ -1,17 +1,5 @@
 ---
 
-- name: Wait for nodes to become available
-  hosts:
-    - entrypoints
-    - duckdns
-  any_errors_fatal: true
-  gather_facts: no
-  tasks:
-  - wait_for_connection:
-      delay: 10
-      timeout: 600
-  tags: waiting
-
 - name: Get Let's Encrypts certificates
   hosts: entrypoints
   any_errors_fatal: true

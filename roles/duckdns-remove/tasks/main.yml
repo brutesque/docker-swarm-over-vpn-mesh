@@ -9,3 +9,4 @@
   register: duckdns_update_result
   until: duckdns_update_result is not failed
   when: duckdns_token is defined and duckdns_subdomain is defined
+  ignore_errors: yes
