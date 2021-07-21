@@ -201,3 +201,9 @@ variable "transip_domains" {
   sensitive   = false
   default     = []
 }
+
+variable "main_domain" {
+  description = "Main domain for SSL certificate"
+  sensitive   = false
+  default     = null
+}
