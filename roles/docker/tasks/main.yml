@@ -53,9 +53,12 @@
 
 - name: Add user to 'docker' group
   user:
-    name: "{{ create_user }}"
+    name: "{{ item }}"
     groups: docker
     append: yes
+  with_items:
+    - "{{ create_user }}"
+    - ansible
 
 - name: Configure Docker daemon options
   template:

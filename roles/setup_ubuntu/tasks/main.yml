@@ -41,20 +41,26 @@
     validate: '/usr/sbin/visudo -cf %s'
 
 # User + Key Setup
-- name: Create a new regular user with sudo privileges
+- name: Create a new regular users with sudo privileges
   user:
-    name: "{{ create_user }}"
+    name: "{{ item }}"
     state: present
     groups: wheel
     append: true
     create_home: true
     shell: /bin/bash
+  with_items:
+    - "{{ create_user }}"
+    - "ansible"
 
 - name: Set authorized key for remote user
   authorized_key:
-    user: "{{ create_user }}"
+    user: "{{ item }}"
     state: present
     key: "{{ copy_local_key }}"
+  with_items:
+    - "{{ create_user }}"
+    - "ansible"
 
 - name: Limit root login
   lineinfile:
@@ -96,7 +102,7 @@
     path: /etc/ssh/sshd_config
     state: present
     regexp: '^#?AllowUsers'
-    line: "AllowUsers {{ [create_user, ansible_ssh_user] | unique| join(' ') }}"
+    line: "AllowUsers {{ [create_user, ansible_ssh_user, 'ansible'] | unique| join(' ') }}"
 
 - name: Limit max authentication attempts
   lineinfile:
