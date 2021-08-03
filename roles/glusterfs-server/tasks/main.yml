@@ -32,7 +32,7 @@
     state: present
     name: "{{ item }}"
     bricks: "/data/{{ item }}/brick"
-    replicas: "{{ play_hosts|length|int }}"
+    replicas: "{{ play_hosts|length|int if play_hosts|length > 1 else 0 }}"
     cluster: "{{ play_hosts }}"
     transport: tcp
     force: yes
