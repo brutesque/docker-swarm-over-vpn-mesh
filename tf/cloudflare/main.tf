@@ -20,7 +20,7 @@ resource "cloudflare_record" "entrypoints" {
   name     = format("*.%s", var.subdomain)
   type     = "A"
   value    = local.entrypoints[count.index][1]
-  ttl      = 600
+  ttl      = 300
   proxied  = false
 }
 
@@ -30,6 +30,6 @@ resource "cloudflare_record" "leader" {
   name     = format("leader.%s", var.subdomain)
   type     = "A"
   value    = var.leader
-  ttl      = 600
+  ttl      = 300
   proxied  = false
 }

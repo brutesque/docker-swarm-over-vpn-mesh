@@ -13,7 +13,7 @@ resource "transip_dns_record" "entrypoints" {
   name    = format("*.%s", var.subdomain)
   type    = "A"
   content = var.entrypoints
-  expire  = 60
+  expire  = 300
 }
 
 resource "transip_dns_record" "leader" {
@@ -22,5 +22,5 @@ resource "transip_dns_record" "leader" {
   name    = format("leader.%s", var.subdomain)
   type    = "A"
   content = [var.leader]
-  expire  = 60
+  expire  = 300
 }
