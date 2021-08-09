@@ -43,8 +43,7 @@ services:
       TASKS: 1
       VOLUMES: 0
     deploy:
-      mode: replicated
-      replicas: 2
+      mode: global
       placement:
         constraints:
           - node.role == manager
