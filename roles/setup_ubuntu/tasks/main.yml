@@ -24,7 +24,8 @@
     cache_valid_time: 3600
   register: apt_action
   retries: 100
-  until: apt_action is success or ('Failed to lock apt for exclusive operation' not in apt_action.msg and '/var/lib/dpkg/lock' not in apt_action.msg)
+#  until: apt_action is success or ('Failed to lock apt for exclusive operation' not in apt_action.msg and '/var/lib/dpkg/lock' not in apt_action.msg)
+  until: apt_action is success
 
 # Sudo Group Setup
 - name: Make sure we have a 'wheel' group
