@@ -7,6 +7,13 @@ module "digitalocean" {
   project_name        = var.project_name
   instances           = var.digitalocean_instances
 }
+module "hetzner" {
+  source              = "./hetzner"
+  ssh_public_key_path = var.ssh_public_key_path
+  api_key             = var.hetzner_token
+  project_name        = var.project_name
+  instances           = var.hetzner_instances
+}
 
 module "oraclecloud" {
   source                        = "./oraclecloud"
@@ -48,6 +55,7 @@ module "onpremise" {
 locals {
   instances             = {
     digitalocean = module.digitalocean.instances,
+    hetzner      = module.hetzner.instances,
     oraclecloud  = module.oraclecloud.instances,
     transip      = module.transip.instances,
     vultr        = module.vultr.instances,

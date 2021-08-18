@@ -66,6 +66,11 @@ variable "digitalocean_instances" {
   default = []
 }
 
+variable "hetzner_instances" {
+  description = "List of server types and regions for instances on Hetzner Cloud"
+  default = []
+}
+
 variable "oraclecloud_instances" {
   description = "List of shapes for instances on Oracle Cloud Infrastructure"
   default = []
@@ -83,6 +88,12 @@ variable "vultr_instances" {
 
 variable "do_token" {
   description = "Digital Ocean API Token"
+  sensitive   = true
+  default     = null
+}
+
+variable "hetzner_token" {
+  description = "Hetzner Cloud API Key"
   sensitive   = true
   default     = null
 }
