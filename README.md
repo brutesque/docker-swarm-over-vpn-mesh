@@ -20,6 +20,7 @@ Requirements:
 
 Implemented instance providers:
 - Digital Ocean
+- Hetzner Cloud
 - Oracle Cloud Infrastructure
 - TransIP
 - Vultr
