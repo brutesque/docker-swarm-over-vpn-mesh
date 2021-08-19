@@ -54,7 +54,7 @@
     - "{{ create_user }}"
     - "ansible"
 
-- name: Set authorized key for remote user
+- name: Set authorized key for remote users
   authorized_key:
     user: "{{ item }}"
     state: present
@@ -91,13 +91,6 @@
     regexp: '^#?PermitEmptyPasswords'
     line: 'PermitEmptyPasswords no'
 
-- name: Disable X11 forwarding
-  lineinfile:
-    path: /etc/ssh/sshd_config
-    state: present
-    regexp: '^#?X11Forwarding'
-    line: 'X11Forwarding no'
-
 - name: Whitelist SSH users
   lineinfile:
     path: /etc/ssh/sshd_config
@@ -118,10 +111,5 @@
     state: latest
     update_cache: yes
     cache_valid_time: 3600
-
-- name: Remove unnecessary system packages
-  apt:
-    name: "{{ remove_packages }}"
-    state: absent
 
 - include_tasks: firewall.yml

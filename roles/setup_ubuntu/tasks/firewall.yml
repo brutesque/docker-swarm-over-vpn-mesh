@@ -1,5 +1,16 @@
 ---
 
+- name: Remove unnecessary system packages
+  apt:
+    name:
+      - iptables-persistent
+      - netfilter-persistent
+      - ufw
+    state: absent
+  tags:
+    - ubuntu
+    - ubuntu-firewall
+
 - name: Enable Ferm
   service:
     name: ferm
