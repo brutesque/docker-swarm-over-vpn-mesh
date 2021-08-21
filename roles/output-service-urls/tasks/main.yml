@@ -1,42 +1,57 @@
 ---
 
-- name: Traefik
-  debug:
-    msg: "https://{{ item }}/"
-  with_items: "{{ ['traefik'] | product(swarm_hostnames) | map('join', '.') }}"
+- name: Create list of services urls
+  set_fact:
+    services_urls: []
   run_once: true
 
-- name: Registry
-  debug:
-    msg: "https://{{ item }}/"
+- name: Add traefik urls
+  set_fact:
+    services_urls: "{{ services_urls + [ 'https://' + item + '/' ] }}"
+  with_items: "{{ ['traefik'] | product(swarm_hostnames) | map('join', '.') }}"
+  run_once: true
+  no_log: yes
+
+- name: Add registry urls
+  set_fact:
+    services_urls: "{{ services_urls + [ 'https://' + item + '/' ] }}"
   with_items: "{{ ['registry'] | product(swarm_hostnames) | map('join', '.') }}"
   when: enable_registry is defined and enable_registry
   run_once: true
+  no_log: yes
 
-- name: Portainer
-  debug:
-    msg: "https://{{ item }}/"
+- name: Add portainer urls
+  set_fact:
+    services_urls: "{{ services_urls + [ 'https://' + item + '/' ] }}"
   with_items: "{{ ['portainer'] | product(swarm_hostnames) | map('join', '.') }}"
   when: enable_portainer is defined and enable_portainer
   run_once: true
+  no_log: yes
 
-- name: Swarmpit
-  debug:
-    msg: "https://{{ item }}/"
+- name: Add swarmpit urls
+  set_fact:
+    services_urls: "{{ services_urls + [ 'https://' + item + '/' ] }}"
   with_items: "{{ ['swarmpit'] | product(swarm_hostnames) | map('join', '.') }}"
   when: enable_swarmpit is defined and enable_swarmpit
   run_once: true
+  no_log: yes
 
-- name: Swarmprom
-  debug:
-    msg: "https://{{ item }}/"
+- name: Add swarmprom urls
+  set_fact:
+    services_urls: "{{ services_urls + [ 'https://' + item + '/' ] }}"
   with_items: "{{ ['grafana', 'prometheus', 'unsee', 'alertmanager'] | product(swarm_hostnames) | map('join', '.') }}"
   when: enable_swarmprom is defined and enable_swarmprom
   run_once: true
+  no_log: yes
 
-- name: Tests
-  debug:
-    msg: "https://{{ item }}/"
+- name: Add test urls
+  set_fact:
+    services_urls: "{{ services_urls + [ 'https://' + item + '/' ] }}"
   with_items: "{{ ['app1', 'app2', 'app3', 'app4'] | product(swarm_hostnames) | map('join', '.') }}"
   when: enable_tests is defined and enable_tests
+  run_once: true
+  no_log: yes
+
+- debug:
+    var: services_urls
   run_once: true
