@@ -1,9 +1,8 @@
 ---
 
 - name: Removing DuckDNS records
-  get_url:
+  uri:
     url: "https://www.duckdns.org/update?domains={{ duckdns_subdomain }}&token={{ duckdns_token }}&clear=true"
-    dest: /dev/null
   retries: 20
   delay: 30
   register: duckdns_update_result
