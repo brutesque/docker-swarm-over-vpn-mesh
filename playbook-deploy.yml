@@ -66,6 +66,7 @@
     - glusterfs-server
   tags:
     - glusterfs
+    - glusterfs-servers
 
 - name: Install Glusterfs clients
   hosts: swarm
@@ -78,6 +79,7 @@
     - glusterfs-client
   tags:
     - glusterfs
+    - glusterfs-clients
 
 - name: Install Docker
   hosts: swarm
