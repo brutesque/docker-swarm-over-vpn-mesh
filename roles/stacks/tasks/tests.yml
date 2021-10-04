@@ -13,7 +13,7 @@
     mode: '0600'
   run_once: true
 
-- name: Deploy portainer stack
+- name: Deploy tests stack
   docker_stack:
     state: present
     name: tests
