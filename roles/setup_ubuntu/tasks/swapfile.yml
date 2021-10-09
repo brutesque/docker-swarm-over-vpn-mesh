@@ -5,17 +5,17 @@
 - block:
 
   - set_fact:
-      swapfile_block_count: "{{ (ansible_memory_mb.real.total / 1000 * 8 * 4 * 2) | round | int }}"
+      swapfile_block_count: "{{ (ansible_memory_mb.real.total / 1000 * 8 * 1 * 2) | round | int }}"
     when: ansible_memory_mb.real.total < 2048
   - set_fact:
-      swapfile_block_count: "{{ (ansible_memory_mb.real.total / 1000 * 8 * 4 * 1) | round | int }}"
+      swapfile_block_count: "{{ (ansible_memory_mb.real.total / 1000 * 8 * 1 * 1) | round | int }}"
     when: 2048 <= ansible_memory_mb.real.total < 8192
   - set_fact:
-      swapfile_block_count: "{{ 8 * 4 * 4}}"
+      swapfile_block_count: "{{ 8 * 1 * 4}}"
     when: 8192 < ansible_memory_mb.real.total
 
   - name: create swap file
-    command: "dd if=/dev/zero of=/swapfile bs=32M count={{ swapfile_block_count }}"
+    command: "dd if=/dev/zero of=/swapfile bs=128M count={{ swapfile_block_count }}"
 
   - name: change permission type
     file: path=/swapfile mode=600 state=file
