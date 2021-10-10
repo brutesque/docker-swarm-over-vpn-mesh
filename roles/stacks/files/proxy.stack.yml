@@ -49,12 +49,12 @@ services:
           - node.role == manager
         max_replicas_per_node: 1
       resources:
-        limits:
-          cpus: '0.02'
-          memory: 16M
         reservations:
           cpus: '0.01'
           memory: 8M
+        limits:
+          cpus: '0.05'
+          memory: 16M
     logging:
       options:
         max-size: "500k"
@@ -129,12 +129,12 @@ services:
         constraints:
           - node.labels.traefik == true
       resources:
-        limits:
-          cpus: '0.20'
-          memory: 128M
         reservations:
           cpus: '0.01'
           memory: 32M
+        limits:
+          cpus: '0.50'
+          memory: 64M
 
 networks:
   traefik-public:

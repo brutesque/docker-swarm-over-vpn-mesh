@@ -33,12 +33,12 @@ services:
     deploy:
       mode: global
       resources:
-        limits:
-          cpus: '0.05'
-          memory: 32M
         reservations:
           cpus: '0.01'
           memory: 8M
+        limits:
+          cpus: '0.02'
+          memory: 16M
 
   cadvisor:
     image: google/cadvisor
@@ -54,12 +54,12 @@ services:
     deploy:
       mode: global
       resources:
-        limits:
-          cpus: '0.20'
-          memory: 128M
         reservations:
-          cpus: '0.05'
-          memory: 64M
+          cpus: '0.02'
+          memory: 128M
+        limits:
+          cpus: '0.1'
+          memory: 256M
 
   grafana:
     image: stefanprodan/swarmprom-grafana:5.3.4
@@ -87,12 +87,12 @@ services:
         constraints:
           - node.role == manager
       resources:
-        limits:
-          cpus: '0.05'
-          memory: 128M
         reservations:
           cpus: '0.01'
           memory: 32M
+        limits:
+          cpus: '0.1'
+          memory: 64M
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.grafana.loadbalancer.server.port=3000"
@@ -124,12 +124,12 @@ services:
         constraints:
           - node.role == manager
       resources:
-        limits:
-          cpus: '0.05'
-          memory: 64M
         reservations:
           cpus: '0.01'
           memory: 16M
+        limits:
+          cpus: '0.02'
+          memory: 32M
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.alertmanager.loadbalancer.server.port=9093"
@@ -151,12 +151,12 @@ services:
       mode: replicated
       replicas: 1
       resources:
-        limits:
-          cpus: '0.05'
-          memory: 64M
         reservations:
           cpus: '0.01'
           memory: 16M
+        limits:
+          cpus: '0.02'
+          memory: 32M
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.unsee.loadbalancer.server.port=8080"
@@ -186,10 +186,12 @@ services:
     deploy:
       mode: global
       resources:
-        limits:
-          memory: 128M
         reservations:
-          memory: 64M
+          cpus: '0.02'
+          memory: 16M
+        limits:
+          cpus: '0.04'
+          memory: 32M
 
   prometheus:
     image: stefanprodan/swarmprom-prometheus:v2.5.0
@@ -215,10 +217,12 @@ services:
         constraints:
           - node.role == manager
       resources:
-        limits:
-          memory: 256M
         reservations:
+          cpus: '0.01'
           memory: 128M
+        limits:
+          cpus: '0.2'
+          memory: 256M
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.prometheus.loadbalancer.server.port=9090"

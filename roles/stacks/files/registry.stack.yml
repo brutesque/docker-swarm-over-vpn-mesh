@@ -16,12 +16,12 @@ services:
       mode: replicated
       replicas: 1
       resources:
-        limits:
-          cpus: '0.02'
-          memory: 32M
         reservations:
           cpus: '0.01'
           memory: 16M
+        limits:
+          cpus: '0.02'
+          memory: 32M
 
   registry-ui:
     restart: always
@@ -40,12 +40,12 @@ services:
       mode: replicated
       replicas: 1
       resources:
-        limits:
-          cpus: '0.02'
-          memory: 16M
         reservations:
           cpus: '0.01'
           memory: 8M
+        limits:
+          cpus: '0.02'
+          memory: 16M
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.registry.loadbalancer.server.port=80"
