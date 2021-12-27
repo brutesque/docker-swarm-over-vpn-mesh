@@ -39,7 +39,7 @@
   run_once: true
 
 - set_fact:
-    nodes_labels: "{{ groups[item] | product([providers_labels[item]]) }}"
+    nodes_labels: "{{ nodes_labels | default([])}} + {{ groups[item] | product([providers_labels[item]]) }}"
   with_items: "{{ groups.keys() | intersect(providers_labels.keys()) }}"
   run_once: true
 
@@ -47,6 +47,6 @@
   docker_node:
     hostname: "{{ item[0] }}"
     labels: "{{ item[1] |default({}) }}"
-  loop: "{{ nodes_labels }}"
+  loop: "{{ nodes_labels | default([]) }}"
   when: inventory_hostname in groups['managers']
   run_once: true
