@@ -1,5 +1,13 @@
 ---
 
+- name: Add labels to nodes
+  docker_node:
+    hostname: "{{ groups['managers'][0] }}"
+    labels: "{'swarmpit.db-data': 'true', 'swarmpit.influx-data': 'true'}"
+  loop: "{{ ansible_play_batch }}"
+  when: inventory_hostname in groups['managers']
+  run_once: true
+
 - name: Copy swarmpit stack file
   copy:
     src: files/swarmpit.stack.yml

@@ -15,7 +15,7 @@ ${ hostname }
 
 [managers]
 %{ for index, hostname in managers ~}
-${ hostname }${ index == 0 ? " swarm_labels=\"{'swarmpit.db-data': 'true', 'swarmpit.influx-data': 'true'}\"" : "" }
+${ hostname }
 %{ endfor ~}
 
 [workers]
