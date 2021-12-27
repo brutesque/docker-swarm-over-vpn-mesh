@@ -218,3 +218,9 @@ variable "main_domain" {
   sensitive   = false
   default     = null
 }
+
+variable "providers_labels" {
+  description = "Swarm node labels per provider"
+  sensitive   = false
+  default     = {}
+}

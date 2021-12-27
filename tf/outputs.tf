@@ -44,6 +44,7 @@ resource "local_file" "AnsibleVars" {
       stacks_swarmpit    = var.stacks_swarmpit,
       stacks_swarmprom   = var.stacks_swarmprom,
       stacks_tests       = var.stacks_tests,
+      providers_labels   = var.providers_labels,
     }
   )
 }

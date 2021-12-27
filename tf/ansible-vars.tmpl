@@ -25,3 +25,12 @@ swarm_hostnames:
 %{ if duckdns_hosts != null ~}%{ for hostname, duckdns_subdomain in duckdns_hosts ~}%{ if contains(entrypoints, hostname) ~}
   - "${ services_subdomain }.${ duckdns_subdomain }.duckdns.org"
 %{ endif ~}%{ endfor ~}%{ endif ~}
+
+providers_labels: {
+%{ if providers_labels != null ~}%{ for group, item in providers_labels ~}
+  "${ group }":{
+%{ for key, value in item ~}
+    "${ key }": "${ value }",
+%{ endfor ~}},
+%{ endfor ~}%{ endif ~}
+}

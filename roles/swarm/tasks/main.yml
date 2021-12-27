@@ -30,9 +30,23 @@
     advertise_addr: "{{ docker_swarm_interface }}"
   when: "'workers' in group_names"
 
-- name: Add labels to nodes
+- name: Add inventory labels to nodes
   docker_node:
     hostname: "{{ hostvars[item]['ansible_hostname'] }}"
     labels: "{{ hostvars[item]['swarm_labels'] |default({}) }}"
   loop: "{{ ansible_play_batch }}"
-  when: inventory_hostname == groups['managers'][0]
+  when: inventory_hostname in groups['managers']
+  run_once: true
+
+- set_fact:
+    nodes_labels: "{{ groups[item] | product([providers_labels[item]]) }}"
+  with_items: "{{ groups.keys() | intersect(providers_labels.keys()) }}"
+  run_once: true
+
+- name: Add providers labels to nodes
+  docker_node:
+    hostname: "{{ item[0] }}"
+    labels: "{{ item[1] |default({}) }}"
+  loop: "{{ nodes_labels }}"
+  when: inventory_hostname in groups['managers']
+  run_once: true
