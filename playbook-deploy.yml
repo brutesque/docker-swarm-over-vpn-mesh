@@ -27,7 +27,7 @@
   any_errors_fatal: true
   become: true
   roles:
-    - update_ubuntu
+    - update-ubuntu
   vars_files:
     - vars/main.yml
     - secrets/vars.yml
