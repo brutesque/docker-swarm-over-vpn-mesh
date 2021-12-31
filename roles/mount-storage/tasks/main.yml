@@ -1,0 +1,49 @@
+---
+
+- command:
+    argv:
+      - blkid
+      - --match-token
+      - UUID={{ item }}
+      - --output
+      - export
+  register: result
+  with_items: "{{ mount_uuids }}"
+  changed_when:
+    - result.rc == 0
+    - result.stdout != ""
+  failed_when: false
+
+- set_fact:
+    found_devices: []
+
+- set_fact:
+    found_devices: "{{ found_devices }} + [{{ dict(item.stdout_lines | map('lower') | map('split', '=')) }}]"
+  when: item.changed == true and item.stdout != ""
+  with_items: "{{ result.results }}"
+  no_log: true
+
+- name: Mount storage device
+  mount:
+    path: "/mnt/storage-{{ (item['uuid'] | hash('sha1'))[0:6] }}"
+    src: "UUID={{ item['uuid'] }}"
+    fstype: "{{ item['type'] }}"
+    opts: defaults
+    state: mounted
+  register: storage_mounts
+  with_items: "{{ found_devices }}"
+
+- set_fact:
+    storage_paths: []
+
+- set_fact:
+    storage_paths: "{{ storage_paths }} + ['{{ item.name }}']"
+  with_items: "{{ storage_mounts.results }}"
+
+- file:
+    state: directory
+    path: "{{ item }}"
+    mode: '0755'
+    owner: root
+    group: root
+  with_items: "{{ storage_paths }}"

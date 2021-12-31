@@ -30,12 +30,12 @@
     advertise_addr: "{{ docker_swarm_interface }}"
   when: "'workers' in group_names"
 
-- name: Add inventory labels to nodes
+- name: Add labels to nodes set in the inventory
   docker_node:
     hostname: "{{ hostvars[item]['ansible_hostname'] }}"
     labels: "{{ hostvars[item]['swarm_labels'] |default({}) }}"
   loop: "{{ ansible_play_batch }}"
-  when: inventory_hostname in groups['managers']
+  when: inventory_hostname in groups['swarm']
   run_once: true
 
 - set_fact:
@@ -43,10 +43,26 @@
   with_items: "{{ groups.keys() | intersect(providers_labels.keys()) }}"
   run_once: true
 
-- name: Add providers labels to nodes
+- name: Add labels to nodes about their provider
   docker_node:
     hostname: "{{ item[0] }}"
     labels: "{{ item[1] |default({}) }}"
   loop: "{{ nodes_labels | default([]) }}"
   when: inventory_hostname in groups['managers']
   run_once: true
+
+- name: Add labels to nodes about their storage mounts
+  docker_node:
+    hostname: "{{ inventory_hostname }}"
+    labels: "{
+      'storage.available': 'true',
+      'storage.default': '{{ (item.mount | basename)[8:] }}',
+      'storage.{{ (item.mount | basename)[8:] }}': 'true',
+      'storage.{{ (item.mount | basename)[8:] }}.mount': '{{ item.mount }}',
+      'storage.{{ (item.mount | basename)[8:] }}.size': '{{ item.size_total | filesizeformat }}',
+      'storage.{{ (item.mount | basename)[8:] }}.uuid': '{{ item.uuid }}',
+      'storage.{{ (item.mount | basename)[8:] }}.fstype': '{{ item.fstype }}',
+    }"
+  when: item["uuid"] in mount_uuids
+  loop: "{{ ansible_mounts }}"
+  no_log: true

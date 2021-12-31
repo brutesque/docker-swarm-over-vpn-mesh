@@ -224,3 +224,9 @@ variable "providers_labels" {
   sensitive   = false
   default     = {}
 }
+
+variable "mount_uuids" {
+  description = "List of UUID's for storage devices to mount when found"
+  sensitive   = true
+  default     = []
+}
