@@ -20,8 +20,8 @@ services:
           cpus: '0.01'
           memory: 16M
         limits:
-          cpus: '0.02'
-          memory: 32M
+          cpus: '0.1'
+          memory: 64M
 
   registry-ui:
     restart: always
@@ -44,8 +44,8 @@ services:
           cpus: '0.01'
           memory: 8M
         limits:
-          cpus: '0.02'
-          memory: 16M
+          cpus: '0.1'
+          memory: 64M
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.registry.loadbalancer.server.port=80"
