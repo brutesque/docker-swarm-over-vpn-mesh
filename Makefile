@@ -42,6 +42,9 @@ ansible: ansible-deploy
 deploy: terraform-deploy ansible-deploy
 
 backup:
+	pip3 install --quiet --upgrade pip
+	pip3 install --quiet --upgrade --requirement requirements.txt
+
 	ansible-playbook playbook-backup.yml
 
 destroy: ansible-destroy terraform-destroy
