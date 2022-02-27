@@ -9,7 +9,7 @@
       delay: 10
       timeout: 600
   - action: ping
-  tags: waiting
+  tags: wait
 
 - name: Setup Ubuntu
   hosts: all
